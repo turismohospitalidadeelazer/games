@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memória e Hospitalidade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,6 +16,62 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem 5%;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a4d2e, #e76f51);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: #2d3142;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #1a4d2e;
+        }
+
+        /* Game Wrapper */
+        .game-wrapper {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -450,9 +507,36 @@
                 margin-bottom: 0;
             }
         }
+
+        /* Footer */
+        footer {
+            background: #1a4d2e;
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+        }
+
+        footer p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">TH&L</div>
+            <nav class="nav-menu">
+                <a href="../index.html" class="nav-link">Início</a>
+                <a href="index.html#jogos" class="nav-link">Jogos</a>
+                <a href="../index.html#sobre" class="nav-link">Sobre</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="game-wrapper">
     <div class="container">
         <!-- Tela Inicial -->
         <div class="home-screen" id="homeScreen">
@@ -887,5 +971,11 @@
             document.getElementById('completionScreen').classList.remove('active');
         }
     </script>
+    </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Lílian Pacheco Ferreira Paiva. Todos os direitos reservados.</p>
+    </footer>
 </body>
 </html>
