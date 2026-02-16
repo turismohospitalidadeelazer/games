@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo dos Sete Erros - Aquário - TH&L</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem 5%;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .home-screen {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .home-screen h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: #2d3142;
+            margin-bottom: 20px;
+        }
+        
+        .home-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: #2d3142;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a4d2e, #e76f51);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: #2d3142;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #1a4d2e;
+        }
+
+        /* AJUSTES PARA O JOGO DOS SETE ERROS */
+        .game-wrapper { padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 1200px; width: 100%; background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+
+        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .info-card { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 25px; border-radius: 12px; text-align: center; }
+        
+        .images-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            position: relative;
+        }
+
+        .image-box {
+            position: relative;
+            cursor: crosshair;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 4px solid #f0f0f0;
+        }
+
+        .image-box img { width: 100%; display: block; }
+
+        /* Círculo que aparece quando encontra o erro */
+        .error-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ff4757;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            display: none;
+            animation: pop 0.3s ease-out;
+        }
+
+        @keyframes pop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Área invisível clicável do erro */
+        .error-zone {
+            position: absolute;
+            cursor: pointer;
+            /* background: rgba(255,0,0,0.2);  Descomente para debugar a posição dos erros */
+        }
+
+        .victory-screen {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+        }
+        .victory-screen.active { display: flex; }
+        .victory-content { background: white; border-radius: 20px; padding: 50px; text-align: center; }
+        
+        .btn { padding: 14px 28px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; color: white; background: #4caf50; }
+
+    </style>
+</head>
+<body>
+<!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">TH&L</div>
+            <nav class="nav-menu">
+                <a href="../index.html" class="nav-link">Início</a>
+                <a href="index.html" class="nav-link">Jogos</a>
+                <a href="../index.html#sobre" class="nav-link">Sobre</a>
+            </nav>
+        </div>
+    </header>
+    <div class="game-wrapper">
+        <div class="container">
+            <div class="home-screen" id="homeScreen">
+                <h1>🎮 Sete Erros do Turista no Aquário</h1>
+            </div>
+            <div class="game-header">
+                <h2 class="home-screen">Descubra o que está faltando na imagem à direita.<br> Clique no local do elemento para pontuar.</h2>
+                <div style="display: flex; gap: 15px;">
+                    <div class="info-card">
+                        <h3>Erros</h3>
+                        <p id="errorCount">0/7</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Tempo</h3>
+                        <p id="timer">0:00</p>
+                    </div>
+                    <button class="btn btn-danger" onclick="location.href='sete-erros-index.html'">← Voltar</button> 
+                </div>
+            </div>
+
+            <div class="images-container">
+                <div class="image-box">
+                    <img src="images/aquario.png" alt="Original">
+                    <div id="markers-left"></div>
+                </div>
+
+                <div class="image-box" id="clickableArea">
+                    <img src="images/aquario-erro.png" alt="Modificada">
+                    <div id="markers-right"></div>
+                    <div id="errorZones"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="victory-screen" id="victoryScreen">
+        <div class="victory-content">
+            <h2>🎉 Parabéns!</h2>
+            <p>Você encontrou todos os erros!</p>
+            <div id="finalTime" style="margin: 20px 0; font-size: 20px;"></div>
+            <button class="btn" onclick="location.reload()">Jogar Novamente</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURAÇÃO DOS ERROS - Aquário
+        // CONFIGURAÇÃO DOS ERROS (Ajuste top e left conforme sua imagem)
+        const ERROS_DATA = [
+            { id: 1, name: "Coral roxo", top: 78, left: 18, width: 8, height: 8 },
+            { id: 2, name: "Tartaruga", top: 46, left: 22, width: 10, height: 8 },
+            { id: 3, name: "Meias do turista", top: 87, left: 48, width: 10, height: 5 },
+            { id: 4, name: "Peixinho", top: 38, left: 30, width: 5, height: 5 },
+            { id: 5, name: "Mochila do turista", top: 62, left: 56, width: 8, height: 8 },
+            { id: 6, name: "Criança à esquerda", top: 70, left: 40, width: 8, height: 8 },
+            { id: 7, name: "Arraia", top: 43, left: 80, width: 30, height: 10 },
+        ];
+        let foundErrors = 0;
+        let timer = 0;
+        let timerInterval;
+
+        function startGame() {
+            const zonesContainer = document.getElementById('errorZones');
+            
+            ERROS_DATA.forEach(erro => {
+                const zone = document.createElement('div');
+                zone.className = 'error-zone';
+                zone.style.top = erro.top + '%';
+                zone.style.left = erro.left + '%';
+                zone.style.width = erro.width + '%';
+                zone.style.height = erro.height + '%';
+                
+                zone.onclick = (e) => {
+                    e.stopPropagation();
+                    markError(erro);
+                };
+                zonesContainer.appendChild(zone);
+            });
+
+            startTimer();
+        }
+
+        function markError(erro) {
+            // Evita clicar no mesmo erro duas vezes
+            const existingZone = document.querySelector(`.error-zone[style*="top: ${erro.top}%"]`);
+            if(!existingZone) return;
+            existingZone.remove();
+
+            foundErrors++;
+            document.getElementById('errorCount').textContent = foundErrors + "/7";
+
+            // Adiciona o círculo visual nas duas imagens
+            [document.getElementById('markers-left'), document.getElementById('markers-right')].forEach(container => {
+                const marker = document.createElement('div');
+                marker.className = 'error-marker';
+                marker.style.display = 'block';
+                marker.style.top = erro.top + '%';
+                marker.style.left = erro.left + '%';
+                container.appendChild(marker);
+            });
+
+            if (foundErrors === 7) winGame();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer++;
+                let min = Math.floor(timer / 60);
+                let sec = timer % 60;
+                document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+            }, 1000);
+        }
+
+        function winGame() {
+            clearInterval(timerInterval);
+            document.getElementById('finalTime').textContent = "Tempo total: " + document.getElementById('timer').textContent;
+            document.getElementById('victoryScreen').classList.add('active');
+        }
+
+        window.onload = startGame;
+    </script>
+</body>
+</html>
