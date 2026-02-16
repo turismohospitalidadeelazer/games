@@ -430,12 +430,24 @@
         }
 
         .btn {
-            padding: 15px 30px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-danger { 
+            padding: 12px 30px;
             border: none;
             border-radius: 10px;
             font-size: 18px;
             cursor: pointer;
             transition: all 0.3s ease;
+            background: #f44336;
+            color: white;
         }
 
         .btn-primary {
@@ -540,8 +552,9 @@
     <div class="container">
         <!-- Tela Inicial -->
         <div class="home-screen" id="homeScreen">
-            <h1>🏨 Memória e Hospitalidade</h1>
-            
+            <h1>🏨 Memória e Hospitalidade
+                <button class="btn btn-danger" onclick="location.href='index.html'">← Voltar</button>
+            </h1>
             <div class="home-image">
                 <img src="images/memoria-hospitalidade.png" alt="Memória e Hospitalidade" />
                 <div class="play-banner" onclick="startGame()">
