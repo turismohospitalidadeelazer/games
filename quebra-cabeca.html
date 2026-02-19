@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quebra-Cabeça - TH&L</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 1.5rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a4d2e, #e76f51);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            color: #2d3142;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #f4a261; }
+
+        /* ── WRAPPER ── */
+        .game-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: calc(100vh - 100px);
+        }
+        .container { max-width: 1400px; width: 100%; }
+
+        /* ══════════════════════════════════════
+           TELA 1 – GALERIA DE SELEÇÃO
+        ══════════════════════════════════════ */
+        #galleryScreen {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .gallery-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: #2d3142;
+            margin-bottom: 10px;
+        }
+        .gallery-header p { font-size: 16px; color: #666; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 22px;
+        }
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+        }
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 185px;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-item-title {
+            padding: 14px;
+            background: #f8f9fa;
+            text-align: center;
+            font-weight: 600;
+            color: #2d3142;
+            font-size: 13px;
+        }
+
+        /* ══════════════════════════════════════
+           TELA 2 – HOME DO JOGO (dificuldade)
+        ══════════════════════════════════════ */
+        #homeScreen {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 40px 36px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            display: none;
+        }
+        #homeScreen h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: #2d3142;
+            margin-bottom: 20px;
+        }
+
+        /* Imagem com overlay sobreposto */
+        .home-image-wrapper {
+            position: relative;
+            max-width: 820px;
+            margin: 0 auto;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+        }
+        .home-image-wrapper img {
+            width: 100%;
+            display: block;
+        }
+        /* overlay — coluna: grid em cima, botão jogar embaixo, ancorado no fundo */
+        .home-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 70%, transparent 100%);
+        }
+
+        .difficulty-grid {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Cards de dificuldade — mesma altura que o botão Jogar */
+        .difficulty-card {
+            background: rgba(255,255,255,0.22);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255,255,255,0.60);
+            border-radius: 12px;
+            padding: 0 18px;
+            height: 56px;
+            cursor: pointer;
+            transition: all 0.25s;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .difficulty-card:hover {
+            background: rgba(255,255,255,0.35);
+            transform: translateY(-3px);
+        }
+        .difficulty-card.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: white;
+            box-shadow: 0 4px 18px rgba(102,126,234,0.7);
+        }
+        .difficulty-icon { font-size: 22px; line-height: 1; }
+        .difficulty-text { display: flex; flex-direction: column; align-items: flex-start; }
+        .difficulty-name { font-size: 14px; font-weight: bold; line-height: 1.2; }
+        .difficulty-desc { font-size: 11px; opacity: 0.88; line-height: 1.2; }
+
+        .start-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0 36px;
+            height: 56px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+            white-space: nowrap;
+        }
+        .start-button:hover { transform: scale(1.07); box-shadow: 0 8px 30px rgba(102,126,234,0.55); }
+
+        /* Botões abaixo da imagem */
+        .home-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        /* ══════════════════════════════════════
+           TELA 3 – JOGO
+        ══════════════════════════════════════ */
+        #gameScreen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .game-info { display: flex; gap: 15px; flex-wrap: wrap; }
+        .info-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 26px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .info-card h3 { font-size: 12px; margin-bottom: 4px; opacity: 0.9; }
+        .info-card p { font-size: 24px; font-weight: bold; }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+        .btn-secondary { background: #ff9800; }
+        .btn-danger   { background: #f44336; }
+        .btn-primary  { background: #4caf50; }
+        .btn-gallery  { background: #667eea; }
+        .btn:hover { transform: scale(1.05); }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        /* puzzle layout */
+        .puzzle-main {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 28px;
+            margin-top: 16px;
+        }
+        .pieces-tray {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 18px;
+            max-height: 650px;
+            overflow-y: auto;
+        }
+        .pieces-tray h3 { color: #667eea; margin-bottom: 14px; font-size: 15px; }
+        .pieces-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        /* Peça: tamanho visual fixo, mas proporção respeitada via JS */
+        .puzzle-piece {
+            cursor: grab;
+            transition: transform 0.15s;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        .puzzle-piece:hover { transform: scale(1.06); }
+        .puzzle-piece.dragging { opacity: 0.4; cursor: grabbing; }
+        .puzzle-piece.placed { display: none; }
+        .piece-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .puzzle-area {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 20px;
+            overflow-x: auto;
+        }
+        .puzzle-board {
+            position: relative;
+            background: linear-gradient(135deg, #e9ecef, #dee2e6);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+        .drop-zone {
+            position: absolute;
+            border: 2px dashed rgba(102,126,234,0.55);
+            border-radius: 4px;
+            transition: background 0.15s, border-color 0.15s;
+            box-sizing: border-box;
+        }
+        .drop-zone.drag-over {
+            background: rgba(102,126,234,0.22);
+            border-color: #667eea;
+            border-style: solid;
+        }
+        .drop-zone.filled { border-color: transparent; }
+        .placed-piece {
+            position: absolute;
+            inset: 0;
+            background-repeat: no-repeat;
+            border-radius: 3px;
+        }
+
+        /* preview */
+        .preview-panel {
+            position: relative;
+        }
+        .preview-panel h4 {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        #previewContainer {
+            width: 320px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            transition: all 0.3s;
+        }
+        #previewContainer.hidden { display: none; }
+        #previewContainer img { width: 100%; display: block; }
+        .preview-toggle {
+            background: rgba(102,126,234,0.85);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+        }
+        .preview-toggle:hover { background: #667eea; }
+
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        /* ══════════════════════════════════════
+           TELA DE VITÓRIA (overlay)
+        ══════════════════════════════════════ */
+        .victory-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .victory-screen.active { display: flex; }
+        .victory-content {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            text-align: center;
+            max-width: 460px;
+            width: 90%;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+        .victory-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: #2d3142;
+            margin-bottom: 24px;
+        }
+        .victory-stats { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+        .stat-item { font-size: 20px; color: #444; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .puzzle-main { grid-template-columns: 1fr; }
+            .pieces-tray { max-height: 280px; }
+            #previewContainer { width: 220px; }
+        }
+        @media (max-width: 600px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .difficulty-grid { grid-template-columns: 1fr; }
+            .game-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <a href="../index.html" class="logo">TH&L</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Início</a></li>
+            <li><a href="index.html">Jogos</a></li>
+            <li><a href="../index.html#sobre">Sobre</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="game-wrapper">
+    <div class="container">
+
+        <!-- ══ TELA 1 – GALERIA ══ -->
+        <div id="galleryScreen">
+            <div class="gallery-header">
+                <h1>🧩 Quebra-Cabeça</h1>
+                <p>Escolha uma imagem para montar o quebra-cabeça</p>
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-danger" onclick="window.location.href='index.html'">← Voltar aos Games</button>
+                </div>
+            </div>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+        <!-- ══ TELA 2 – HOME / DIFICULDADE ══ -->
+        <div id="homeScreen">
+            <h1 id="homeTitle">🧩 Quebra-Cabeça</h1>
+
+            <!-- Imagem com controles sobrepostos -->
+            <div class="home-image-wrapper">
+                <img id="homeImage" src="" alt="Imagem do Quebra-Cabeça">
+                <div class="home-overlay">
+                    <div class="difficulty-grid">
+                        <div class="difficulty-card selected" data-level="easy" onclick="selectDifficulty('easy')">
+                            <div class="difficulty-icon">😊</div>
+                            <div class="difficulty-text">
+                                <div class="difficulty-name">Fácil</div>
+                                <div class="difficulty-desc">3×3 · 9 peças</div>
+                            </div>
+                        </div>
+                        <div class="difficulty-card" data-level="medium" onclick="selectDifficulty('medium')">
+                            <div class="difficulty-icon">🤔</div>
+                            <div class="difficulty-text">
+                                <div class="difficulty-name">Médio</div>
+                                <div class="difficulty-desc">4×4 · 16 peças</div>
+                            </div>
+                        </div>
+                        <div class="difficulty-card" data-level="hard" onclick="selectDifficulty('hard')">
+                            <div class="difficulty-icon">🔥</div>
+                            <div class="difficulty-text">
+                                <div class="difficulty-name">Difícil</div>
+                                <div class="difficulty-desc">5×5 · 25 peças</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="start-button" onclick="startGame()">🎮 Jogar Agora</button>
+                </div>
+            </div>
+
+            <!-- Botões de navegação ABAIXO da imagem -->
+            <div class="home-actions">
+                <button class="btn btn-gallery" onclick="showGallery()">🖼️ Escolher outra imagem</button>
+                <button class="btn btn-danger" onclick="window.location.href='index.html'">← Voltar aos Games</button>
+            </div>
+
+        </div>
+
+        <!-- ══ TELA 3 – JOGO ══ -->
+        <div id="gameScreen">
+            <div class="game-header">
+                <div class="game-info">
+                    <div class="info-card">
+                        <h3>Nível</h3>
+                        <p id="levelName">Fácil</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Peças</h3>
+                        <p><span id="placed">0</span>/<span id="total">9</span></p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Tempo</h3>
+                        <p id="timer">0:00</p>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="restartGame()">🔄 Reiniciar</button>
+                    <button class="btn btn-primary" onclick="goHome()">🏠 Menu</button>
+                    <button class="btn btn-gallery" onclick="showGallery()">🖼️ Galeria</button>
+                    <button class="btn btn-danger" onclick="window.location.href='index.html'">← Games</button>
+                </div>
+            </div>
+
+            <div class="puzzle-main">
+                <!-- Bandeja de peças -->
+                <div class="pieces-tray">
+                    <h3>🧩 Peças disponíveis</h3>
+                    <div class="pieces-container" id="piecesContainer"></div>
+                </div>
+
+                <!-- Tabuleiro + preview -->
+                <div class="puzzle-area">
+                    <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
+                        <div class="puzzle-board" id="puzzleBoard"></div>
+                        <div class="preview-panel">
+                            <h4>👁️ Modelo</h4>
+                            <button class="preview-toggle" onclick="togglePreview()">Mostrar/Ocultar</button>
+                            <div id="previewContainer">
+                                <img id="previewImage" src="" alt="Modelo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ══ TELA DE VITÓRIA ══ -->
+<div class="victory-screen" id="victoryScreen">
+    <div class="victory-content">
+        <h2>🎉 Parabéns!</h2>
+        <div class="victory-stats">
+            <div class="stat-item">🏆 <strong>Nível:</strong> <span id="victoryLevel"></span></div>
+            <div class="stat-item">⏱️ <strong>Tempo:</strong> <span id="victoryTime"></span></div>
+        </div>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
+            <button class="btn btn-primary" onclick="restartGame()">🔄 Jogar Novamente</button>
+            <button class="btn btn-gallery" onclick="showGallery()">🖼️ Outra Imagem</button>
+            <button class="btn btn-danger" onclick="goHome()">🏠 Menu</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* ═══════════════════════════════════════
+       LISTA DE IMAGENS / PUZZLES
+    ═══════════════════════════════════════ */
+    var PUZZLES = [
+        { id: 'aeroporto',              name: 'Turista no Aeroporto',                  title: 'Quebra-Cabeça – Turista no Aeroporto' },
+        { id: 'aviao',                  name: 'Turista no Avião',                      title: 'Quebra-Cabeça – Turista no Avião' },
+        { id: 'taxi',                   name: 'Turista no Táxi',                       title: 'Quebra-Cabeça – Turista no Táxi' },
+        { id: 'recepcao-hotel',         name: 'Turista na Recepção Hotel',             title: 'Quebra-Cabeça – Turista na Recepção Hotel' },
+        { id: 'quarto',                 name: 'Turista no Quarto de Hotel',            title: 'Quebra-Cabeça – Turista no Quarto de Hotel' },
+        { id: 'restaurante',            name: 'Turista no Restaurante',                title: 'Quebra-Cabeça – Turista no Restaurante' },
+        { id: 'praia',                  name: 'Turista na Praia',                      title: 'Quebra-Cabeça – Turista na Praia' },
+        { id: 'museu',                  name: 'Turista no Museu',                      title: 'Quebra-Cabeça – Turista no Museu' },
+        { id: 'bar-piscina',            name: 'Turista no Bar da Piscina',             title: 'Quebra-Cabeça – Turista no Bar da Piscina' },
+        { id: 'boate',                  name: 'Turista na Boate',                      title: 'Quebra-Cabeça – Turista na Boate' },
+        { id: 'centro-historico',       name: 'Turista no Centro Histórico',           title: 'Quebra-Cabeça – Turista no Centro Histórico' },
+        { id: 'artesanato',             name: 'Turista no Artesanato',                 title: 'Quebra-Cabeça – Turista no Artesanato' },
+        { id: 'parapente',              name: 'Turista voando de Parapente',                  title: 'Quebra-Cabeça – Turista voando de Parapente' },
+        { id: 'parque-aquatico',        name: 'Turista no Parque Aquático',            title: 'Quebra-Cabeça – Turista no Parque Aquático' },
+        { id: 'torcendo-brasil',        name: 'Turista Torcendo pelo Brasil',       title: 'Quebra-Cabeça – Turista Torcendo pelo Brasil' },
+        { id: 'aquario',                name: 'Turista no Aquário',                    title: 'Quebra-Cabeça – Turista no  Aquário' },
+        { id: 'banana-boat',            name: 'Turista no Banana Boat',                title: 'Quebra-Cabeça – Turista no Banana Boat' },
+        { id: 'compras',                name: 'Turista nas Compras',                    title: 'Quebra-Cabeça – Turista nas Compras' },
+        { id: 'futebol-estadio',        name: 'Turista no Estádio de Futebol',          title: 'Quebra-Cabeça – Turista no Estádio de Futebol' },
+        { id: 'recepcao-hotel2',        name: 'Turista na Recepção Hotel 2',           title: 'Quebra-Cabeça – Turista na Recepção Hotel 2' },
+        { id: 'lencois-maranhenses',    name: 'Turista nos Lençóis Maranhenses',        title: 'Quebra-Cabeça – Turista nos Lençóis Maranhenses' },
+        { id: 'aventura',               name: 'Turismo de Aventura',                   title: 'Quebra-Cabeça – Turismo de Aventura' },
+        { id: 'base-comunitaria',       name: 'Turismo de Base Comunitária',           title: 'Quebra-Cabeça – Turismo de Base Comunitária' },
+        { id: 'turismo-observacao',     name: 'Turismo de Observação',      title: 'Quebra-Cabeça – Turismo de Observação' },
+        { id: 'turismo-sustentavel',    name: 'Turismo Sustentável',        title: 'Quebra-Cabeça – Turismo Sustentável' },
+        { id: 'hospitalidade-criancas', name: 'Hospitalidade com Crianças',     title: 'Quebra-Cabeça – Hospitalidade com Crianças' },
+        { id: 'hospitalidade-recepcao', name: 'Hospitalidade na Recepção do Hotel',     title: 'Quebra-Cabeça – Hospitalidade na Recepção do Hotel' }
+    ];
+
+    var DIFFICULTY = {
+        easy:   { rows: 3, cols: 3, name: 'Fácil',  pieces: 9  },
+        medium: { rows: 4, cols: 4, name: 'Médio',  pieces: 16 },
+        hard:   { rows: 5, cols: 5, name: 'Difícil',pieces: 25 }
+    };
+
+    var state = {
+        puzzle:         null,   // objeto do PUZZLES selecionado
+        difficulty:     'easy',
+        placedPieces:   0,
+        timer:          0,
+        timerInterval:  null,
+        draggedData:    null
+    };
+
+    /* ═══════════════════════════════════════
+       GALERIA
+    ═══════════════════════════════════════ */
+    function buildGallery() {
+        var grid = document.getElementById('galleryGrid');
+        grid.innerHTML = '';
+        for (var i = 0; i < PUZZLES.length; i++) {
+            (function(p) {
+                var item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = function() { selectPuzzle(p); };
+                item.innerHTML =
+                    '<img src="images/thumb-' + p.id + '.jpg" alt="' + p.name + '" ' +
+                         'onerror="this.src=\'images/' + p.id + '.jpg\'">' +
+                    '<div class="gallery-item-title">' + p.name + '</div>';
+                grid.appendChild(item);
+            })(PUZZLES[i]);
+        }
+    }
+
+    function showGallery() {
+        if (state.timerInterval) clearInterval(state.timerInterval);
+        document.getElementById('victoryScreen').classList.remove('active');
+        document.getElementById('gameScreen').style.display   = 'none';
+        document.getElementById('homeScreen').style.display   = 'none';
+        document.getElementById('galleryScreen').style.display = 'block';
+    }
+
+    function selectPuzzle(puzzle) {
+        state.puzzle     = puzzle;
+        state.difficulty = 'easy';
+
+        // resetar cards de dificuldade
+        var cards = document.querySelectorAll('.difficulty-card');
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].classList.remove('selected');
+        }
+        document.querySelector('[data-level="easy"]').classList.add('selected');
+
+        document.getElementById('homeTitle').textContent = puzzle.title;
+        document.getElementById('homeImage').src = 'images/' + puzzle.id + '.jpg';
+
+        document.getElementById('galleryScreen').style.display = 'none';
+        document.getElementById('homeScreen').style.display    = 'block';
+    }
+
+    /* ═══════════════════════════════════════
+       HOME / DIFICULDADE
+    ═══════════════════════════════════════ */
+    function selectDifficulty(level) {
+        state.difficulty = level;
+        var cards = document.querySelectorAll('.difficulty-card');
+        for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+        document.querySelector('[data-level="' + level + '"]').classList.add('selected');
+    }
+
+    /* ═══════════════════════════════════════
+       JOGO
+    ═══════════════════════════════════════ */
+    function startGame() {
+        var cfg = DIFFICULTY[state.difficulty];
+        state.placedPieces = 0;
+        state.timer        = 0;
+
+        document.getElementById('homeScreen').style.display  = 'none';
+        document.getElementById('gameScreen').style.display  = 'block';
+        document.getElementById('levelName').textContent     = cfg.name;
+        document.getElementById('total').textContent         = cfg.pieces;
+        document.getElementById('placed').textContent        = '0';
+        document.getElementById('previewImage').src          = 'images/thumb-' + state.puzzle.id + '.jpg';
+
+        createPuzzle();
+        startTimer();
+    }
+
+    function createPuzzle() {
+        var cfg    = DIFFICULTY[state.difficulty];
+        var imgSrc = 'images/' + state.puzzle.id + '.jpg';
+
+        /* Tamanho visual fixo do tabuleiro */
+        var BOARD_W = 580;
+        var BOARD_H = 580;
+
+        /* Carrega a imagem para conhecer a proporção real */
+        var img = new Image();
+        img.onload = function() {
+            var natW = img.naturalWidth;
+            var natH = img.naturalHeight;
+
+            /* Ajusta o tabuleiro para manter a proporção real da imagem */
+            var ratio = natW / natH;
+            var boardW, boardH;
+            if (ratio >= 1) {
+                boardW = BOARD_W;
+                boardH = Math.round(BOARD_W / ratio);
+            } else {
+                boardH = BOARD_H;
+                boardW = Math.round(BOARD_H * ratio);
+            }
+
+            /* Tamanho visual de cada peça no tabuleiro */
+            var pieceW = Math.round(boardW / cfg.cols);
+            var pieceH = Math.round(boardH / cfg.rows);
+
+            /* Tamanho visual de cada peça na bandeja (cabe em 2 colunas de ~110px) */
+            var trayPieceW = 110;
+            var trayPieceH = Math.round(trayPieceW * (pieceH / pieceW));
+
+            /* ── Tabuleiro ── */
+            var board = document.getElementById('puzzleBoard');
+            board.innerHTML = '';
+            board.style.width  = boardW + 'px';
+            board.style.height = boardH + 'px';
+
+            /* ── Peças embaralhadas ── */
+            var piecesContainer = document.getElementById('piecesContainer');
+            piecesContainer.innerHTML = '';
+
+            var positions = [];
+            for (var r = 0; r < cfg.rows; r++)
+                for (var c = 0; c < cfg.cols; c++)
+                    positions.push({ row: r, col: c });
+            positions.sort(function() { return Math.random() - 0.5; });
+
+            for (var i = 0; i < positions.length; i++) {
+                var pos = positions[i];
+
+                /* O background-size na bandeja é proporcional:
+                   a imagem inteira ocuparia boardW escalado para trayPieceW colunas */
+                var trayBgW = Math.round(trayPieceW * cfg.cols);
+                var trayBgH = Math.round(trayPieceH * cfg.rows);
+                var trayBgX = -(pos.col * trayPieceW);
+                var trayBgY = -(pos.row * trayPieceH);
+
+                var piece = document.createElement('div');
+                piece.className   = 'puzzle-piece';
+                piece.draggable   = true;
+                piece.dataset.row = pos.row;
+                piece.dataset.col = pos.col;
+                piece.style.width  = trayPieceW + 'px';
+                piece.style.height = trayPieceH + 'px';
+
+                var inner = document.createElement('div');
+                inner.className                = 'piece-inner';
+                inner.style.width              = trayPieceW + 'px';
+                inner.style.height             = trayPieceH + 'px';
+                inner.style.backgroundImage    = 'url(' + imgSrc + ')';
+                inner.style.backgroundRepeat   = 'no-repeat';
+                inner.style.backgroundSize     = trayBgW + 'px ' + trayBgH + 'px';
+                inner.style.backgroundPosition = trayBgX + 'px ' + trayBgY + 'px';
+
+                piece.appendChild(inner);
+                piece.addEventListener('dragstart', handleDragStart);
+                piece.addEventListener('dragend',   handleDragEnd);
+                piecesContainer.appendChild(piece);
+            }
+
+            /* ── Zonas de drop no tabuleiro ── */
+            for (var r2 = 0; r2 < cfg.rows; r2++) {
+                for (var c2 = 0; c2 < cfg.cols; c2++) {
+                    var zone = document.createElement('div');
+                    zone.className   = 'drop-zone';
+                    zone.dataset.row = r2;
+                    zone.dataset.col = c2;
+                    zone.dataset.pw  = pieceW;
+                    zone.dataset.ph  = pieceH;
+                    zone.dataset.bw  = boardW;
+                    zone.dataset.bh  = boardH;
+                    zone.style.left   = (c2 * pieceW) + 'px';
+                    zone.style.top    = (r2 * pieceH) + 'px';
+                    zone.style.width  = pieceW + 'px';
+                    zone.style.height = pieceH + 'px';
+                    zone.addEventListener('dragover',  handleDragOver);
+                    zone.addEventListener('dragleave', handleDragLeave);
+                    zone.addEventListener('drop',      handleDrop);
+                    board.appendChild(zone);
+                }
+            }
+        };
+        img.src = imgSrc;
+    }
+
+    /* ── Drag & Drop ── */
+    function handleDragStart(e) {
+        state.draggedData = {
+            row:     parseInt(e.currentTarget.dataset.row),
+            col:     parseInt(e.currentTarget.dataset.col),
+            element: e.currentTarget
+        };
+        e.currentTarget.classList.add('dragging');
+    }
+    function handleDragEnd(e) {
+        e.currentTarget.classList.remove('dragging');
+    }
+    function handleDragOver(e) {
+        e.preventDefault();
+        if (!e.currentTarget.classList.contains('filled')) {
+            e.currentTarget.classList.add('drag-over');
+        }
+    }
+    function handleDragLeave(e) {
+        e.currentTarget.classList.remove('drag-over');
+    }
+    function handleDrop(e) {
+        e.preventDefault();
+        e.currentTarget.classList.remove('drag-over');
+
+        if (!state.draggedData || e.currentTarget.classList.contains('filled')) return;
+
+        var zoneRow = parseInt(e.currentTarget.dataset.row);
+        var zoneCol = parseInt(e.currentTarget.dataset.col);
+
+        if (state.draggedData.row === zoneRow && state.draggedData.col === zoneCol) {
+            var pieceW = parseInt(e.currentTarget.dataset.pw);
+            var pieceH = parseInt(e.currentTarget.dataset.ph);
+            var boardW = parseInt(e.currentTarget.dataset.bw);
+            var boardH = parseInt(e.currentTarget.dataset.bh);
+            var imgSrc = 'images/' + state.puzzle.id + '.jpg';
+
+            var placed = document.createElement('div');
+            placed.className                = 'placed-piece';
+            placed.style.backgroundImage    = 'url(' + imgSrc + ')';
+            placed.style.backgroundSize     = boardW + 'px ' + boardH + 'px';
+            placed.style.backgroundPosition = '-' + (zoneCol * pieceW) + 'px -' + (zoneRow * pieceH) + 'px';
+
+            e.currentTarget.appendChild(placed);
+            e.currentTarget.classList.add('filled');
+            state.draggedData.element.classList.add('placed');
+            state.placedPieces++;
+
+            document.getElementById('placed').textContent = state.placedPieces;
+
+            var cfg = DIFFICULTY[state.difficulty];
+            if (state.placedPieces === cfg.pieces) {
+                setTimeout(showVictory, 500);
+            }
+        } else {
+            var zone = e.currentTarget;
+            zone.style.animation = 'shake 0.45s';
+            setTimeout(function() { zone.style.animation = ''; }, 450);
+        }
+
+        state.draggedData = null;
+    }
+
+    /* ── Timer ── */
+    function startTimer() {
+        if (state.timerInterval) clearInterval(state.timerInterval);
+        state.timerInterval = setInterval(function() {
+            state.timer++;
+            var m = Math.floor(state.timer / 60);
+            var s = state.timer % 60;
+            document.getElementById('timer').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+        }, 1000);
+    }
+
+    /* ── Preview ── */
+    function togglePreview() {
+        document.getElementById('previewContainer').classList.toggle('hidden');
+    }
+
+    /* ── Vitória ── */
+    function showVictory() {
+        clearInterval(state.timerInterval);
+        var cfg = DIFFICULTY[state.difficulty];
+        var m   = Math.floor(state.timer / 60);
+        var s   = state.timer % 60;
+        document.getElementById('victoryLevel').textContent = cfg.name + ' (' + cfg.pieces + ' peças)';
+        document.getElementById('victoryTime').textContent  = m + ':' + (s < 10 ? '0' : '') + s;
+        document.getElementById('victoryScreen').classList.add('active');
+    }
+
+    /* ── Reiniciar ── */
+    function restartGame() {
+        document.getElementById('victoryScreen').classList.remove('active');
+        startGame();
+    }
+
+    /* ── Ir ao menu do puzzle (tela 2) ── */
+    function goHome() {
+        if (state.timerInterval) clearInterval(state.timerInterval);
+        document.getElementById('victoryScreen').classList.remove('active');
+        document.getElementById('gameScreen').style.display = 'none';
+        document.getElementById('homeScreen').style.display = 'block';
+    }
+
+    /* ═══════════════════════════════════════
+       INIT
+    ═══════════════════════════════════════ */
+    window.onload = function() {
+        buildGallery();
+    };
+</script>
+</body>
+</html>

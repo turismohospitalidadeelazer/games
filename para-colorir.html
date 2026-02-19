@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Colorir - TH&L</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a4d2e, #e76f51);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        
+        .nav-links a {
+            color: #2d3142;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover { color: #f4a261; }
+
+        .game-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: calc(100vh - 100px);
+        }
+
+        .container { 
+            max-width: 1400px; 
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* TELA DE SELEÇÃO */
+        .selection-screen {
+            display: block;
+        }
+
+        .selection-screen.hidden {
+            display: none;
+        }
+
+        .selection-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .selection-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: #2d3142;
+            margin-bottom: 15px;
+        }
+
+        .selection-header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item-title {
+            padding: 15px;
+            background: #f8f9fa;
+            text-align: center;
+            font-weight: 600;
+            color: #2d3142;
+            font-size: 14px;
+        }
+
+        /* TELA DE VISUALIZAÇÃO */
+        .view-screen {
+            display: none;
+        }
+
+        .view-screen.active {
+            display: block;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: #2d3142;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-print { background: #4caf50; }
+        .btn-secondary { background: #667eea; }
+        .btn-danger { background: #f44336; }
+        .btn:hover { transform: scale(1.05); }
+
+        .images-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .image-box {
+            text-align: center;
+        }
+
+        .image-box h3 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .image-wrapper {
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            background: white;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            display: block;
+        }
+
+        /* ESTILOS DE IMPRESSÃO */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 1cm;
+            }
+
+            body {
+                background: white;
+            }
+
+            body > * {
+                display: none !important;
+            }
+
+            #printArea {
+                display: block !important;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+                border-bottom: 3px solid #667eea;
+            }
+
+            .print-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 36px;
+                font-weight: 900;
+                color: #1a4d2e;
+                margin-bottom: 5px;
+            }
+
+            .print-subtitle {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 10px;
+            }
+
+            .print-game-title {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 18px;
+                font-weight: bold;
+                color: #2d3142;
+                margin: 10px 0;
+            }
+
+            .print-url {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 11px;
+                color: #999;
+                font-style: italic;
+            }
+
+            .print-image {
+                display: block !important;
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                margin-top: 20px;
+            }
+        }
+
+        #printArea {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .images-container { 
+                grid-template-columns: 1fr; 
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header { 
+                flex-direction: column;
+                text-align: center;
+            }
+            .buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">TH&L</a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Início</a></li>
+                <li><a href="index.html">Jogos</a></li>
+                <li><a href="../index.html#sobre">Sobre</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="game-wrapper">
+        <div class="container">
+            <!-- TELA DE SELEÇÃO -->
+            <div class="selection-screen" id="selectionScreen">
+                <div class="selection-header">
+                    <h1>🎨 Para Colorir</h1>
+                    <p>Escolha um desenho para imprimir e colorir</p>
+                </div>
+
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Itens serão inseridos via JavaScript -->
+                </div>
+            </div>
+
+            <!-- TELA DE VISUALIZAÇÃO -->
+            <div class="view-screen" id="viewScreen">
+                <div class="header">
+                    <h1 id="drawingTitle">🖨️ Imprimir e Colorir</h1>
+                    <div class="buttons">
+                        <button class="btn btn-print" onclick="window.print()">🖨️ Imprimir</button>
+                        <button class="btn btn-secondary" onclick="showGallery()">🖼️ Outros Desenhos</button>
+                        <button class="btn btn-danger" onclick="window.location.href='index.html'">← Games</button>
+                    </div>
+                </div>
+
+                <div class="images-container">
+                    <div class="image-box">
+                        <h3>✏️ Para Colorir</h3>
+                        <div class="image-wrapper">
+                            <img id="coloringImage" src="" alt="Desenho para Colorir">
+                        </div>
+                    </div>
+
+                    <div class="image-box">
+                        <h3>🎨 Modelo</h3>
+                        <div class="image-wrapper">
+                            <img id="originalImage" src="" alt="Modelo Colorido">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÁREA DE IMPRESSÃO -->
+    <div id="printArea">
+        <div class="print-header">
+            <div class="print-logo">TH&L</div>
+            <div class="print-subtitle">Turismo, Hospitalidade e Lazer</div>
+            <div class="print-game-title" id="printGameTitle">Para Colorir</div>
+            <div class="print-url" id="printUrl"></div>
+        </div>
+        <img class="print-image" id="printImage" src="" alt="Desenho para Colorir">
+    </div>
+
+    <script>
+        // LISTA DE DESENHOS DISPONÍVEIS
+        var drawings = [
+            { id: 'aeroporto', name: 'Turista no Aeroporto', title: 'Colorir - Turista no Aeroporto' },
+            { id: 'aviao', name: 'Turista no Avião', title: 'Colorir - Turista no Avião' },
+            { id: 'taxi', name: 'Turista no Táxi', title: 'Colorir - Turista no Táxi' },
+            { id: 'recepcao-hotel', name: 'Turista na Recepção do Hotel', title: 'Colorir - Turista na Recepção do Hotel' },
+            { id: 'quarto', name: 'Turista no Quarto de Hotel', title: 'Colorir - Turista no Quarto de Hotel' },
+            { id: 'restaurante', name: 'Turista no Restaurante', title: 'Colorir - Turista no Restaurante' },
+            { id: 'artesanato', name: 'Turista no Artesanato', title: 'Colorir - Turista no Artesanato' },
+            { id: 'banana-boat', name: 'Turista no Banana Boat', title: 'Colorir - Turista no Banana Boat' },
+            { id: 'bar-piscina', name: 'Bar da Piscina', title: 'Colorir - Turista no Bar da Piscina' },
+            { id: 'compras', name: 'Turista nas Compras', title: 'Colorir - Turista nas Compras' },
+            { id: 'museu', name: 'Turista no Museu', title: 'Colorir - Turista no Museu' },
+            { id: 'parapente', name: 'Turista voando de  Parapente', title: 'Colorir - Turista voando de Parapente' },
+            { id: 'parque-aquatico', name: 'Turista no Parque Aquático', title: 'Colorir - Turista no Parque Aquático' },
+            { id: 'recepcao-hotel2', name: 'Turista na Recepção do Hotel 2', title: 'Colorir - Turista na Recepção do Hotel 2' },
+            { id: 'hospitalidade-criancas', name: 'Hospitalidade com Crianças', title: 'Colorir - Hospitalidade com Crianças' },
+            { id: 'hospitalidade-recepcao', name: 'Hospitalidade na Recepção do Hotel', title: 'Colorir - Hospitalidade na Recepção do Hotel' },
+            { id: 'aventura', name: 'Turismo de Aventura', title: 'Colorir - Turismo de Aventura' },
+            { id: 'base-comunitaria', name: 'Turismo de Base Comunitária', title: 'Colorir - Turismo de Base Comunitária' },
+            { id: 'turismo-observacao', name: 'Turismo de Observação', title: 'Colorir - Turismo de Observação' },
+            { id: 'turismo-sustentavel', name: 'Turismo Sustentável', title: 'Colorir - Turismo Sustentável' }
+        ];
+
+        var currentDrawing = null;
+
+        // Carregar galeria ao iniciar
+        window.onload = function() {
+            loadGallery();
+            document.getElementById('printUrl').textContent = window.location.href;
+        };
+
+        // Criar galeria de thumbnails
+        function loadGallery() {
+            var grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+
+            for (var i = 0; i < drawings.length; i++) {
+                var drawing = drawings[i];
+                var item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = (function(d) {
+                    return function() { selectDrawing(d); };
+                })(drawing);
+
+                item.innerHTML = 
+                    '<img src="images/thumb-' + drawing.id + '.jpg" alt="' + drawing.name + '">' +
+                    '<div class="gallery-item-title">' + drawing.name + '</div>';
+
+                grid.appendChild(item);
+            }
+        }
+
+        // Selecionar desenho
+        function selectDrawing(drawing) {
+            currentDrawing = drawing;
+
+            // Atualizar imagens
+            document.getElementById('coloringImage').src = 'images/colorir-' + drawing.id + '.jpg';
+            document.getElementById('originalImage').src = 'images/' + drawing.id + '.jpg';
+            document.getElementById('printImage').src = 'images/colorir-' + drawing.id + '.jpg';
+
+            // Atualizar títulos
+            document.getElementById('drawingTitle').textContent = '🖨️ ' + drawing.title;
+            document.getElementById('printGameTitle').textContent = drawing.title;
+
+            // Trocar telas
+            document.getElementById('selectionScreen').classList.add('hidden');
+            document.getElementById('viewScreen').classList.add('active');
+        }
+
+        // Voltar para galeria
+        function showGallery() {
+            document.getElementById('viewScreen').classList.remove('active');
+            document.getElementById('selectionScreen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
