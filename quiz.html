@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz do Turismo e Hospitalidade - TH&L</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 1.5rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a4d2e, #e76f51);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            color: #2d3142;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #f4a261; }
+
+        /* ── WRAPPER ── */
+        .game-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: calc(100vh - 100px);
+        }
+        .container { max-width: 1100px; width: 100%; }
+
+        /* ══════════════════════════════════════
+           TELA 1 – GALERIA DE SELEÇÃO
+        ══════════════════════════════════════ */
+        #galleryScreen {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .gallery-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            color: #2d3142;
+            margin-bottom: 10px;
+        }
+        .gallery-header p { font-size: 16px; color: #666; margin-bottom: 16px; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+        }
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+        }
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 185px;
+            object-fit: cover;
+            display: block;
+        }        
+        .gallery-item-title {
+            padding: 16px;
+            background: #f8f9fa;
+            text-align: center;
+            font-weight: 700;
+            color: #2d3142;
+            font-size: 15px;
+        }
+        .gallery-item-desc {
+            padding: 0 16px 14px;
+            background: #f8f9fa;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        /* ══════════════════════════════════════
+           TELA 2 – HOME DO QUIZ
+        ══════════════════════════════════════ */
+        #homeScreen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .home-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: #2d3142;
+            margin-bottom: 16px;
+        }
+        .home-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+ 
+        .home-image-box {
+            width: 100%;
+            position: relative;
+            max-width: 820px;
+            border-radius: 15px;
+            margin: 0 auto 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 90px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .start-btn {
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            margin-bottom: 16px;
+        }
+        .start-btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        .home-nav-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        /* ══════════════════════════════════════
+           TELA 3 – JOGO
+        ══════════════════════════════════════ */
+        #gameScreen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* Progress */
+        .progress-container { margin-bottom: 22px; }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            color: #666;
+            font-weight: 600;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+        .stat-card {
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .stat-icon { font-size: 1rem; color: #888; }
+
+        /* Game header buttons */
+        .game-header-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            justify-content: flex-end;
+        }
+
+        /* Scenario */
+        .scenario-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 22px;
+            border-left: 5px solid;
+        }
+        .scenario-icon { font-size: 3.5rem; margin-bottom: 12px; text-align: center; }
+        .scenario-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #2d3142;
+        }
+        .scenario-text { font-size: 1rem; color: #555; line-height: 1.8; }
+
+        /* Choices */
+        .choices-container { display: grid; gap: 14px; }
+        .choice-btn {
+            background: white;
+            border: 3px solid;
+            padding: 18px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            height: 100%; width: 0;
+            transition: width 0.3s;
+            z-index: 0;
+            opacity: 0.1;
+        }
+        .choice-btn:hover::before { width: 100%; }
+        .choice-btn:hover { transform: translateX(8px); box-shadow: 0 5px 18px rgba(0,0,0,0.13); }
+        .choice-content { position: relative; z-index: 1; }
+        .choice-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3142;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .choice-emoji { font-size: 1.4rem; }
+        .choice-description { font-size: 0.93rem; color: #666; line-height: 1.6; }
+
+        /* ══════════════════════════════════════
+           MODAL DE FEEDBACK
+        ══════════════════════════════════════ */
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.72);
+            z-index: 500;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .feedback-modal.active { display: flex; }
+        .feedback-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.35s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .feedback-icon { font-size: 4.5rem; text-align: center; margin-bottom: 16px; }
+        .feedback-title { font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 12px; color: #2d3142; }
+        .feedback-text { font-size: 1rem; color: #555; text-align: center; line-height: 1.8; margin-bottom: 22px; }
+        .feedback-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+        .feedback-stat { padding: 14px; border-radius: 10px; text-align: center; }
+        .feedback-stat-value { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+        .feedback-stat-label { font-size: 0.8rem; color: #666; }
+        .positive-change { color: #28a745; }
+        .negative-change { color: #dc3545; }
+        .continue-btn {
+            width: 100%;
+            padding: 14px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .continue-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+        /* ══════════════════════════════════════
+           TELA DE RESULTADOS
+        ══════════════════════════════════════ */
+        #resultsScreen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .results-icon { font-size: 5rem; margin-bottom: 16px; }
+        .results-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #2d3142;
+            margin-bottom: 12px;
+        }
+        .results-score { font-size: 3.5rem; font-weight: 700; margin: 16px 0; }
+        .score-excellent { color: #28a745; }
+        .score-good      { color: #52b788; }
+        .score-average   { color: #f4a261; }
+        .score-poor      { color: #e76f51; }
+        .results-message {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 28px;
+            padding: 18px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .results-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+        .result-detail {
+            background: linear-gradient(135deg, #f8f9fa, white);
+            padding: 18px;
+            border-radius: 12px;
+            border: 2px solid;
+        }
+        .result-detail-icon { font-size: 2.2rem; margin-bottom: 8px; }
+        .result-detail-title { font-size: 0.9rem; color: #666; margin-bottom: 4px; }
+        .result-detail-value { font-size: 1.8rem; font-weight: 700; }
+        .action-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 14px 36px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+
+        /* Tips */
+        .tips-section {
+            padding: 22px;
+            border-radius: 12px;
+            margin-top: 26px;
+            text-align: left;
+        }
+        .tips-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tips-list { list-style: none; padding: 0; }
+        .tips-list li {
+            padding: 10px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            gap: 10px;
+            color: #555;
+        }
+        .tips-list li:last-child { border-bottom: none; }
+        .tip-icon { font-weight: 700; }
+
+        /* Generic btn variants */
+        .btn-primary   { color: white; }
+        .btn-secondary { background: white; border: 2px solid; }
+        .btn-gallery   { background: #667eea; color: white; }
+        .btn-danger    { background: #f44336; color: white; }
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 0.88rem;
+            border-radius: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gallery-grid { grid-template-columns: 1fr 1fr; }
+            .feedback-stats { grid-template-columns: 1fr; }
+            .stats-panel { grid-template-columns: 1fr 1fr; }
+            .home-title { font-size: 2rem; }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <a href="../index.html" class="logo">TH&L</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Início</a></li>
+            <li><a href="index.html">Jogos</a></li>
+            <li><a href="../index.html#sobre">Sobre</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="game-wrapper">
+    <div class="container">
+
+        <!-- ══ TELA 1 – GALERIA ══ -->
+        <div id="galleryScreen">
+            <div class="gallery-header">
+                <h1>🎯 Quiz do Turismo e Hospitalidade</h1>
+                <p>Escolha um quiz para testar seus conhecimentos</p>
+                <button class="btn btn-danger btn-small" onclick="window.location.href='index.html'">← Voltar aos Games</button>
+            </div>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+        <!-- ══ TELA 2 – HOME DO QUIZ ══ -->
+        <div id="homeScreen">
+            <h1 class="home-title" id="homeTitle">Quiz</h1>
+            <p class="home-subtitle" id="homeSubtitle"></p>
+            <div class="home-image-box" id="homeImageBox"></div>
+            <p style="color:#666; font-size:1rem; margin-bottom:20px;" id="homeDesc"></p>
+            <button class="start-btn" id="startBtn" onclick="startGame()">🚀 Iniciar Quiz</button>
+            <div class="home-nav-btns">
+                <button class="btn btn-gallery btn-small" onclick="showGallery()">🎯 Escolher outro quiz</button>
+                <button class="btn btn-danger btn-small" onclick="window.location.href='index.html'">← Voltar aos Games</button>
+            </div>
+        </div>
+
+        <!-- ══ TELA 3 – JOGO ══ -->
+        <div id="gameScreen">
+            <div class="game-header-btns">
+                <button class="btn btn-gallery btn-small" onclick="showGallery()">🎯 Outro quiz</button>
+                <button class="btn btn-danger btn-small" onclick="window.location.href='index.html'">← Games</button>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span id="progressLabel">Progresso</span>
+                    <span id="progressText">1/8</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width:12.5%;"></div>
+                </div>
+            </div>
+
+            <div class="stats-panel" id="statsPanel"></div>
+
+            <div class="scenario-card" id="scenarioCard">
+                <div class="scenario-icon" id="scenarioIcon">❓</div>
+                <h2 class="scenario-title" id="scenarioTitle">Carregando...</h2>
+                <p class="scenario-text" id="scenarioText">Carregando cenário...</p>
+            </div>
+
+            <div class="choices-container" id="choicesContainer"></div>
+        </div>
+
+        <!-- ══ TELA DE RESULTADOS ══ -->
+        <div id="resultsScreen">
+            <div class="results-icon" id="resultsIcon">🏆</div>
+            <h1 class="results-title" id="resultsTitle">Quiz Concluído!</h1>
+            <div class="results-score" id="finalScore">0</div>
+            <p class="results-message" id="resultsMessage"></p>
+            <div class="results-details" id="resultsDetails"></div>
+            <div class="tips-section" id="tipsSection">
+                <h3 class="tips-title" id="tipsTitle">💡 Dicas</h3>
+                <ul class="tips-list" id="tipsList"></ul>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="restartBtn" onclick="restartGame()">🔄 Jogar Novamente</button>
+                <button class="btn btn-gallery" onclick="showGallery()">🎯 Escolher outro quiz</button>
+                <button class="btn btn-danger" onclick="window.location.href='index.html'">← Games</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ══ MODAL DE FEEDBACK ══ -->
+<div class="feedback-modal" id="feedbackModal">
+    <div class="feedback-content" id="feedbackContent">
+        <div class="feedback-icon" id="feedbackIcon">✅</div>
+        <h2 class="feedback-title" id="feedbackTitle">Boa Escolha!</h2>
+        <p class="feedback-text" id="feedbackText"></p>
+        <div class="feedback-stats" id="feedbackStats"></div>
+        <button class="continue-btn" id="continueBtn" onclick="closeFeedback()">Continuar →</button>
+    </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DEFINIÇÃO DOS QUIZZES
+═══════════════════════════════════════════════════════ */
+const QUIZZES = [
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – Jornada Sustentável
+    ══════════════════════════════════════════════════════════ */
+
+    {
+        id: 'sustentavel',
+        name: 'Jornada Sustentável',
+        emoji: '🌍',
+        thumb: 'images/thumb-jornada-sustentavel.jpg',
+        cover: 'images/jornada-sustentavel.jpg',
+        gradient: 'linear-gradient(135deg, #52b788, #74c69d)',
+        accentColor: '#2d6a4f',
+        borderColor: '#74c69d',
+        statBg: '#d8f3dc',
+        subtitle: 'Tome decisões conscientes e descubra como suas escolhas impactam o turismo sustentável!',
+        homeDesc: 'Você terá que fazer escolhas durante sua viagem. Cada decisão afetará três aspectos importantes: Ambiente, Comunidade e Economia.',
+        startLabel: '🚀 Iniciar Jornada',
+        progressLabel: 'Progresso da Jornada',
+        continueLabel: 'Continuar Jornada →',
+        restartLabel: '🔄 Jogar Novamente',
+        endTitle: 'Jornada Concluída!',
+        tipsTitle: '💡 Dicas para um Turismo Mais Sustentável',
+        stats: [
+            { key: 'environment', label: '🌳 Ambiente',    icon: '🌳' },
+            { key: 'community',   label: '🤝 Comunidade',  icon: '🤝' },
+            { key: 'economy',     label: '💰 Economia',    icon: '💰' }
+        ],
+        initialScores: { environment: 0, community: 0, economy: 0 },
+        resultDetails: [
+            { key: 'environment', icon: '🌳', title: 'Impacto Ambiental' },
+            { key: 'community',   icon: '🤝', title: 'Impacto Comunitário' },
+            { key: 'economy',     icon: '💰', title: 'Impacto Econômico' }
+        ],
+        scoreThresholds: [
+            { min: 80, cls: 'score-excellent', icon: '🏆', msg: 'Parabéns! Você é um verdadeiro embaixador do turismo sustentável! Suas escolhas demonstram consciência ambiental, respeito à comunidade e visão econômica equilibrada. Continue inspirando outros viajantes!' },
+            { min: 60, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você fez escolhas conscientes durante sua jornada. Com pequenos ajustes, você pode se tornar um turista ainda mais sustentável. Continue aprendendo e aplicando práticas responsáveis!' },
+            { min: 40, cls: 'score-average',   icon: '👍', msg: 'Você está no caminho certo, mas há espaço para melhorar. Preste mais atenção ao impacto de suas escolhas no ambiente, nas comunidades locais e na economia. Pequenas mudanças fazem grande diferença!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Suas escolhas tiveram impactos negativos significativos. É importante repensar seus hábitos de viagem e considerar alternativas mais sustentáveis. O turismo responsável beneficia a todos - revise as dicas abaixo!' }
+        ],
+        tips: [
+            'Escolha hospedagens com certificação ambiental e práticas sustentáveis.',
+            'Priorize negócios locais: restaurantes, guias e artesãos da comunidade.',
+            'Use transporte público, bicicleta ou caminhe sempre que possível.',
+            'Reduza o uso de plástico descartável levando sua própria garrafa.',
+            'Respeite a cultura local: vista-se adequadamente e peça permissão para fotos.',
+            'Participe de experiências autênticas de turismo de base comunitária.',
+            'Não alimente ou toque em animais selvagens, observe à distância.',
+            'As praias são ecossistemas frágeis: deixe apenas pegadas e leve apenas fotos.',
+            'Leve seu lixo de volta e faça separação adequada dos resíduos.'
+        ],
+        scenarios: [
+            {
+                icon: '🏨', title: 'Escolha da Hospedagem',
+                text: 'Você está planejando sua viagem e precisa escolher onde ficar. Existem várias opções disponíveis. Qual você escolhe?',
+                choices: [
+                    { emoji:'🏢', title:'Resort Internacional',    description:'Um grande resort de rede internacional com todas as comodidades, all-inclusive e piscinas aquecidas.',           impact:{environment:-15,community:-5,economy:0},   feedback:'Atenção! Grandes resorts geralmente consomem muitos recursos naturais e o lucro vai para corporações internacionais, impactando menos a comunidade local.' },
+                    { emoji:'🏡', title:'Pousada Local Familiar',  description:'Uma pequena pousada gerenciada por uma família local, com produtos regionais no café da manhã.',               impact:{environment:5,community:15,economy:10},    feedback:'Excelente! Você apoiou a economia local e a comunidade. Hospedagens familiares geralmente têm menor pegada ambiental e geram renda direta para moradores.' },
+                    { emoji:'🌿', title:'Eco-lodge Certificado',   description:'Um alojamento sustentável com certificação ambiental, energia solar e programas de conservação.',              impact:{environment:15,community:10,economy:5},    feedback:'Perfeito! Eco-lodges certificados são ótimas opções, combinando práticas sustentáveis com apoio às comunidades locais e conservação ambiental.' }
+                ]
+            },
+            {
+                icon: '🍽️', title: 'Hora da Refeição',
+                text: 'É hora de almoçar. Você está com fome e procura um lugar para comer. Onde você decide ir?',
+                choices: [
+                    { emoji:'🌱', title:'Restaurante Orgânico',          description:'Um restaurante que usa apenas ingredientes orgânicos de produtores locais.',                               impact:{environment:15,community:10,economy:10},   feedback:'Ótima decisão! Restaurantes orgânicos apoiam agricultura sustentável, reduzem uso de agrotóxicos e geralmente trabalham com pequenos produtores locais.' },
+                    { emoji:'🍔', title:'Fast Food Internacional',        description:'Uma rede conhecida de fast food, rápida e prática.',                                                      impact:{environment:-10,community:-10,economy:-5}, feedback:'Infelizmente, redes internacionais de fast food geram muito lixo plástico, têm baixo impacto na economia local e não valorizam a cultura gastronômica regional.' },
+                    { emoji:'🥘', title:'Restaurante da Dona Maria',      description:'Um restaurante familiar que serve pratos típicos da região com ingredientes locais.',                     impact:{environment:10,community:15,economy:15},   feedback:'Excelente escolha! Você apoiou negócios locais, experimentou a cultura gastronômica autêntica e contribuiu para a economia da comunidade.' }
+                ]
+            },
+            {
+                icon: '🚗', title: 'Transporte Local',
+                text: 'Você precisa se deslocar para conhecer os pontos turísticos. Como você vai circular pela cidade?',
+                choices: [
+                    { emoji:'🚌', title:'Transporte Público',        description:'Ônibus e metrô locais para se deslocar como os moradores.',                             impact:{environment:15,community:10,economy:5},    feedback:'Muito bom! Usar transporte público reduz emissões, você conhece melhor a cidade e ainda apoia o sistema de transporte local.' },
+                    { emoji:'🚙', title:'Alugar um Carro',           description:'Um carro alugado para ter liberdade total de horários e rotas.',                        impact:{environment:-10,community:-5,economy:0},   feedback:'Atenção! Carros individuais aumentam emissões de CO2 e congestionamentos. Considere compartilhar o veículo ou usar transporte público quando possível.' },
+                    { emoji:'🚴', title:'Bicicleta Compartilhada',   description:'Sistema de bike sharing da cidade para explorar no seu ritmo.',                        impact:{environment:20,community:5,economy:5},     feedback:'Excelente! Bicicleta é o meio de transporte mais sustentável, não polui, beneficia sua saúde e permite explorar a cidade de forma única.' }
+                ]
+            },
+            {
+                icon: '🎁', title: 'Hora das Lembranças',
+                text: 'Você quer levar algumas lembranças da viagem. O que você escolhe comprar?',
+                choices: [
+                    { emoji:'📸', title:'Apenas Fotos e Memórias',     description:'Registrar momentos com fotos e vídeos, sem compras físicas.',                            impact:{environment:15,community:0,economy:-5},    feedback:'Sustentável! Menos consumo significa menos lixo. Porém, considere apoiar artesãos locais comprando peças significativas quando possível.' },
+                    { emoji:'🎨', title:'Artesanato Local',             description:'Peças feitas à mão por artesãos locais, únicas e autênticas.',                          impact:{environment:10,community:20,economy:15},   feedback:'Perfeito! Artesanato local valoriza a cultura, gera renda direta para artesãos e suas famílias, e você leva uma lembrança única e significativa.' },
+                    { emoji:'🏪', title:'Souvenirs Industrializados',   description:'Imãs, chaveiros e camisetas de lojas de souvenir turísticas.',                          impact:{environment:-5,community:-10,economy:-5},  feedback:'Cuidado! A maioria dos souvenirs industrializados não é produzida localmente e tem baixa qualidade, gerando mais lixo e pouco benefício para a comunidade.' }
+                ]
+            },
+            {
+                icon: '🏖️', title: 'Visita à Praia',
+                text: 'Você está visitando uma bela praia. Como você aproveita o dia?',
+                choices: [
+                    { emoji:'🧹', title:'Mutirão de Limpeza',     description:'Participar de um projeto de limpeza de praia organizado por ONGs locais.',       impact:{environment:25,community:15,economy:5},    feedback:'Incrível! Você está fazendo turismo voluntário, ajudando a preservar o ambiente, e inspirando outros turistas e moradores.' },
+                    { emoji:'🚤', title:'Passeio de Jet Ski',     description:'Adrenalina e velocidade nas águas cristalinas.',                                 impact:{environment:-20,community:0,economy:5},    feedback:'Atenção! Jet skis poluem a água, perturbam vida marinha e geram muito barulho. Considere atividades de menor impacto ambiental.' },
+                    { emoji:'🤿', title:'Mergulho com Snorkel',   description:'Observar a vida marinha com máscara e snorkel, respeitando o ecossistema.',      impact:{environment:10,community:5,economy:10},    feedback:'Ótima escolha! Observação responsável da natureza é educativa e tem baixo impacto. Lembre-se de não tocar nos corais e animais.' }
+                ]
+            },
+            {
+                icon: '🌳', title: 'Visita à Floresta',
+                text: 'Você vai conhecer uma área de floresta preservada. Qual tour você escolhe?',
+                choices: [
+                    { emoji:'🌱', title:'Programa de Reflorestamento',   description:'Atividade de plantio de árvores nativas em área degradada.',                        impact:{environment:30,community:10,economy:5},    feedback:'Fantástico! Turismo regenerativo deixa um legado positivo. Você está ajudando ativamente na restauração ambiental.' },
+                    { emoji:'🏍️', title:'Tour de Quadriciclo',           description:'Passeio radical de quadriciclo pelas trilhas da floresta.',                          impact:{environment:-15,community:0,economy:5},    feedback:'Problemas! Quadriciclos compactam o solo, perturbam fauna, poluem e podem causar erosão. Prefira caminhadas ou trilhas de bike.' },
+                    { emoji:'🥾', title:'Trilha Guiada',                 description:'Caminhada com guia local certificado que explica sobre a flora e fauna.',            impact:{environment:15,community:15,economy:15},   feedback:'Excelente! Guias locais conhecem e respeitam a natureza, geram renda para a comunidade e educam sobre conservação.' }
+                ]
+            },
+            {
+                icon: '🎭', title: 'Experiência Cultural',
+                text: 'Você quer conhecer mais sobre a cultura local. O que você faz?',
+                choices: [
+                    { emoji:'📱', title:'Show Turístico',              description:'Apresentação cultural em hotel para turistas.',                                           impact:{environment:0,community:0,economy:0},      feedback:'Superficial. Shows turísticos geralmente são versões simplificadas e comercializadas da cultura, sem benefício real para a comunidade.' },
+                    { emoji:'👵', title:'Turismo de Base Comunitária',  description:'Vivência com família local, aprendendo tradições e compartilhando o dia a dia.',         impact:{environment:10,community:25,economy:20},   feedback:'Perfeito! Turismo de base comunitária é o mais autêntico, empodera comunidades e cria conexões humanas significativas.' },
+                    { emoji:'🎪', title:'Festival Local',               description:'Participar de uma festa tradicional da comunidade.',                                     impact:{environment:5,community:20,economy:10},    feedback:'Maravilhoso! Participar de eventos autênticos da comunidade promove intercâmbio cultural genuíno e apoia tradições locais.' }
+                ]
+            },
+            {
+                icon: '♻️', title: 'Gestão de Resíduos',
+                text: 'Durante a viagem, você gera diversos resíduos. Como você lida com isso?',
+                choices: [
+                    { emoji:'♻️', title:'Separar para Reciclagem',   description:'Separar recicláveis e procurar pontos de coleta seletiva.',                              impact:{environment:15,community:10,economy:10},   feedback:'Muito bom! Reciclagem reduz lixo em aterros, economiza recursos naturais e pode gerar renda para cooperativas de catadores.' },
+                    { emoji:'🗑️', title:'Descarte Normal',            description:'Jogar tudo no lixo comum sem se preocupar.',                                             impact:{environment:-15,community:-10,economy:0},  feedback:'Problemático! Lixo não separado vai para aterros, polui o ambiente e desperdiça recursos que poderiam ser reciclados.' },
+                    { emoji:'🌍', title:'Zero Waste',                 description:'Evitar descartáveis, usar garrafa reutilizável e recusar plásticos.',                    impact:{environment:25,community:5,economy:5},     feedback:'Exemplar! Práticas zero waste são o ideal da sustentabilidade. Você está sendo um exemplo e reduzindo drasticamente seu impacto.' }
+                ]
+            }
+        ]
+    },
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – Gerente de Hotel Familiar
+    ══════════════════════════════════════════════════════════ */
+    {
+        id: 'hotelkids',
+        name: 'Gerente de Hotel Familiar',
+        emoji: '🏨',
+        thumb: 'images/thumb-gerente-de-hotel-familia.jpg',
+        cover: 'images/gerente-de-hotel-familia.jpg',
+        gradient: 'linear-gradient(135deg, #ff6b9d, #ffc947)',
+        accentColor: '#ff6b9d',
+        borderColor: '#ffc947',
+        statBg: '#fff5f9',
+        subtitle: 'Você é o gerente de um hotel familiar! Tome decisões inteligentes para garantir a melhor experiência para as crianças e suas famílias.',
+        homeDesc: 'Suas decisões afetarão a Satisfação das Crianças, Felicidade dos Pais e a Reputação do Hotel!',
+        startLabel: '🎮 Começar a Gerenciar',
+        progressLabel: 'Progresso do Dia',
+        continueLabel: 'Continuar Turno →',
+        restartLabel: '🔄 Gerenciar Novamente',
+        endTitle: 'Dia de Trabalho Concluído!',
+        tipsTitle: '💡 Dicas de Hospitalidade Infantil',
+        stats: [
+            { key: 'kids',       label: '😊 Crianças', icon: '😊' },
+            { key: 'parents',    label: '👨‍👩‍👧 Pais',    icon: '👨‍👩‍👧' },
+            { key: 'reputation', label: '⭐ Reputação', icon: '⭐' }
+        ],
+        initialScores: { kids: 0, parents: 0, reputation: 0 },
+        resultDetails: [
+            { key: 'kids',       icon: '😊', title: 'Satisfação das Crianças' },
+            { key: 'parents',    icon: '👨‍👩‍👧', title: 'Felicidade dos Pais' },
+            { key: 'reputation', icon: '⭐', title: 'Reputação do Hotel' }
+        ],
+        scoreThresholds: [
+            { min: 80, cls: 'score-excellent', icon: '🏆', msg: 'Parabéns! Você é um gerente excepcional! Suas decisões demonstram excelência em hospitalidade infantil. As famílias se sentem acolhidas, as crianças felizes e a reputação do hotel está nas alturas. Continue esse trabalho incrível!' },
+            { min: 60, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você é um bom gerente e tomou decisões conscientes. Com alguns ajustes, você pode criar experiências ainda mais memoráveis para as famílias. Continue aprendendo e aprimorando suas habilidades!' },
+            { min: 40, cls: 'score-average',   icon: '👍', msg: 'Você está no caminho certo, mas há muito a melhorar. Hospitalidade infantil requer atenção aos detalhes, empatia e criatividade. Revise as dicas abaixo para aprimorar suas decisões!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Suas decisões deixaram as famílias insatisfeitas. É fundamental entender as necessidades das crianças e seus pais para criar um ambiente acolhedor. Estude as melhores práticas de hospitalidade infantil e tente novamente!' }
+        ],
+        tips: [
+            'Sempre tenha kits de boas-vindas especiais para crianças de diferentes idades',
+            'Mantenha cardápios infantis com opções saudáveis apresentadas de forma criativa',
+            'Crie espaços seguros e supervisionados para diferentes faixas etárias',
+            'Treine a equipe em primeiros socorros pediátricos e comunicação com crianças',
+            'Ofereça amenities adaptados: berços, babás eletrônicas, aquecedores de mamadeira',
+            'Tenha atividades para dias de chuva e monitores qualificados',
+            'Estabeleça horários tranquilos e regras claras comunicadas de forma lúdica',
+            'Transforme problemas em oportunidades de criar experiências memoráveis'
+        ],
+        scenarios: [
+            {
+                icon: '🚪', title: 'Check-in com Crianças Pequenas',
+                text: 'Uma família com duas crianças pequenas (3 e 5 anos) está fazendo check-in. Eles estão cansados de uma longa viagem. Como você os recebe?',
+                choices: [
+                    { emoji:'🎪', title:'Tour Divertido pelo Hotel',    description:'Fazer um tour rápido e lúdico pelo hotel, mostrando áreas infantis enquanto os pais fazem check-in.',   impact:{kids:20,parents:15,reputation:15}, feedback:'Perfeito! As crianças se distraem explorando enquanto os pais finalizam o check-in tranquilamente. Todos ganham!' },
+                    { emoji:'📋', title:'Check-in Padrão',              description:'Seguir o procedimento normal de check-in com formulários e explicações.',                                impact:{kids:-5,parents:-5,reputation:0},  feedback:'O processo padrão pode ser cansativo para famílias com crianças pequenas. Considere agilizar e personalizar o atendimento.' },
+                    { emoji:'🎁', title:'Kit de Boas-Vindas Infantil',  description:'Oferecer kit de boas-vindas com brinquedos, livros de colorir e snacks saudáveis para as crianças.',    impact:{kids:15,parents:10,reputation:10}, feedback:'Excelente! As crianças ficaram encantadas e os pais apreciaram a atenção especial. Isso cria uma primeira impressão memorável.' }
+                ]
+            },
+            {
+                icon: '🍽️', title: 'Café da Manhã Familiar',
+                text: 'No restaurante, você percebe que o cardápio infantil é limitado e algumas crianças estão entediadas esperando. O que fazer?',
+                choices: [
+                    { emoji:'🎨', title:'Kit de Atividades na Mesa',      description:'Disponibilizar kits com jogos de colorir e quebra-cabeças nas mesas familiares.',                      impact:{kids:20,parents:20,reputation:15}, feedback:'Excelente! As crianças ficam entretidas, os pais podem relaxar e aproveitar o café tranquilamente. Todos felizes!' },
+                    { emoji:'📋', title:'Manter o Cardápio Atual',        description:'Continuar com as opções tradicionais do buffet.',                                                        impact:{kids:-10,parents:-5,reputation:-5},feedback:'Crianças precisam de opções atrativas e saudáveis. Cardápios limitados podem frustrar tanto os pequenos quanto os pais.' },
+                    { emoji:'🥞', title:'Estação Infantil Especial',      description:'Criar uma estação kids-friendly com panquecas divertidas, frutas cortadas de forma criativa e iogurtes coloridos.', impact:{kids:15,parents:15,reputation:10}, feedback:'Ótima ideia! Apresentação criativa torna a refeição divertida e incentiva as crianças a comerem melhor.' }
+                ]
+            },
+            {
+                icon: '🏊', title: 'Segurança na Piscina',
+                text: 'Você nota que crianças de diferentes idades estão usando a mesma piscina, e algumas muito pequenas sem supervisão adequada. Como resolver?',
+                choices: [
+                    { emoji:'⚠️', title:'Apenas Avisos',          description:'Colocar placas de aviso sobre supervisão dos responsáveis.',                                                  impact:{kids:0,parents:-10,reputation:-15}, feedback:'Avisos são importantes, mas insuficientes. A segurança deve ser proativa, não apenas reativa.' },
+                    { emoji:'👶', title:'Área Infantil Exclusiva', description:'Criar uma piscina/área rasa separada com brinquedos aquáticos para crianças pequenas, mantendo salva-vidas.', impact:{kids:20,parents:25,reputation:20},  feedback:'Perfeito! Área dedicada com profissionais treinados dá tranquilidade aos pais e segurança às crianças.' },
+                    { emoji:'🏊', title:'Horários Separados',      description:'Estabelecer horários específicos para diferentes faixas etárias usarem a piscina.',                          impact:{kids:10,parents:15,reputation:15},  feedback:'Boa solução! Isso garante que cada criança aproveite a piscina com segurança apropriada para sua idade.' }
+                ]
+            },
+            {
+                icon: '🛌', title: 'Quarto para Bebê',
+                text: 'Uma família reclama que o quarto não está adequado para seu bebê de 1 ano. O que você oferece?',
+                choices: [
+                    { emoji:'🌙', title:'Quarto Baby-Adaptado',   description:'Upgrade para quarto com proteções, tomadas seladas, monitor, temperatura controlada e black-out completo.',   impact:{kids:25,parents:30,reputation:25}, feedback:'Excepcional! Um quarto totalmente preparado para bebês mostra excelência em hospitalidade infantil. Família vai recomendar!' },
+                    { emoji:'🛏️', title:'Berço Padrão',           description:'Enviar um berço comum disponível no hotel.',                                                                   impact:{kids:5,parents:5,reputation:0},    feedback:'Resolve o básico, mas pode ser melhorado. Famílias com bebês apreciam cuidados extras.' },
+                    { emoji:'🍼', title:'Kit Baby Friendly',       description:'Além do berço, oferecer kit com babá eletrônica, aquecedor de mamadeiras e luz noturna.',                    impact:{kids:15,parents:20,reputation:15}, feedback:'Muito bom! Esses itens fazem grande diferença para pais viajando com bebês. Demonstra cuidado e planejamento.' }
+                ]
+            },
+            {
+                icon: '🎨', title: 'Dia de Chuva',
+                text: 'Está chovendo e várias famílias com crianças estão entediadas no hotel. O que você organiza?',
+                choices: [
+                    { emoji:'🎪', title:'Mini Festival Indoor',   description:'Criar um mini festival com oficinas, apresentação de mágica, caça ao tesouro indoor e lanches temáticos.',    impact:{kids:30,parents:25,reputation:25}, feedback:'Sensacional! Transformar um problema em experiência especial. As famílias vão lembrar desse dia com carinho!' },
+                    { emoji:'📺', title:'TV e Videogames',        description:'Liberar acesso à sala de jogos com TV e videogames.',                                                           impact:{kids:5,parents:0,reputation:0},    feedback:'Funciona, mas é uma solução passiva. Crianças e pais apreciam atividades mais engajadoras e interativas.' },
+                    { emoji:'🎭', title:'Oficina de Artes',       description:'Organizar oficina de pintura, artesanato e contação de histórias na área coberta.',                           impact:{kids:20,parents:15,reputation:15}, feedback:'Ótimo! Atividades criativas mantêm as crianças entretidas, educam e dão descanso aos pais. Experiência memorável!' }
+                ]
+            },
+            {
+                icon: '🍕', title: 'Cardápio Kids',
+                text: 'Os pais pedem um cardápio mais saudável para as crianças, mas as crianças querem apenas frituras e doces. Como equilibrar?',
+                choices: [
+                    { emoji:'🥗', title:'Opções Saudáveis Criativas',   description:"Criar pratos saudáveis divertidos: 'Pizza de legumes', 'Espetinhos de frutas', 'Nuggets de frango assado'.", impact:{kids:15,parents:20,reputation:15}, feedback:'Muito bom! Comida saudável apresentada de forma divertida atrai as crianças e agrada os pais.' },
+                    { emoji:'👨‍🍳', title:'Oficina Culinária Kids',      description:'Permitir que crianças criem seus próprios pratos com ingredientes saudáveis sob supervisão.',             impact:{kids:25,parents:25,reputation:20}, feedback:'Perfeito! Envolver as crianças no preparo as torna mais propensas a comer saudável. Educativo e divertido!' },
+                    { emoji:'🍔', title:'Menu Tradicional',              description:'Manter batata frita, nuggets e hambúrguer como únicas opções.',                                           impact:{kids:10,parents:-15,reputation:-10},feedback:'As crianças podem gostar, mas os pais ficarão frustrados. Hotéis modernos precisam oferecer opções saudáveis.' }
+                ]
+            },
+            {
+                icon: '😢', title: 'Criança Chorando no Lobby',
+                text: 'Uma criança está chorando muito no lobby porque perdeu seu brinquedo favorito. Os outros hóspedes estão incomodados. O que fazer?',
+                choices: [
+                    { emoji:'🎪', title:'Experiência de Distração',   description:'Levar a criança para área kids com atividade especial enquanto equipe procura e mobiliza todo staff.',    impact:{kids:25,parents:20,reputation:20}, feedback:'Excelente! Transforma uma crise em atendimento memorável. Criança se acalma, pais agradecem e outros hóspedes percebem o cuidado.' },
+                    { emoji:'🔍', title:'Procurar Rapidamente',        description:'Pedir aos pais que acalmem a criança enquanto a equipe procura o brinquedo.',                              impact:{kids:0,parents:5,reputation:-5},   feedback:'Solução básica que não resolve a situação emocional da criança imediatamente.' },
+                    { emoji:'🎁', title:'Oferecer Substituto',         description:'Dar um brinquedo similar da loja do hotel enquanto procuram o original.',                                 impact:{kids:15,parents:15,reputation:10}, feedback:'Boa iniciativa! Resolve o problema imediato e mostra empatia, embora possa ter custo.' }
+                ]
+            },
+            {
+                icon: '🌙', title: 'Barulho Noturno',
+                text: 'Crianças estão brincando e fazendo barulho no corredor à noite. Outros hóspedes reclamam. Como lidar?',
+                choices: [
+                    { emoji:'🎬', title:'Cinema Noturno Kids',      description:'Criar sessão de cinema infantil improvisada em sala específica com pipoca e cobertores.',                   impact:{kids:25,parents:25,reputation:25}, feedback:'Brilhante! Transforma problema em serviço especial. Crianças adoram, pais descansam e outros hóspedes têm paz.' },
+                    { emoji:'🤫', title:'Repreender os Pais',        description:'Pedir firmemente aos pais que controlem as crianças.',                                                       impact:{kids:-10,parents:-15,reputation:-10},feedback:'Abordagem negativa que constrange os pais e não educa. Pode gerar conflitos e avaliações ruins.' },
+                    { emoji:'🎯', title:'Redirecionar com Gentileza',description:'Gentilmente oferecer atividades alternativas na área kids que ainda está aberta.',                          impact:{kids:15,parents:15,reputation:15}, feedback:'Ótima abordagem! Resolve o problema sem constrangimento, oferecendo solução positiva.' }
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'hospitalidade',
+        name: 'Mestre da Hospitalidade',
+        emoji: '🎩',
+        thumb: 'images/thumb-mestre-da-hospitalidade.jpg',
+        cover: 'images/mestre-da-hospitalidade.jpg',
+        gradient: 'linear-gradient(135deg, #2d3142, #667eea)',
+        accentColor: '#667eea',
+        borderColor: '#764ba2',
+        statBg: '#f0f0ff',
+        subtitle: 'A arte de bem receber vai além do atendimento. Teste suas habilidades de hospitalidade em situações reais e desafiadoras!',
+        homeDesc: 'Suas decisões afetarão a Satisfação do Hóspede, Eficiência da Equipe e Excelência no Serviço!',
+        startLabel: '✨ Iniciar Desafio',
+        progressLabel: 'Progresso do Plantão',
+        continueLabel: 'Continuar Plantão →',
+        restartLabel: '🔄 Novo Plantão',
+        endTitle: 'Plantão Finalizado!',
+        tipsTitle: '💎 Princípios da Hospitalidade',
+        stats: [
+            { key: 'satisfaction', label: '😊 Satisfação', icon: '😊' },
+            { key: 'team',         label: '👥 Equipe',      icon: '👥' },
+            { key: 'excellence',   label: '⭐ Excelência',  icon: '⭐' }
+        ],
+        initialScores: { satisfaction: 0, team: 0, excellence: 0 },
+        resultDetails: [
+            { key: 'satisfaction', icon: '😊', title: 'Satisfação do Hóspede' },
+            { key: 'team',         icon: '👥', title: 'Eficiência da Equipe' },
+            { key: 'excellence',   icon: '⭐', title: 'Excelência no Serviço' }
+        ],
+        scoreThresholds: [
+            { min: 85, cls: 'score-excellent', icon: '👑', msg: 'Extraordinário! Você é um verdadeiro Mestre da Hospitalidade! Suas decisões demonstram não apenas conhecimento técnico, mas a essência da hospitalidade: empatia, proatividade e dedicação genuína. Continue inspirando excelência!' },
+            { min: 70, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você demonstrou sólidas habilidades em hospitalidade. Suas decisões foram conscientes e orientadas ao cliente. Com refinamento contínuo, você pode alcançar a excelência absoluta.' },
+            { min: 50, cls: 'score-average',   icon: '📚', msg: 'Você está no caminho certo, mas há muito espaço para crescimento. Hospitalidade vai além de procedimentos - é sobre criar conexões genuínas e momentos especiais. Estude os princípios fundamentais!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Suas decisões mostram necessidade de desenvolvimento significativo. Hospitalidade é uma arte que requer estudo, prática e, acima de tudo, desejo genuíno de servir. Revise os princípios fundamentais!' }
+        ],
+        tips: [
+            'A primeira impressão é crucial: cumprimente todos com genuíno interesse e entusiasmo',
+            'Antecipe necessidades antes que sejam verbalizadas - a proatividade é a alma da hospitalidade',
+            'Personalize sempre que possível: use nomes, lembre de preferências, adapte serviços',
+            'Transforme problemas em oportunidades de surpreender positivamente',
+            'Nunca diga apenas "não" - sempre busque alternativas e soluções criativas',
+            'A linguagem corporal comunica tanto quanto palavras: sorria, mantenha contato visual, demonstre atenção',
+            'Invista em sua equipe: funcionários valorizados criam experiências excepcionais',
+            'Detalhes fazem a diferença: pequenos gestos têm grande impacto emocional'
+        ],
+        scenarios: [
+            {
+                icon: '🚪', title: 'A Primeira Impressão',
+                text: 'Um hóspede VIP chega para fazer check-in. Ele parece cansado e ansioso. A recepção está cheia. Como você o aborda?',
+                choices: [
+                    { emoji:'🤝', title:'Acolhimento Personalizado',   description:'Abordá-lo pessoalmente, oferecer bebida de boas-vindas e fazer check-in express em área privativa.',       impact:{satisfaction:25,team:15,excellence:25}, feedback:'Perfeito! A hospitalidade vai além do protocolo. Você criou uma experiência memorável desde o primeiro contato.' },
+                    { emoji:'⏱️', title:'Pedir para Aguardar',         description:'Informar educadamente que há fila e pedir que aguarde sua vez.',                                             impact:{satisfaction:-10,team:5,excellence:-5},feedback:'Clientes VIP esperam tratamento diferenciado. Fazê-los aguardar em fila pode gerar frustração.' },
+                    { emoji:'🎯', title:'Atendimento Prioritário',     description:'Reconhecê-lo imediatamente, cumprimentá-lo pelo nome e conduzi-lo para área VIP.',                           impact:{satisfaction:20,team:10,excellence:20}, feedback:'Excelente! Reconhecer e priorizar hóspedes especiais é fundamental. Demonstra atenção aos detalhes.' }
+                ]
+            },
+            {
+                icon: '💬', title: 'Reclamação Delicada',
+                text: 'Um hóspede reclama que o quarto não está do padrão esperado. Ele está visivelmente irritado, mas sendo educado. Como responder?',
+                choices: [
+                    { emoji:'📋', title:'Justificar o Padrão',   description:'Explicar que o quarto está dentro do padrão estabelecido pelo hotel.',                                             impact:{satisfaction:-15,team:0,excellence:-10}, feedback:'Nunca justifique ou contradiga uma reclamação. Isso invalida os sentimentos do hóspede e piora a situação.' },
+                    { emoji:'💎', title:'Solução Premium',        description:'Desculpar-se, fazer upgrade, enviar amenities especiais e garantir acompanhamento pessoal.',                       impact:{satisfaction:30,team:15,excellence:25},  feedback:'Excepcional! Você não só resolveu o problema, mas superou expectativas. O hóspede se torna um embaixador da marca.' },
+                    { emoji:'🔄', title:'Oferecer Upgrade',       description:'Pedir desculpas sinceras e oferecer upgrade imediato sem custo adicional.',                                       impact:{satisfaction:20,team:10,excellence:15},  feedback:'Ótima decisão! Resolver rapidamente com upgrade transforma uma experiência negativa em positiva.' }
+                ]
+            },
+            {
+                icon: '🍽️', title: 'Restrições Alimentares',
+                text: 'Durante o jantar, você descobre que um hóspede tem alergias severas não informadas previamente. O que fazer?',
+                choices: [
+                    { emoji:'⭐', title:'Menu Personalizado',     description:'Criar menu exclusivo sem alérgenos, com apresentação especial e acompanhamento do chef.',                         impact:{satisfaction:30,team:20,excellence:30}, feedback:'Excelente! Transformar uma restrição em experiência gourmet exclusiva é o ápice da hospitalidade.' },
+                    { emoji:'📝', title:'Seguir o Cardápio',      description:'Informar as opções disponíveis no cardápio atual e suas limitações.',                                              impact:{satisfaction:-5,team:0,excellence:-5},  feedback:'Limitado. A hospitalidade exige flexibilidade, especialmente em questões de saúde e bem-estar.' },
+                    { emoji:'👨‍🍳', title:'Consultar o Chef',    description:'Chamar o chef pessoalmente para discutir alternativas seguras e saborosas.',                                      impact:{satisfaction:20,team:15,excellence:20}, feedback:'Muito bom! Envolver o chef demonstra cuidado e permite criar soluções personalizadas e seguras.' }
+                ]
+            },
+            {
+                icon: '🎉', title: 'Celebração Especial',
+                text: 'Você descobre pelo sistema que é aniversário de um hóspede. Ele não mencionou nada. O que fazer?',
+                choices: [
+                    { emoji:'🎊', title:'Experiência Completa',   description:'Preparar decoração discreta no quarto, upgrade, bolo artesanal e mensagem personalizada da gerência.',            impact:{satisfaction:30,team:15,excellence:30}, feedback:'Perfeito! Você criou uma experiência inesquecível. O hóspede terá uma história para contar sobre sua hospitalidade.' },
+                    { emoji:'🤐', title:'Não Fazer Nada',         description:'Respeitar que ele não mencionou e não fazer nenhuma menção.',                                                      impact:{satisfaction:0,team:0,excellence:-5},   feedback:'Oportunidade perdida. Pequenos gestos de reconhecimento criam momentos memoráveis.' },
+                    { emoji:'🎂', title:'Surpresa Discreta',      description:'Enviar uma sobremesa especial com vela ao quarto com cartão de parabéns.',                                        impact:{satisfaction:20,team:10,excellence:20}, feedback:'Ótimo! Gestos discretos e elegantes mostram atenção sem ser invasivo. Criou um momento especial.' }
+                ]
+            },
+            {
+                icon: '⚠️', title: 'Emergência Médica',
+                text: 'Um hóspede passa mal no lobby. Ele está consciente mas precisa de ajuda. Como você age?',
+                choices: [
+                    { emoji:'💊', title:'Cuidado Integral',          description:'Ativar protocolo completo, acompanhar ao hospital, contatar família e fazer follow-up posterior.',              impact:{satisfaction:35,team:25,excellence:35}, feedback:'Excepcional! Hospitalidade é também zelar pelo bem-estar total do hóspede, mesmo em situações críticas.' },
+                    { emoji:'📞', title:'Chamar Emergência',          description:'Ligar imediatamente para emergência médica e aguardar.',                                                       impact:{satisfaction:10,team:5,excellence:10},  feedback:'Correto, mas incompleto. Em emergências, é preciso ação imediata complementar enquanto aguarda socorro.' },
+                    { emoji:'🏥', title:'Protocolo de Emergência',    description:'Acionar emergência, prestar primeiros socorros, isolar área e informar gerência.',                             impact:{satisfaction:25,team:20,excellence:25}, feedback:'Muito bom! Seguir protocolos estabelecidos garante segurança e demonstra profissionalismo.' }
+                ]
+            },
+            {
+                icon: '🌍', title: 'Barreira Cultural',
+                text: 'Um hóspede internacional não fala seu idioma e parece confuso com os costumes locais. Como ajudar?',
+                choices: [
+                    { emoji:'🤝', title:'Acompanhamento Cultural',   description:'Disponibilizar membro da equipe bilíngue, kit cultural personalizado e orientação sobre costumes locais.',     impact:{satisfaction:30,team:25,excellence:30}, feedback:'Perfeito! Hospitalidade verdadeira abraça a diversidade e facilita experiências culturais enriquecedoras.' },
+                    { emoji:'📱', title:'Aplicativo Tradutor',        description:'Usar aplicativo de tradução no celular para comunicação básica.',                                               impact:{satisfaction:10,team:5,excellence:5},   feedback:'Funcional mas limitado. A hospitalidade deve ir além de soluções tecnológicas básicas.' },
+                    { emoji:'🗺️', title:'Guia Multilíngue',          description:'Fornecer guia visual multilíngue do hotel e atrações locais com mapas ilustrados.',                            impact:{satisfaction:20,team:15,excellence:20}, feedback:'Bom! Material visual transcende barreiras linguísticas e demonstra preparação cultural.' }
+                ]
+            },
+            {
+                icon: '💼', title: 'Conflito de Equipe',
+                text: 'Dois membros da equipe têm um desentendimento na frente de hóspedes. Como intervir?',
+                choices: [
+                    { emoji:'🎯', title:'Gestão Completa',          description:'Intervir imediatamente, realocá-los discretamente, mediar conflito em particular e fazer follow-up.',           impact:{satisfaction:25,team:30,excellence:30}, feedback:'Excelente! Liderança eficaz protege a experiência do cliente e fortalece a equipe através de gestão profissional.' },
+                    { emoji:'🤫', title:'Ignorar no Momento',        description:'Deixar para resolver depois do plantão para não chamar mais atenção.',                                          impact:{satisfaction:-10,team:-15,excellence:-15},feedback:'Péssima escolha. Ignorar conflitos na frente de hóspedes prejudica a imagem e piora o clima organizacional.' },
+                    { emoji:'⚡', title:'Intervenção Imediata',      description:'Intervir discretamente, separar a equipe e retomar profissionalismo.',                                          impact:{satisfaction:15,team:20,excellence:20}, feedback:'Correto! Ação rápida preserva a experiência dos hóspedes e estabelece limites profissionais.' }
+                ]
+            },
+            {
+                icon: '🌧️', title: 'Planos Cancelados pela Chuva',
+                text: 'Uma família planejava passeio ao ar livre, mas está chovendo torrencialmente. Eles estão desapontados. O que oferecer?',
+                choices: [
+                    { emoji:'🎪', title:'Experiência Exclusiva',     description:'Organizar atividade especial indoor: workshop, degustação, tour pelos bastidores com a equipe.',               impact:{satisfaction:30,team:20,excellence:35}, feedback:'Excepcional! Transformar um problema em experiência única e memorável é o ápice da hospitalidade criativa.' },
+                    { emoji:'📺', title:'Sugerir TV no Quarto',      description:'Recomendar que aproveitem o dia assistindo TV ou descansando.',                                                 impact:{satisfaction:-5,team:0,excellence:-10}, feedback:'Solução passiva que não agrega valor. Hospitalidade é criar alternativas, não simplesmente aceitar contratempos.' },
+                    { emoji:'🎭', title:'Opções Alternativas',       description:'Apresentar lista de atrações internas: spa, cinema, áreas de lazer cobertas.',                                 impact:{satisfaction:20,team:15,excellence:20}, feedback:'Bom! Oferecer alternativas mostra proatividade e conhecimento do destino. Transforma frustração em oportunidade.' }
+                ]
+            },
+            {
+                icon: '💰', title: 'Erro na Conta',
+                text: 'Há um erro de cobrança significativo na conta de um hóspede no checkout. Ele está irritado pois tem um voo a pegar. Como resolver?',
+                choices: [
+                    { emoji:'🎁', title:'Compensação Proativa',      description:'Corrigir, pedir desculpas genuínas, oferecer cortesia e desconto na próxima estadia.',                         impact:{satisfaction:35,team:25,excellence:35}, feedback:'Perfeito! Transformar erro em oportunidade de fidelização. O hóspede lembrará da solução, não do problema.' },
+                    { emoji:'🔍', title:'Verificar Detalhadamente',  description:'Revisar item por item cuidadosamente para identificar o erro.',                                                 impact:{satisfaction:-10,team:5,excellence:0},  feedback:'Muito demorado para situação urgente. Em hospitalidade, agilidade e empatia são essenciais.' },
+                    { emoji:'✅', title:'Ajuste Imediato',            description:'Corrigir imediatamente, pedir desculpas e processar checkout prioritário.',                                    impact:{satisfaction:25,team:20,excellence:25}, feedback:'Ótimo! Resolver rapidamente sem burocracia demonstra confiança e respeito pelo tempo do hóspede.' }
+                ]
+            },
+            {
+                icon: '🌙', title: 'Pedido Extraordinário',
+                text: 'Às 2h da madrugada, um hóspede liga pedindo um item específico não disponível no hotel. Como responder?',
+                choices: [
+                    { emoji:'🚗', title:'Serviço Extraordinário',    description:'Providenciar o item pessoalmente através de serviço de concierge, independente da hora.',                      impact:{satisfaction:35,team:30,excellence:40}, feedback:'Lendário! Esse tipo de dedicação cria histórias que os hóspedes contam por anos. É hospitalidade no seu melhor.' },
+                    { emoji:'❌', title:'Declinar Educadamente',      description:'Explicar que não é possível atender no horário e sugerir alternativa pela manhã.',                             impact:{satisfaction:-5,team:5,excellence:-5},  feedback:'Solução fácil mas limitada. Hospitalidade de excelência encontra maneiras de dizer sim.' },
+                    { emoji:'🔍', title:'Buscar Solução',             description:'Pesquisar estabelecimentos 24h próximos e ajudar a conseguir o item.',                                         impact:{satisfaction:25,team:20,excellence:25}, feedback:'Muito bom! Ir além do óbvio e buscar soluções criativas diferencia serviço excepcional.' }
+                ]
+            }
+        ]
+    },
+
+    {
+        id: 'restaurante',
+        name: 'Garçom Nota 10',
+        emoji: '🍽️',
+        thumb: 'images/thumb-garcom-nota-10.jpg',
+        cover: 'images/garcom-nota-10.jpg',
+        gradient: 'linear-gradient(135deg, #e63946, #f4a261)',
+        accentColor: '#e63946',
+        borderColor: '#f4a261',
+        statBg: '#fff5f0',
+        subtitle: 'Você é o garçom do restaurante mais badalado da cidade! Cada decisão pode encantar ou afastar seus clientes.',
+        homeDesc: 'Suas escolhas afetarão a Satisfação dos Clientes, a Harmonia da Equipe e a Reputação do Restaurante!',
+        startLabel: '🍷 Abrir o Restaurante',
+        progressLabel: 'Progresso do Serviço',
+        continueLabel: 'Continuar Serviço →',
+        restartLabel: '🔄 Novo Turno',
+        endTitle: 'Turno Encerrado!',
+        tipsTitle: '🍴 Segredos de um Atendimento de Excelência',
+        stats: [
+            { key: 'clientes',  label: '😊 Clientes',  icon: '😊' },
+            { key: 'equipe',    label: '👨‍🍳 Equipe',   icon: '👨‍🍳' },
+            { key: 'reputacao', label: '⭐ Reputação', icon: '⭐' }
+        ],
+        initialScores: { clientes: 0, equipe: 0, reputacao: 0 },
+        resultDetails: [
+            { key: 'clientes',  icon: '😊', title: 'Satisfação dos Clientes' },
+            { key: 'equipe',    icon: '👨‍🍳', title: 'Harmonia da Equipe' },
+            { key: 'reputacao', icon: '⭐', title: 'Reputação do Restaurante' }
+        ],
+        scoreThresholds: [
+            { min: 80, cls: 'score-excellent', icon: '🏆', msg: 'Extraordinário! Você é um garçom cinco estrelas! Seu atendimento transformou refeições em experiências inesquecíveis. Os clientes já estão reservando mesa para voltar. Você nasceu para a hospitalidade!' },
+            { min: 60, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você demonstrou boa postura e tomou decisões acertadas na maioria das situações. Com um pouco mais de refinamento e atenção aos detalhes, você estará no caminho da excelência!' },
+            { min: 40, cls: 'score-average',   icon: '👍', msg: 'Você está aprendendo! Algumas decisões foram boas, mas outras deixaram clientes insatisfeitos. O atendimento em restaurante exige rapidez, empatia e jogo de cintura. Continue praticando!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Foi um turno difícil! Muitas decisões afastaram clientes e prejudicaram a equipe. Não desanime — todo grande garçom começa errando. Releia as dicas abaixo e tente novamente!' }
+        ],
+        tips: [
+            'Sorria e estabeleça contato visual ao se aproximar da mesa — a primeira impressão é tudo.',
+            'Conheça o cardápio de cor: ingredientes, preparo, alergênicos e sugestões do chef.',
+            'Nunca faça o cliente repetir o pedido — anote sempre, mesmo que confie na memória.',
+            'Monitore as mesas periodicamente sem ser invasivo — atenção sem sufocamento.',
+            'Diante de reclamações, ouça com calma, peça desculpas e ofereça solução imediata.',
+            'Antecipe necessidades: refil de água, pão extra, guardanapo antes que peçam.',
+            'Trabalhe em equipe — ajude os colegas e comunique-se com a cozinha com clareza.',
+            'No momento da conta, seja rápido e discreto — não deixe o cliente esperar.'
+        ],
+        scenarios: [
+            {
+                icon: '🚪', title: 'Recebendo os Clientes',
+                text: 'Uma mesa de 4 pessoas chega ao restaurante lotado. Não há mesa disponível no momento e a espera é de cerca de 20 minutos. Como você os recebe?',
+                choices: [
+                    { emoji: '🥂', title: 'Acomodar no Bar com Cortesia',       description: 'Conduzi-los ao bar, oferecer uma bebida de cortesia e aperitivo enquanto aguardam a mesa ser preparada.',      impact: { clientes: 20, equipe: 10, reputacao: 20 }, feedback: 'Excelente! Transformar a espera em experiência agradável é sinal de atendimento de alto nível. Os clientes mal sentiram o tempo passar!' },
+                    { emoji: '🤷', title: 'Informar a Espera e Pedir que Aguardem', description: 'Dizer que não há mesa disponível e que podem aguardar na entrada se quiserem.',                             impact: { clientes: -5, equipe: 0, reputacao: -5 }, feedback: 'Funcional, mas frio. Clientes que aguardam sem conforto ou atenção tendem a ir embora ou sair insatisfeitos.' },
+                    { emoji: '📋', title: 'Lista de Espera com Previsão',        description: 'Anotar o nome da mesa, dar uma previsão de tempo e pedir que fiquem por perto.',                               impact: { clientes: 5, equipe: 5, reputacao: 5 },   feedback: 'Organizado, mas pode melhorar. Uma bebida de boas-vindas ou um gesto adicional fariam toda a diferença.' }
+                ]
+            },
+            {
+                icon: '📖', title: 'Dúvida sobre Alergênicos',
+                text: 'Um cliente pergunta sobre a diferença entre dois pratos e se um deles contém lactose, pois é intolerante. Você não tem certeza sobre um dos ingredientes. O que faz?',
+                choices: [
+                    { emoji: '👨‍🍳', title: 'Consultar a Cozinha na Hora',  description: 'Pedir licença, verificar com o chef e retornar com a informação correta e segura.',                                   impact: { clientes: 25, equipe: 15, reputacao: 25 }, feedback: 'Perfeito! Segurança alimentar é prioridade. O cliente ficou tranquilo e confiante no atendimento. Isso gera fidelização!' },
+                    { emoji: '🎲', title: 'Arriscar uma Resposta',            description: 'Dizer que acredita que não tem lactose, sem confirmar com a cozinha.',                                               impact: { clientes: -20, equipe: -10, reputacao: -20 }, feedback: 'Grave erro! Nunca arrisque informações sobre alergênicos. Isso pode causar sérios problemas de saúde ao cliente.' },
+                    { emoji: '📱', title: 'Indicar o Cardápio Digital',        description: 'Indicar que o cardápio digital tem os detalhes dos ingredientes e pedir que o cliente consulte.',                   impact: { clientes: 0, equipe: 0, reputacao: -5 }, feedback: 'Razoável, mas preguiçoso. O cliente esperava que você fosse o elo de comunicação com a cozinha, não ele mesmo.' }
+                ]
+            },
+            {
+                icon: '⏰', title: 'Pedido Atrasado',
+                text: 'Uma mesa aguarda há 35 minutos e o prato ainda não saiu da cozinha. Os clientes começam a demonstrar impaciência. O que você faz?',
+                choices: [
+                    { emoji: '🎁', title: 'Pedir Desculpas e Oferecer Entrada de Cortesia', description: 'Visitar a mesa, pedir desculpas pelo atraso e trazer uma entrada ou bebida por conta da casa.',     impact: { clientes: 30, equipe: 15, reputacao: 30 }, feedback: 'Excelente! Um gesto de compensação transforma frustração em encantamento. O cliente sairá elogiando o serviço!' },
+                    { emoji: '🤫', title: 'Aguardar e Torcer',                              description: 'Evitar a mesa com medo de receber reclamações e esperar o prato ficar pronto.',                      impact: { clientes: -20, equipe: -5, reputacao: -15 }, feedback: 'Péssimo! Ignorar clientes impacientes piora a situação drasticamente. A fuga nunca é solução em atendimento.' },
+                    { emoji: '🙏', title: 'Ir à Mesa, Pedir Desculpas e Dar Previsão',     description: 'Aproximar-se proativamente, explicar o atraso com sinceridade e informar o tempo restante.',        impact: { clientes: 15, equipe: 10, reputacao: 15 }, feedback: 'Boa atitude! Transparência e proatividade acalmam clientes. Eles apreciam ser informados e tratados com respeito.' }
+                ]
+            },
+            {
+                icon: '🍷', title: 'Harmonização de Bebidas',
+                text: 'Um casal pede recomendação de vinho para acompanhar o peixe que escolheram. Você não é sommelier, mas conhece o básico. O que faz?',
+                choices: [
+                    { emoji: '😎', title: 'Recomendar com Contexto',           description: 'Sugerir um vinho branco leve da carta explicando que harmoniza bem com peixes, perguntando se preferem mais seco ou suave.', impact: { clientes: 25, equipe: 10, reputacao: 25 }, feedback: 'Perfeito! Você demonstrou preparo, envolveu o cliente na escolha e criou uma experiência personalizada.' },
+                    { emoji: '🤷', title: 'Dizer que Não Entende de Vinho',    description: 'Ser honesto e dizer que não sabe indicar, sugerindo que escolham pelo que preferem.',                             impact: { clientes: -5, equipe: 0, reputacao: -5 }, feedback: 'Honesto, mas deixa o cliente na mão. Mesmo conhecimentos básicos sobre harmonização já demonstram preparo e cuidado.' },
+                    { emoji: '🍾', title: 'Chamar o Responsável pela Adega',   description: 'Reconhecer os limites e buscar o colega especialista para fazer a indicação corretamente.',                      impact: { clientes: 20, equipe: 20, reputacao: 20 }, feedback: 'Muito bem! Saber pedir ajuda é sinal de maturidade profissional. O cliente foi bem atendido e a equipe funcionou como time.' }
+                ]
+            },
+            {
+                icon: '😤', title: 'Cliente Difícil',
+                text: 'Um cliente reclama em voz alta que a carne está passada demais, mesmo você tendo confirmado o ponto no pedido. Ele está sendo grosseiro na frente de outras mesas. Como reagir?',
+                choices: [
+                    { emoji: '🌟', title: 'Ouvir, Resolver e Surpreender com Sobremesa', description: 'Escutar com empatia, refazer o prato imediatamente e surpreender com uma sobremesa de cortesia ao final.', impact: { clientes: 35, equipe: 10, reputacao: 35 }, feedback: 'Magistral! Você transformou uma situação constrangedora em fidelização. Esse cliente provavelmente vai voltar e indicar o restaurante!' },
+                    { emoji: '😠', title: 'Defender o Restaurante',           description: 'Explicar firmemente que o ponto foi o solicitado pelo próprio cliente e mostrar a comanda.',                          impact: { clientes: -20, equipe: -5, reputacao: -20 }, feedback: 'Nunca entre em confronto com cliente, mesmo tendo razão. A experiência de outras mesas é afetada e a imagem do restaurante sofre.' },
+                    { emoji: '🙏', title: 'Pedir Desculpas e Propor Refazer', description: 'Ouvir com calma, pedir desculpas sem debate e oferecer refazer o prato no ponto que ele desejar agora.',               impact: { clientes: 20, equipe: 10, reputacao: 20 }, feedback: 'Ótimo! Absorver a situação com elegância é sinal de profissionalismo. O cliente se acalmou e a situação foi resolvida sem drama.' }
+                ]
+            },
+            {
+                icon: '🎂', title: 'Aniversário na Mesa',
+                text: 'Você percebe pelo papo da mesa ao lado que é aniversário de um dos clientes. Ninguém pediu nada especial. O que você faz?',
+                choices: [
+                    { emoji: '🍮', title: 'Sobremesa com Vela de Forma Discreta', description: 'Discretamente trazer uma sobremesa especial com vela, em um gesto elegante e personalizado.',                  impact: { clientes: 30, equipe: 10, reputacao: 30 }, feedback: 'Excelente! Um gesto discreto e refinado que tocou o coração do aniversariante sem constranger. Alta hospitalidade com elegância!' },
+                    { emoji: '🎵', title: 'Coordenar Parabéns com a Equipe',      description: 'Avisar a equipe e organizar um parabéns surpresa com vela no final da refeição.',                              impact: { clientes: 25, equipe: 15, reputacao: 25 }, feedback: 'Maravilhoso! A surpresa encantou a mesa e chamou atenção positiva dos outros clientes. Esse tipo de gesto faz o restaurante ser lembrado!' },
+                    { emoji: '🤐', title: 'Não Fazer Nada',                        description: 'Como ninguém pediu, respeitar a privacidade e seguir o atendimento normal.',                                   impact: { clientes: 0, equipe: 0, reputacao: -5 }, feedback: 'Oportunidade perdida. Pequenos gestos de atenção criam memórias afetivas e diferenciam o restaurante da concorrência.' }
+                ]
+            },
+            {
+                icon: '🤝', title: 'Colega em Apuros',
+                text: 'Você percebe que um colega está sobrecarregado com muitas mesas e alguns dos clientes dele esperam para pedir. Você tem um momento tranquilo. O que faz?',
+                choices: [
+                    { emoji: '💬', title: 'Avisar o Gerente e Ajudar Simultaneamente', description: 'Comunicar ao gerente a sobrecarga enquanto já começa a auxiliar o colega diretamente nas mesas.',           impact: { clientes: 25, equipe: 30, reputacao: 25 }, feedback: 'Perfeito! Você resolveu o imediato e ainda acionou a gestão para corrigir a raiz do problema. Liderança e trabalho em equipe de alto nível!' },
+                    { emoji: '🙈', title: 'Focar Só nas Suas Mesas',                   description: 'Entender que cada um tem sua área e não se intrometer no trabalho do colega.',                             impact: { clientes: 0, equipe: -15, reputacao: -10 }, feedback: 'Egoísta! Restaurante funciona como equipe. Clientes mal atendidos prejudicam a reputação do estabelecimento inteiro.' },
+                    { emoji: '🤜', title: 'Ajudar a Anotar os Pedidos',                description: 'Aproximar-se das mesas do colega e ajudar a anotar os pedidos até ele conseguir atender.',                 impact: { clientes: 20, equipe: 25, reputacao: 20 }, feedback: 'Muito bem! Espírito de equipe é essencial. Os clientes foram atendidos em tempo hábil e seu colega ficou aliviado.' }
+                ]
+            },
+            {
+                icon: '💳', title: 'Problema na Conta',
+                text: 'Ao apresentar a conta, o cliente aponta um item cobrado que ele diz não ter pedido. Há uma dúvida genuína sobre o lançamento. O que fazer?',
+                choices: [
+                    { emoji: '🎁', title: 'Retirar, Pedir Desculpas e Oferecer Desconto', description: 'Resolver imediatamente, pedir desculpas pelo transtorno e aplicar um pequeno desconto como gesto de boa vontade.', impact: { clientes: 35, equipe: 10, reputacao: 30 }, feedback: 'Excepcional! Você transformou um momento tenso em fidelização. Esse cliente vai contar para amigos sobre o atendimento impecável!' },
+                    { emoji: '💪', title: 'Defender que o Item Foi Pedido',             description: 'Mostrar a comanda e defender que o lançamento está correto.',                                                impact: { clientes: -20, equipe: -5, reputacao: -20 }, feedback: 'Nunca discuta sobre dinheiro com o cliente ao final da refeição. Mesmo que tenha razão, o cliente sai com gosto amargo na boca.' },
+                    { emoji: '✅', title: 'Retirar o Item Sem Questionar',              description: 'Pedir desculpas imediatamente, retirar o valor da conta e agradecer a compreensão.',                        impact: { clientes: 20, equipe: 5, reputacao: 15 }, feedback: 'Bom senso! Em caso de dúvida genuína, dar o benefício ao cliente é sempre a decisão mais inteligente.' }
+                ]
+            }
+        ]
+    },
+
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – Vida de Chef (GASTRONOMIA)
+    ══════════════════════════════════════════════════════════ */
+    {
+        id: 'gastronomia',
+        name: 'Vida de Chef',
+        emoji: '👨‍🍳',
+        thumb: 'images/thumb-vida-de-chef.jpg',
+        cover: 'images/vida-de-chef.jpg',
+        gradient: 'linear-gradient(135deg, #b5451b, #f9c74f)',
+        accentColor: '#b5451b',
+        borderColor: '#f9c74f',
+        statBg: '#fff8ec',
+        subtitle: 'Você é chef de uma cozinha profissional! Tome decisões sábias sobre técnicas, ingredientes e gestão culinária.',
+        homeDesc: 'Suas decisões afetarão a Qualidade dos Pratos, a Gestão da Cozinha e a Reputação Gastronômica do seu restaurante!',
+        startLabel: '🔪 Acender os Fogões',
+        progressLabel: 'Progresso do Serviço',
+        continueLabel: 'Continuar Cozinhando →',
+        restartLabel: '🔄 Novo Serviço',
+        endTitle: 'Serviço Finalizado!',
+        tipsTitle: '👨‍🍳 Fundamentos da Alta Gastronomia',
+        stats: [
+            { key: 'qualidade', label: '🍴 Qualidade', icon: '🍴' },
+            { key: 'gestao',    label: '⚙️ Gestão',    icon: '⚙️' },
+            { key: 'reputacao', label: '⭐ Reputação',  icon: '⭐' }
+        ],
+        initialScores: { qualidade: 0, gestao: 0, reputacao: 0 },
+        resultDetails: [
+            { key: 'qualidade', icon: '🍴', title: 'Qualidade dos Pratos' },
+            { key: 'gestao',    icon: '⚙️', title: 'Gestão da Cozinha' },
+            { key: 'reputacao', icon: '⭐', title: 'Reputação Gastronômica' }
+        ],
+        scoreThresholds: [
+            { min: 82, cls: 'score-excellent', icon: '🌟', msg: 'Parabéns, Chef! Suas decisões demonstram domínio técnico, visão criativa e gestão impecável. Sua cozinha é uma experiência sensorial completa. O mundo gastronômico está de olho em você!' },
+            { min: 62, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Sua cozinha tem um nível elevado e os críticos e clientes notaram. Com refinamento nas técnicas e atenção aos detalhes, você está no caminho certo. Continue aprimorando sua arte!' },
+            { min: 42, cls: 'score-average',   icon: '👍', msg: 'Você está crescendo! Algumas decisões foram acertadas, mas a alta gastronomia exige consistência e perfeição em cada detalhe. Estude mais sobre técnicas e gestão de cozinha para elevar seu nível!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'A cozinha precisa de muito trabalho! A alta gastronomia é uma arte que exige dedicação, técnica e paixão em cada decisão. Revise os fundamentos abaixo e volte para reconquistar a confiança dos clientes!' }
+        ],
+        tips: [
+            'Ingredientes de qualidade são a base de tudo: priorize produtos frescos, sazonais e locais.',
+            'Mise en place é sagrada: organização antes do serviço evita erros e garante fluidez.',
+            'Domine as técnicas clássicas antes de inovar — a criatividade cresce sobre bases sólidas.',
+            'Cuide da sua brigada: uma equipe motivada produz comida com alma.',
+            'Desperdício zero: aproveite integralmente os ingredientes com criatividade e respeito.',
+            'Prove tudo antes de servir — o paladar é sua ferramenta mais importante.',
+            'Aprenda com críticas: cada feedback é uma oportunidade de evolução.',
+            'A apresentação importa tanto quanto o sabor: comemos primeiro com os olhos.',
+            'Conheça as restrições alimentares dos seus clientes antes de criar o cardápio.'
+        ],
+        scenarios: [
+            {
+                icon: '🛒', title: 'Escolha dos Ingredientes',
+                text: 'Você precisa comprar ingredientes para o menu especial de fim de semana. Qual abordagem você adota?',
+                choices: [
+                    { emoji: '🌾', title: 'Feirantes e Produtores Locais',   description: 'Visitar feiras livres e produtores regionais para selecionar ingredientes sazonais frescos e únicos.',         impact: { qualidade: 25, gestao: 10, reputacao: 20 }, feedback: 'Excelente! Ingredientes frescos e locais elevam a qualidade dos pratos, reduzem o custo logístico e valorizam a identidade gastronômica regional.' },
+                    { emoji: '🏪', title: 'Fornecedor Padrão do Restaurante', description: 'Pedir os ingredientes habituais ao fornecedor de sempre, com entrega programada.',                              impact: { qualidade: 5, gestao: 15, reputacao: 5 },   feedback: 'Prático, mas sem diferenciação. Fornecedores padrão garantem consistência, mas raramente surpreendem em qualidade ou exclusividade.' },
+                    { emoji: '✈️', title: 'Importados de Alto Padrão',        description: 'Importar ingredientes premium de regiões especializadas: trufas, wagyu, caviar.',                               impact: { qualidade: 20, gestao: -10, reputacao: 25 }, feedback: 'Ingredientes importados impressionam, mas encarecem o prato e complicam a logística. Use com moderação como elemento especial do menu.' }
+                ]
+            },
+            {
+                icon: '📋', title: 'Elaboração do Cardápio',
+                text: 'É hora de criar o novo cardápio do restaurante. Como você estrutura suas criações?',
+                choices: [
+                    { emoji: '🌿', title: 'Menu Sazonal e Regional',         description: 'Criar pratos baseados nos ingredientes disponíveis na estação, valorizando a cultura culinária local.',          impact: { qualidade: 20, gestao: 15, reputacao: 25 }, feedback: 'Perfeito! Menu sazonal garante frescor, reduz custos e conta uma história gastronômica autêntica. Críticos adoram identidade e propósito.' },
+                    { emoji: '🍱', title: 'Copiar Tendências Internacionais', description: 'Replicar pratos em voga no exterior sem adaptação ao contexto local.',                                          impact: { qualidade: 5, gestao: 10, reputacao: -10 }, feedback: 'Arriscado! Copiar sem contextualizar demonstra falta de identidade. A gastronomia de excelência é autoral e conta uma história própria.' },
+                    { emoji: '🔬', title: 'Gastronomia Molecular',            description: 'Criar pratos com técnicas avançadas como esferificação, gelificação e emulsificação.',                           impact: { qualidade: 15, gestao: -5, reputacao: 20 }, feedback: 'Criativo e impactante visualmente, mas exige muito da equipe e pode sacrificar o sabor se não houver equilíbrio com a técnica clássica.' }
+                ]
+            },
+            {
+                icon: '🔥', title: 'Técnicas de Cocção',
+                text: 'Para um prato principal com carne nobre, qual técnica de cocção você prioriza?',
+                choices: [
+                    { emoji: '🌡️', title: 'Sous Vide com Finalização na Grelha', description: 'Cozinhar a vácuo em temperatura controlada e finalizar na grelha para crosta perfeita.',                    impact: { qualidade: 30, gestao: 5, reputacao: 25 }, feedback: 'Excelente técnica! Sous vide garante ponto preciso, suculência e consistência. A finalização na grelha adiciona sabor e textura irresistíveis.' },
+                    { emoji: '🍳', title: 'Fritura Rápida na Frigideira',          description: 'Selar e finalizar diretamente na frigideira com manteiga e ervas aromáticas.',                            impact: { qualidade: 15, gestao: 15, reputacao: 10 }, feedback: 'Técnica clássica e eficaz. Resulta em pratos saborosos, mas o controle do ponto é mais difícil para grandes volumes do serviço.' },
+                    { emoji: '🏺', title: 'Assado Lento no Forno',                 description: 'Assar lentamente por horas com ervas, legumes e caldo para sabor profundo.',                              impact: { qualidade: 20, gestao: -10, reputacao: 15 }, feedback: 'Sabor rico e profundo, mas exige planejamento e limita a flexibilidade durante o serviço. Ideal para dias com antecedência garantida.' }
+                ]
+            },
+            {
+                icon: '🧂', title: 'Erro na Receita',
+                text: 'Durante o serviço, você percebe que o molho do prato principal ficou salgado demais. Há 10 mesas esperando. O que faz?',
+                choices: [
+                    { emoji: '🔄', title: 'Refazer o Molho Imediatamente',      description: 'Pausar os pedidos daquele prato, refazer o molho corretamente e informar os clientes sobre o pequeno atraso.', impact: { qualidade: 25, gestao: 10, reputacao: 20 }, feedback: 'Decisão corajosa e correta! A qualidade nunca pode ser comprometida. Os clientes apreciam honestidade e recebem um prato perfeito.' },
+                    { emoji: '😬', title: 'Servir Assim Mesmo',                  description: 'Decidir servir o molho com excesso de sal esperando que ninguém reclame.',                                  impact: { qualidade: -25, gestao: -10, reputacao: -25 }, feedback: 'Erro grave! Servir comida de baixa qualidade compromete toda a reputação do restaurante. Um prato ruim pode anular dez perfeitos.' },
+                    { emoji: '🍋', title: 'Corrigir com Acidez e Diluição',      description: 'Adicionar caldo sem sal, suco de limão e açúcar para equilibrar o excesso de sal.',                         impact: { qualidade: 15, gestao: 20, reputacao: 10 }, feedback: 'Solução inteligente e rápida! A técnica de correção funciona em muitos casos e demonstra domínio culinário e criatividade sob pressão.' }
+                ]
+            },
+            {
+                icon: '👥', title: 'Gestão da Brigada',
+                text: 'Um membro importante da sua equipe faltou no dia de maior movimento. Como você reorganiza a cozinha?',
+                choices: [
+                    { emoji: '🤝', title: 'Redistribuir Funções e Assumir uma Estação', description: 'Reorganizar a equipe e assumir pessoalmente a estação mais crítica durante o serviço.',              impact: { qualidade: 20, gestao: 25, reputacao: 20 }, feedback: 'Liderança exemplar! Um chef que trabalha ao lado da brigada nos momentos difíceis inspira a equipe e mantém o padrão elevado.' },
+                    { emoji: '📞', title: 'Chamar um Freelancer de Última Hora',  description: 'Ligar para um cozinheiro freelancer para cobrir a vaga imediatamente.',                                   impact: { qualidade: 5, gestao: 15, reputacao: 5 },   feedback: 'Solução prática, mas arriscada. Freelancers desconhecidos a sua rotina podem causar inconsistências durante o serviço.' },
+                    { emoji: '✂️', title: 'Reduzir o Cardápio do Dia',            description: 'Simplificar o menu eliminando pratos mais complexos para equilibrar a carga de trabalho.',                impact: { qualidade: 10, gestao: 30, reputacao: 0 },  feedback: 'Decisão honesta e estratégica! Cardápio reduzido executado com perfeição é sempre melhor que cardápio completo com erros.' }
+                ]
+            },
+            {
+                icon: '🌱', title: 'Desperdício na Cozinha',
+                text: 'Ao final do serviço, você percebe grande quantidade de ingredientes nobres sobrando. O que fazer?',
+                choices: [
+                    { emoji: '♻️', title: 'Criar Prato Especial com as Sobras',  description: 'Elaborar um prato criativo "do chef" usando os ingredientes restantes para o serviço seguinte.',             impact: { qualidade: 20, gestao: 25, reputacao: 20 }, feedback: 'Criatividade e sustentabilidade juntas! Usar sobras com inteligência reduz custos, evita desperdício e ainda surpreende os clientes.' },
+                    { emoji: '🗑️', title: 'Descartar o que Sobrou',               description: 'Jogar fora os ingredientes restantes para garantir o frescor no próximo serviço.',                          impact: { qualidade: 5, gestao: -15, reputacao: -10 }, feedback: 'Inaceitável! Desperdiçar ingredientes nobres é prejuízo financeiro, irresponsabilidade ambiental e falta de criatividade culinária.' },
+                    { emoji: '❄️', title: 'Armazenar Corretamente e Replanejar',  description: 'Armazenar em condições ideais e replanejar o cardápio do dia seguinte para usar os ingredientes.',         impact: { qualidade: 15, gestao: 20, reputacao: 10 }, feedback: 'Bom senso! Gestão eficiente do estoque é fundamental para a sustentabilidade financeira e ambiental de qualquer cozinha de qualidade.' }
+                ]
+            },
+            {
+                icon: '📰', title: 'Visita do Crítico Gastronômico',
+                text: 'Você sabe que um renomado crítico gastronômico está jantando no restaurante hoje. Como você age?',
+                choices: [
+                    { emoji: '🏆', title: 'Tratar Como Qualquer Cliente',        description: 'Manter o padrão habitual de excelência sem tratamento especial — afinal, todo cliente merece o melhor.',     impact: { qualidade: 25, gestao: 20, reputacao: 35 }, feedback: 'Atitude impecável! Críticos percebem quando recebem tratamento especial. Consistência e excelência para todos é a marca de um grande restaurante.' },
+                    { emoji: '🌟', title: 'Preparar Pratos Exclusivos para Ele',  description: 'Criar um menu personalizado especial com suas melhores criações exclusivamente para a mesa do crítico.',     impact: { qualidade: 20, gestao: -5, reputacao: 15 }, feedback: 'Cuidado! Embora impressione, pode soar forçado. Críticos avaliam a experiência real dos outros clientes, não apenas a deles.' },
+                    { emoji: '😰', title: 'Avisar a Equipe e Aumentar a Tensão', description: 'Comunicar para toda a brigada sobre a presença do crítico, aumentando a pressão e o nervosismo.',            impact: { qualidade: -5, gestao: -10, reputacao: 0 },  feedback: 'Contraproducente! Pressão excessiva causa erros. Times bem treinados entregam excelência todos os dias — não apenas quando há críticos.' }
+                ]
+            },
+            {
+                icon: '🎓', title: 'Capacitação da Equipe',
+                text: 'Você tem a oportunidade de investir em treinamento para sua equipe. Qual abordagem escolhe?',
+                choices: [
+                    { emoji: '🍳', title: 'Oficinas Práticas de Técnicas Clássicas', description: 'Promover treinamentos práticos semanais sobre técnicas de base da culinária francesa e italiana.',         impact: { qualidade: 25, gestao: 20, reputacao: 15 }, feedback: 'Excelente investimento! Técnicas clássicas são o alicerce de qualquer cozinha de excelência. Uma brigada bem treinada produz resultados consistentes.' },
+                    { emoji: '🌍', title: 'Viagem de Imersão Gastronômica',          description: 'Levar a equipe para um intercâmbio em outro país reconhecido gastronomicamente.',                         impact: { qualidade: 20, gestao: 5, reputacao: 25 }, feedback: 'Inspirador! Vivenciar outras culturas gastronômicas amplia horizontes criativos e eleva a motivação da equipe. Investimento de alto retorno.' },
+                    { emoji: '📱', title: 'Curso Online de Tendências',               description: 'Inscrever a equipe em cursos online sobre novas tendências culinárias e técnicas modernas.',             impact: { qualidade: 10, gestao: 10, reputacao: 5 },  feedback: 'Razoável, mas limitado. Culinária é muito prática para ser aprendida apenas de forma teórica. Complemente sempre com exercício prático.' }
+                ]
+            },
+            {
+                icon: '🍰', title: 'Prato de Sobremesa',
+                text: 'O pâtissier do restaurante pediu demissão na véspera de um jantar importante. Como resolver o serviço de sobremesas?',
+                choices: [
+                    { emoji: '🫐', title: 'Criar Sobremesas Simples e Elegantes',   description: 'Preparar sobremesas minimalistas com ingredientes de qualidade: coulis de frutas, sorvete artesanal, tuille.', impact: { qualidade: 20, gestao: 25, reputacao: 20 }, feedback: 'Decisão sábia! Simplicidade executada com maestria impressiona mais que complexidade malfeita. Menos é mais na alta gastronomia.' },
+                    { emoji: '🛍️', title: 'Comprar Sobremesas Prontas',              description: 'Adquirir sobremesas de confeitaria de qualidade para complementar o serviço desta noite.',                  impact: { qualidade: -10, gestao: 15, reputacao: -15 }, feedback: 'Arriscado! Críticos e clientes exigentes percebem quando sobremesas não são da casa. Compromete a autenticidade do restaurante.' },
+                    { emoji: '🤝', title: 'Convidar um Pâtissier Parceiro',          description: 'Ligar para um amigo pâtissier para cobrir o serviço de emergência com suas próprias criações.',            impact: { qualidade: 15, gestao: 10, reputacao: 15 }, feedback: 'Solução inteligente! Saber buscar apoio especializado é sinal de maturidade profissional e garante qualidade na sobremesa.' }
+                ]
+            },
+            {
+                icon: '📊', title: 'Precificação do Cardápio',
+                text: 'Os custos de ingredientes subiram 20% e você precisa ajustar os preços. Como tomar essa decisão?',
+                choices: [
+                    { emoji: '🔍', title: 'Analisar e Ajustar com Transparência',   description: 'Revisar o cardápio, ajustar os preços de forma justa e comunicar aos clientes os motivos da mudança.',     impact: { qualidade: 10, gestao: 30, reputacao: 20 }, feedback: 'Excelente! Transparência constrói confiança. Clientes que entendem o valor por trás do preço ficam mais satisfeitos e fiéis.' },
+                    { emoji: '📉', title: 'Reduzir Porções sem Mudar Preço',         description: 'Manter os preços, mas diminuir levemente as porções para compensar o aumento dos custos.',                  impact: { qualidade: -15, gestao: 10, reputacao: -20 }, feedback: 'Péssima estratégia! Clientes percebem a redução de porções e se sentem enganados. Isso destrói a confiança e a reputação a longo prazo.' },
+                    { emoji: '🌟', title: 'Reformular com Ingredientes Equivalentes', description: 'Substituir alguns ingredientes por equivalentes de igual qualidade, mas com custo mais acessível.',         impact: { qualidade: 15, gestao: 25, reputacao: 10 }, feedback: 'Criativo e inteligente! Engenharia de cardápio bem feita mantém a qualidade percebida sem comprometer as finanças do restaurante.' }
+                ]
+            }
+        ]
+    },
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – ECO TRAVELER (AÇÕES SUSTENTÁVEIS NO TURISMO)
+    ══════════════════════════════════════════════════════════ */
+    {
+        id: 'ecotraveler',
+        name: 'Eco Turista',
+        emoji: '🌿',
+        thumb: 'images/thumb-eco-turista.jpg',
+        cover: 'images/eco-turista.jpg',
+        gradient: 'linear-gradient(135deg, #1b4332, #52b788)',
+        accentColor: '#1b4332',
+        borderColor: '#52b788',
+        statBg: '#d8f3dc',
+        subtitle: 'Você é um viajante responsável que deseja explorar o mundo sem destruí-lo. Cada decisão conta para o futuro do turismo sustentável!',
+        homeDesc: 'Suas escolhas afetarão a Preservação do Destino, o Impacto Social nas Comunidades e a sua Pegada Ecológica ao viajar!',
+        startLabel: '🌿 Começar a Aventura',
+        progressLabel: 'Progresso da Viagem',
+        continueLabel: 'Continuar Viagem →',
+        restartLabel: '🔄 Nova Viagem',
+        endTitle: 'Viagem Concluída!',
+        tipsTitle: '🌿 Guia do Turista Verdadeiramente Sustentável',
+        stats: [
+            { key: 'preservacao', label: '🏞️ Preservação', icon: '🏞️' },
+            { key: 'social',      label: '🤝 Impacto Social', icon: '🤝' },
+            { key: 'pegada',      label: '👣 Pegada Eco',    icon: '👣' }
+        ],
+        initialScores: { preservacao: 0, social: 0, pegada: 0 },
+        resultDetails: [
+            { key: 'preservacao', icon: '🏞️', title: 'Preservação do Destino' },
+            { key: 'social',      icon: '🤝', title: 'Impacto Social Positivo' },
+            { key: 'pegada',      icon: '👣', title: 'Pegada Ecológica' }
+        ],
+        scoreThresholds: [
+            { min: 82, cls: 'score-excellent', icon: '🌍', msg: 'Você é um Eco Traveler exemplar! Suas escolhas demonstram que turismo e responsabilidade andam juntos. Você contribuiu para preservar destinos, apoiar comunidades e reduzir sua pegada. O mundo precisa de viajantes como você!' },
+            { min: 62, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você viajou com consciência e tomou boas decisões sustentáveis. Algumas escolhas ainda podem melhorar, mas você já está bem acima da média dos turistas. Continue evoluindo!' },
+            { min: 42, cls: 'score-average',   icon: '👍', msg: 'Você tem a intenção certa, mas algumas escolhas ainda causaram impactos negativos. Turismo sustentável exige atenção constante — pequenas mudanças de hábito fazem enorme diferença para os destinos!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Sua viagem deixou marcas negativas nos destinos visitados. Turismo irresponsável prejudica o meio ambiente, as comunidades e o próprio futuro do turismo. Revise as dicas e planeje sua próxima viagem com muito mais consciência!' }
+        ],
+        tips: [
+            'Pesquise o destino antes de ir: conheça a cultura, as normas locais e áreas protegidas.',
+            'Compense as emissões de carbono do voo por meio de programas de reflorestamento certificados.',
+            'Escolha operadoras de turismo com certificação de sustentabilidade e compromisso social.',
+            'Nunca tire, quebre ou compre produtos feitos com espécies protegidas.',
+            'Respeite os limites de visitação de áreas naturais — lotação excessiva degrada ecossistemas.',
+            'Aprenda palavras básicas do idioma local — é um gesto de respeito que abre portas.',
+            'Prefira transporte terrestre ou ferroviário quando possível: menor pegada de carbono.',
+            'Documente e denuncie exploração de animais em atrações turísticas.',
+            'Fotografe com respeito: peça permissão antes de fotografar pessoas e locais sagrados.'
+        ],
+        scenarios: [
+            {
+                icon: '✈️', title: 'Escolha do Transporte',
+                text: 'Você vai conhecer uma cidade a 600km. Tem três opções de transporte. Qual escolhe?',
+                choices: [
+                    { emoji: '🚂', title: 'Trem de Longa Distância', description: 'Viajar de trem, com paisagens pelo caminho, menor emissão de carbono e experiência cultural diferenciada.', impact: { preservacao: 20, social: 10, pegada: 30 }, feedback: 'Excelente! O trem é um dos meios mais sustentáveis para viagens médias. Menor emissão, experiência cultural rica e apoio ao transporte coletivo.' },
+                    { emoji: '✈️', title: 'Voo Direto de Baixo Custo', description: 'Pegar um voo rápido de apenas 1 hora para economizar tempo.', impact: { preservacao: -10, social: 0, pegada: -25 }, feedback: 'O avião tem a maior pegada de carbono por km entre todos os transportes. Para distâncias como essa, considere alternativas terrestres — a diferença de tempo raramente justifica o impacto.' },
+                    { emoji: '🚌', title: 'Ônibus Interestadual', description: 'Viajar de ônibus convencional, confortável e com boa ocupação média.', impact: { preservacao: 15, social: 10, pegada: 20 }, feedback: 'Boa escolha! Ônibus bem ocupado distribui a emissão entre muitos passageiros, tornando a pegada individual bem menor que o carro ou avião. Prático e responsável.' }
+                ]
+            },
+            {
+                icon: '🐘', title: 'Atração com Animais',
+                text: 'Um guia local oferece passeio para fotografar animais silvestres de perto. A descrição menciona que os animais são "amansados para o turismo". O que fazer?',
+                choices: [
+                    { emoji: '🔍', title: 'Investigar e Denunciar se Necessário', description: 'Recusar o passeio, pesquisar a operadora e, se confirmada exploração animal, denunciar ao órgão ambiental local.', impact: { preservacao: 30, social: 15, pegada: 25 }, feedback: 'Atitude corajosa e necessária! Animais "amansados para turismo" frequentemente sofrem maus tratos. Denúncias responsáveis ajudam a combater esse mercado prejudicial.' },
+                    { emoji: '📸', title: 'Participar Apenas para Fotografar', description: 'Ir ao passeio, mas prometendo não tocar nos animais.', impact: { preservacao: -15, social: -10, pegada: -15 }, feedback: 'Participar financia a prática, independente de tocar ou não. Seu ingresso sustenta um negócio que causa sofrimento animal. Recusa é a única resposta ética.' },
+                    { emoji: '🦋', title: 'Buscar Observação Natural Certificada', description: 'Procurar operadora com certificação ambiental para observação de animais em habitat natural, sem interferência.', impact: { preservacao: 25, social: 20, pegada: 20 }, feedback: 'Perfeito! Observação responsável em habitat natural é a alternativa ética e ainda mais emocionante. Você apoia operadoras comprometidas com a conservação real.' }
+                ]
+            },
+            {
+                icon: '🏕️', title: 'Acampamento em Área Natural',
+                text: 'Você vai acampar em uma área de preservação ambiental. Como você se prepara e se comporta?',
+                choices: [
+                    { emoji: '🌿', title: 'Leave No Trace Completo', description: 'Levar todo o lixo de volta, usar apenas trilhas marcadas, evitar fogueiras e fazer necessidades em locais adequados com pá.', impact: { preservacao: 35, social: 10, pegada: 30 }, feedback: 'Exemplar! Os princípios Leave No Trace são o padrão ouro do turismo em áreas naturais. Você garante que as próximas gerações também poderão desfrutar do mesmo lugar.' },
+                    { emoji: '🔥', title: 'Acampar Livremente fora das Trilhas', description: 'Explorar livremente, fazer fogueira para o jantar e deixar o local como encontrou.', impact: { preservacao: -25, social: -5, pegada: -20 }, feedback: 'Comportamento danoso! Sair das trilhas esmaga vegetação e habitats. Fogueiras causam incêndios. "Deixar como encontrou" não é suficiente em áreas protegidas.' },
+                    { emoji: '📋', title: 'Seguir as Regras Básicas da Área', description: 'Respeitar as placas e regras oficiais da área de preservação sem maior aprofundamento.', impact: { preservacao: 15, social: 5, pegada: 15 }, feedback: 'Bom começo! Respeitar as regras é o mínimo esperado. Para um impacto verdadeiramente positivo, aprofunde-se nas práticas Leave No Trace e compartilhe com outros visitantes.' }
+                ]
+            },
+            {
+                icon: '🛍️', title: 'Compras no Destino',
+                text: 'Você quer levar lembranças do destino para amigos e família. O que você escolhe comprar?',
+                choices: [
+                    { emoji: '🎨', title: 'Artesanato Direto do Produtor', description: 'Visitar cooperativa de artesãos locais e comprar peças diretamente, pagando o preço justo e conhecendo a história de cada item.', impact: { preservacao: 10, social: 30, pegada: 20 }, feedback: 'Perfeito! Comprar direto do produtor garante que a renda vai inteiramente para quem produziu. Você leva uma memória com alma e história — infinitamente mais valioso que um souvenir industrializado.' },
+                    { emoji: '🏪', title: 'Souvenirs em Loja Turística', description: 'Comprar imãs e camisetas em loja de souvenirs no centro turístico.', impact: { preservacao: -5, social: -10, pegada: -10 }, feedback: 'Atenção! A maioria dos souvenirs turísticos é fabricada em massa longe do destino. Você paga pelo símbolo, mas o dinheiro não fica na comunidade local.' },
+                    { emoji: '🌿', title: 'Produtos Naturais Certificados', description: 'Comprar produtos naturais locais como mel, ervas e cachaças artesanais com certificação de origem.', impact: { preservacao: 15, social: 25, pegada: 15 }, feedback: 'Excelente! Produtos naturais certificados valorizam a biodiversidade local, apoiam pequenos produtores e têm menor impacto ambiental que industrializados.' }
+                ]
+            },
+            {
+                icon: '🏨', title: 'Hábitos na Hospedagem',
+                text: 'Durante a estada no hotel, como você adota práticas sustentáveis no seu quarto?',
+                choices: [
+                    { emoji: '💚', title: 'Rotina Sustentável Completa', description: 'Reutilizar toalhas, desligar ar-condicionado ao sair, fechar torneiras, recusar troca desnecessária de roupa de cama e participar de programa de reciclagem do hotel.', impact: { preservacao: 20, social: 10, pegada: 30 }, feedback: 'Excelente! Cada hóspede que adota essas práticas multiplica o impacto positivo. Hotéis percebem a diferença no consumo e são incentivados a expandir seus programas sustentáveis.' },
+                    { emoji: '🛁', title: 'Usar Todos os Serviços Disponíveis', description: 'Trocar toalhas diariamente, manter ar-condicionado ligado e aproveitar todos os amenities oferecidos.', impact: { preservacao: -15, social: 0, pegada: -20 }, feedback: 'Alto consumo desnecessário! Troca diária de toalhas usa centenas de litros de água por hóspede. Ar-condicionado constante eleva drasticamente o consumo energético do hotel.' },
+                    { emoji: '🚿', title: 'Banhos Rápidos e Luzes Apagadas', description: 'Tomar banhos curtos e apagar as luzes ao sair do quarto.', impact: { preservacao: 10, social: 5, pegada: 15 }, feedback: 'Bons hábitos! São atitudes simples com impacto real. Para ir além, inclua a reutilização de toalhas e a gestão do ar-condicionado.' }
+                ]
+            },
+            {
+                icon: '🌊', title: 'Turismo Náutico Responsável',
+                text: 'Você vai fazer um passeio de barco em área de recife de corais. O que considerar?',
+                choices: [
+                    { emoji: '🤿', title: 'Operadora Certificada com Guia Ambiental', description: 'Escolher operadora com certificação ambiental, com guia que explica comportamentos proibidos e mantém distância segura dos corais.', impact: { preservacao: 30, social: 20, pegada: 25 }, feedback: 'Excelente! Operadoras certificadas garantem que o turismo náutico não degrade os recifes. O guia educado é fundamental para que todos os visitantes respeitem o ecossistema.' },
+                    { emoji: '💆', title: 'Mergulhar Tocando Levemente os Corais', description: 'Tocar suavemente nos corais para ter uma experiência mais próxima da natureza.', impact: { preservacao: -30, social: -5, pegada: -20 }, feedback: 'Gravíssimo! Tocar corais — mesmo "levemente" — causa danos irreversíveis. Corais que levaram séculos para crescer morrem com um toque. Nunca toque vida marinha.' },
+                    { emoji: '📸', title: 'Passeio de Observação Superficial', description: 'Ficar na superfície observando com snorkel básico, sem mergulho profundo.', impact: { preservacao: 15, social: 10, pegada: 15 }, feedback: 'Observação responsável! A distância protege o ecossistema. Para experiência mais rica, combine com guia que explique a biodiversidade sem precisar se aproximar demais.' }
+                ]
+            },
+            {
+                icon: '📸', title: 'Fotografia Responsável',
+                text: 'Você encontra uma cena cultural belíssima: um ritual indígena. Você quer registrar. O que faz?',
+                choices: [
+                    { emoji: '🙏', title: 'Pedir Permissão e Respeitar a Resposta', description: 'Aproximar-se respeitosamente, perguntar se é permitido fotografar e, se positivo, manter distância discreta.', impact: { preservacao: 20, social: 30, pegada: 20 }, feedback: 'Atitude correta e respeitosa! Culturas tradicionais têm o direito de controlar como são retratadas. Pedir permissão é reconhecer a humanidade e soberania do outro.' },
+                    { emoji: '📷', title: 'Fotografar Discretamente sem Perguntar', description: 'Registrar o momento de longe sem perturbar, acreditando que discreto é inofensivo.', impact: { preservacao: -10, social: -20, pegada: -5 }, feedback: 'Erro comum mas sério! "Discreto" não é sinônimo de consentido. Registrar pessoas sem permissão viola sua privacidade e pode ferir práticas sagradas ou restritas.' },
+                    { emoji: '🎥', title: 'Apenas Observar e Memorizar', description: 'Optar por não fotografar e apenas vivenciar o momento presente, respeitando o espaço cultural.', impact: { preservacao: 15, social: 25, pegada: 15 }, feedback: 'Belo gesto! Às vezes a melhor fotografia é a que fica na memória. Experiências vividas com plenitude, sem filtros de câmera, costumam ser as mais marcantes.' }
+                ]
+            },
+            {
+                icon: '🌱', title: 'Compensação de Carbono',
+                text: 'Ao terminar a viagem, você percebe que gerou emissões significativas. Como lidar com esse impacto?',
+                choices: [
+                    { emoji: '🌳', title: 'Compensação Certificada + Mudança de Hábito', description: 'Calcular as emissões da viagem, compensar via programa certificado de reflorestamento e adotar hábitos mais sustentáveis nas próximas viagens.', impact: { preservacao: 25, social: 20, pegada: 30 }, feedback: 'Responsabilidade completa! Compensação + mudança de comportamento é a equação correta. Programas certificados garantem que as árvores plantadas realmente absorvem carbono equivalente.' },
+                    { emoji: '🤷', title: 'Aceitar como Inevitável', description: 'Entender que toda viagem gera impacto e que isso é inevitável para quem quer conhecer o mundo.', impact: { preservacao: -10, social: 0, pegada: -15 }, feedback: 'Resignação não é solução! O impacto existe, mas pode ser minimizado e compensado. Aceitar passivamente perpetua um ciclo que o planeta não pode mais sustentar.' },
+                    { emoji: '💸', title: 'Pagar Taxa de Compensação da Companhia Aérea', description: 'Adicionar a opção de compensação de carbono oferecida pela própria companhia aérea ao comprar a passagem.', impact: { preservacao: 10, social: 5, pegada: 15 }, feedback: 'Passo positivo, mas verifique a credibilidade do programa! Nem todas as compensações de companhias aéreas são certificadas. Prefira programas independentes auditados externamente.' }
+                ]
+            }
+        ]
+    },    
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – DESPERDÍCIO ZERO (EVITAR DESPERDÍCIOS NA COZINHA)
+    ══════════════════════════════════════════════════════════ */
+    {
+        id: 'desperdicio',
+        name: 'Desperdício Zero',
+        emoji: '♻️',
+        thumb: 'images/thumb-desperdicio-zero.jpg',
+        cover: 'images/desperdicio-zero.jpg',
+        gradient: 'linear-gradient(135deg, #4a7c59, #a8d5a2)',
+        accentColor: '#2e5e3a',
+        borderColor: '#78c18a',
+        statBg: '#edfaef',
+        subtitle: 'Você é o chef responsável por uma cozinha de alto movimento. Saiba tomar as decisões certas para eliminar o desperdício e aumentar a sustentabilidade!',
+        homeDesc: 'Suas escolhas afetarão o Aproveitamento dos Alimentos, a Eficiência da Cozinha e o Impacto Ambiental do seu restaurante!',
+        startLabel: '♻️ Entrar na Cozinha',
+        progressLabel: 'Progresso do Turno',
+        continueLabel: 'Continuar Turno →',
+        restartLabel: '🔄 Novo Turno',
+        endTitle: 'Turno Finalizado!',
+        tipsTitle: '♻️ Segredos para uma Cozinha Sem Desperdício',
+        stats: [
+            { key: 'aproveitamento', label: '🥕 Aproveitamento', icon: '🥕' },
+            { key: 'eficiencia',     label: '⚙️ Eficiência',     icon: '⚙️' },
+            { key: 'ambiental',      label: '🌿 Impacto',        icon: '🌿' }
+        ],
+        initialScores: { aproveitamento: 0, eficiencia: 0, ambiental: 0 },
+        resultDetails: [
+            { key: 'aproveitamento', icon: '🥕', title: 'Aproveitamento dos Alimentos' },
+            { key: 'eficiencia',     icon: '⚙️', title: 'Eficiência da Cozinha' },
+            { key: 'ambiental',      icon: '🌿', title: 'Impacto Ambiental' }
+        ],
+        scoreThresholds: [
+            { min: 82, cls: 'score-excellent', icon: '🏆', msg: 'Incrível! Você é um verdadeiro Mestre do Desperdício Zero! Sua cozinha é um exemplo de sustentabilidade, criatividade e eficiência. Você prova que é possível ser lucrativo e responsável ao mesmo tempo. Inspire outros chefs!' },
+            { min: 62, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você tomou ótimas decisões para reduzir o desperdício. Com algumas melhorias adicionais, sua cozinha pode se tornar um modelo de sustentabilidade gastronômica. Continue evoluindo!' },
+            { min: 42, cls: 'score-average',   icon: '👍', msg: 'Você está no caminho certo! Algumas decisões foram positivas, mas ainda há muito a melhorar. Lembre-se: desperdício custa dinheiro e prejudica o planeta. Reveja seus hábitos de compra e estocagem.' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Atenção! Sua cozinha está desperdiçando muito. Cada alimento jogado fora é dinheiro perdido e impacto ambiental desnecessário. Estude as dicas abaixo e repense sua gestão de compras, estoque e produção.' }
+        ],
+        tips: [
+            'Planeje o cardápio com base nos ingredientes disponíveis antes de fazer novos pedidos.',
+            'Adote o método PEPS (Primeiro que Entra, Primeiro que Sai) no estoque sempre.',
+            'Use talos, cascas e sementes criativamente — eles têm sabor e valor nutricional.',
+            'Porcione os ingredientes com precisão: balança é aliada do chef consciente.',
+            'Transforme sobras de produção em caldos, molhos ou pratos especiais do dia.',
+            'Treine sua equipe: o desperdício começa na falta de atenção e técnica.',
+            'Faça pedidos frequentes e menores ao invés de grandes estoques que perdem validade.',
+            'Monitore semanalmente o índice de perdas e estabeleça metas de redução.',
+            'Doações de alimentos próximos ao vencimento para ONGs são sustentáveis e fiscalmente vantajosas.'
+        ],
+        scenarios: [
+            {
+                icon: '🛒', title: 'Compras da Semana',
+                text: 'É segunda-feira e você precisa fazer o pedido dos ingredientes para a semana. Como você decide o que comprar?',
+                choices: [
+                    { emoji: '📋', title: 'Cardápio Planejado + Estoque Real', description: 'Verificar o estoque existente, cruzar com o cardápio da semana e pedir apenas o necessário com margem segura.', impact: { aproveitamento: 25, eficiencia: 20, ambiental: 20 }, feedback: 'Perfeito! Comprar com planejamento é a base do desperdício zero. Você evita excesso de estoque e garante frescor em todos os ingredientes.' },
+                    { emoji: '📦', title: 'Pedido em Grande Volume com Desconto', description: 'Aproveitar o desconto do fornecedor e pedir quantidade dobrada para garantir estoque folgado.', impact: { aproveitamento: -15, eficiencia: 5, ambiental: -10 }, feedback: 'Cuidado! Descontos em volume parecem vantajosos, mas alimentos em excesso vencem antes do uso. O barato sai caro no desperdício.' },
+                    { emoji: '🔁', title: 'Repetir o Pedido da Semana Passada', description: 'Usar a lista anterior sem verificar o estoque atual ou o cardápio.', impact: { aproveitamento: -10, eficiencia: -5, ambiental: -5 }, feedback: 'Arriscado! Cada semana tem demandas diferentes. Repetir pedidos sem análise gera acúmulo de ingredientes e perdas desnecessárias.' }
+                ]
+            },
+            {
+                icon: '🥦', title: 'Vegetais Próximos do Vencimento',
+                text: 'Você encontra no estoque legumes frescos que vencem amanhã e não estavam no cardápio do dia. O que fazer?',
+                choices: [
+                    { emoji: '🍲', title: 'Criar Prato Especial do Dia', description: 'Criar uma sugestão do chef com esses ingredientes e comunicar ao salão para oferecer como especial.', impact: { aproveitamento: 30, eficiencia: 20, ambiental: 25 }, feedback: 'Excelente! Criatividade a serviço do aproveitamento. O especial do dia valoriza o ingrediente, gera receita e evita o desperdício de forma elegante.' },
+                    { emoji: '🗑️', title: 'Descartar por Segurança', description: 'Jogar fora para não correr risco com a qualidade dos pratos.', impact: { aproveitamento: -25, eficiencia: -5, ambiental: -20 }, feedback: 'Descarte precipitado! Ingredientes próximos ao vencimento ainda têm qualidade e valor. Avalie antes de descartar — o descarte deve ser o último recurso.' },
+                    { emoji: '❄️', title: 'Congelar para Usar Depois', description: 'Congelar adequadamente os vegetais para preservar por mais tempo.', impact: { aproveitamento: 20, eficiencia: 15, ambiental: 15 }, feedback: 'Boa solução! O congelamento correto preserva nutrientes e valor. Certifique-se de etiquetar com data e usar dentro do prazo adequado.' }
+                ]
+            },
+            {
+                icon: '🍖', title: 'Aproveitamento da Carne',
+                text: 'Após o preparo do lombo assado, sobram aparas, nervos e ossos. O que você faz com esses subprodutos?',
+                choices: [
+                    { emoji: '🍜', title: 'Caldo Artesanal + Petisco', description: 'Usar os ossos para caldo rico e as aparas para recheio de um petisco do happy hour.', impact: { aproveitamento: 30, eficiencia: 25, ambiental: 25 }, feedback: 'Extraordinário! Usar o animal integralmente é o princípio do cozinheiro consciente. Você gera novos produtos com custo quase zero e zero desperdício.' },
+                    { emoji: '🗑️', title: 'Descartar no Lixo Orgânico', description: 'Jogar tudo fora pois a cozinha está ocupada e não há tempo para reaproveitamento.', impact: { aproveitamento: -20, eficiencia: -5, ambiental: -15 }, feedback: 'Oportunidade perdida! Ossos e aparas têm grande valor culinário. Uma cozinha eficiente sempre prevê o aproveitamento integral nos processos de produção.' },
+                    { emoji: '🧊', title: 'Separar e Congelar para Produção Futura', description: 'Etiquetar e congelar os subprodutos para usar no caldo da semana seguinte.', impact: { aproveitamento: 20, eficiencia: 15, ambiental: 20 }, feedback: 'Muito bom! Guardar subprodutos organizados é gestão inteligente. Lembre-se de documentar e usar dentro do prazo para manter a qualidade.' }
+                ]
+            },
+            {
+                icon: '📊', title: 'Análise de Perdas',
+                text: 'O relatório mensal mostra que 18% dos ingredientes comprados foram descartados. Como você reage?',
+                choices: [
+                    { emoji: '🔍', title: 'Investigar Causa por Causa', description: 'Analisar cada categoria de perda, identificar padrões e criar plano de ação com metas mensais.', impact: { aproveitamento: 25, eficiencia: 30, ambiental: 20 }, feedback: 'Gestão exemplar! Dados sem análise não mudam realidades. Identificar as causas raízes é o primeiro passo para uma cozinha verdadeiramente eficiente.' },
+                    { emoji: '😬', title: 'Ignorar e Repassar no Preço', description: 'Aceitar as perdas como inevitáveis e aumentar levemente o preço dos pratos para compensar.', impact: { aproveitamento: -15, eficiencia: -10, ambiental: -10 }, feedback: 'Decisão cara e irresponsável! Repassar o desperdício ao cliente é injusto e não competitivo. O problema continua crescendo sem correção.' },
+                    { emoji: '📢', title: 'Reunião de Conscientização com a Equipe', description: 'Apresentar os números para a equipe e pedir mais cuidado no manuseio dos alimentos.', impact: { aproveitamento: 10, eficiencia: 15, ambiental: 10 }, feedback: 'Passo importante, mas incompleto. Conscientizar a equipe é fundamental, mas precisa vir acompanhado de processos claros e metas mensuráveis.' }
+                ]
+            },
+            {
+                icon: '🥚', title: 'Estoque Expirado',
+                text: 'Ao revisar o estoque, você encontra ingredientes vencidos que passaram despercebidos. Como agir?',
+                choices: [
+                    { emoji: '📋', title: 'Implementar PEPS e Checklist Diário', description: 'Reorganizar o estoque com PEPS imediatamente e criar checklist diário de validades para a equipe.', impact: { aproveitamento: 25, eficiencia: 30, ambiental: 20 }, feedback: 'Ação corretiva perfeita! O método PEPS evita que esse problema se repita. Checklist diário é a ferramenta mais simples e eficaz para controle de validades.' },
+                    { emoji: '🤫', title: 'Descartar Discretamente', description: 'Jogar fora sem registrar ou comunicar para não gerar constrangimento.', impact: { aproveitamento: -20, eficiencia: -15, ambiental: -10 }, feedback: 'Erro grave! Esconder perdas impede a melhoria dos processos. Transparência sobre falhas é o único caminho para uma cultura de melhoria contínua.' },
+                    { emoji: '💸', title: 'Registrar Como Perda e Seguir', description: 'Documentar a perda financeira no sistema e continuar sem mudar o processo.', impact: { aproveitamento: -5, eficiencia: 5, ambiental: -5 }, feedback: 'Incompleto! Registrar é importante, mas sem mudança de processo a perda se repetirá. Análise + ação corretiva são os próximos passos obrigatórios.' }
+                ]
+            },
+            {
+                icon: '🥗', title: 'Ponta de Estoque Criativo',
+                text: 'Fim de semana chegou e sobram ingredientes variados que precisam ser usados. Como aproveitar?',
+                choices: [
+                    { emoji: '🍱', title: 'Menu Degustação de Aproveitamento', description: 'Criar um menu especial de fim de semana usando todos os ingredientes disponíveis de forma criativa e apresentá-lo como exclusivo do chef.', impact: { aproveitamento: 30, eficiencia: 25, ambiental: 25 }, feedback: 'Genial! Transformar sobras em exclusividade é o ápice da criatividade culinária. Clientes pagam mais por "especial do chef" do que por pratos padrão.' },
+                    { emoji: '🤷', title: 'Descartar e Começar Fresco na Segunda', description: 'Jogar fora tudo que sobrou para começar a semana com ingredientes novos e frescos.', impact: { aproveitamento: -25, eficiencia: -5, ambiental: -25 }, feedback: 'Hábito terrível! Descartar sistematicamente no fim de semana representa perda financeira enorme e impacto ambiental grave. Planejamento evita esse ciclo.' },
+                    { emoji: '🤝', title: 'Doação para Programa Social', description: 'Separar os alimentos em boas condições e doá-los para uma ONG ou programa de alimentação parceiro.', impact: { aproveitamento: 20, eficiencia: 10, ambiental: 20 }, feedback: 'Muito bem! Doação responsável é uma prática sustentável e gera impacto social positivo. Verifique a legislação local para doações de alimentos preparados.' }
+                ]
+            },
+            {
+                icon: '💧', title: 'Água e Energia na Cozinha',
+                text: 'Você percebe que a equipe deixa torneiras abertas e fornos ligados desnecessariamente. Como resolver?',
+                choices: [
+                    { emoji: '📌', title: 'Protocolo de Uso Responsável', description: 'Criar checklist de abertura e fechamento com responsáveis por verificar equipamentos e consumo a cada turno.', impact: { aproveitamento: 10, eficiencia: 25, ambiental: 30 }, feedback: 'Excelente! Processos claros com responsáveis definidos criam hábitos sustentáveis. Agua e energia economizadas reduzem custos e impacto ambiental diretamente.' },
+                    { emoji: '😤', title: 'Repreender a Equipe Individualmente', description: 'Chamar atenção de cada funcionário que vir desperdiçando sem implementar processo formal.', impact: { aproveitamento: 0, eficiencia: 5, ambiental: 5 }, feedback: 'Efeito temporário! Repreensão sem processo não gera mudança cultural duradoura. A equipe muda por hábito e processo, não por medo.' },
+                    { emoji: '🌡️', title: 'Instalar Sensores e Temporizadores', description: 'Investir em tecnologia: sensores de presença para iluminação e temporizadores nos equipamentos.', impact: { aproveitamento: 5, eficiencia: 20, ambiental: 25 }, feedback: 'Ótimo investimento! Tecnologia garante eficiência mesmo quando a atenção humana falha. O retorno financeiro geralmente justifica o investimento em poucos meses.' }
+                ]
+            },
+            {
+                icon: '🎓', title: 'Treinamento Anti-Desperdício',
+                text: 'Você quer capacitar sua equipe em práticas de desperdício zero. Qual formato de treinamento escolhe?',
+                choices: [
+                    { emoji: '👨‍🍳', title: 'Oficina Prática: Cozinha Integral', description: 'Organizar uma oficina em que cada cozinheiro prepara um prato usando integralmente um ingrediente, do talo à casca.', impact: { aproveitamento: 30, eficiencia: 20, ambiental: 25 }, feedback: 'Perfeito! Aprender fazendo é a forma mais eficaz na cozinha. Quem vivencia o aproveitamento integral passa a aplicar naturalmente no cotidiano.' },
+                    { emoji: '📊', title: 'Palestra sobre Impacto Ambiental', description: 'Trazer um especialista para falar sobre o impacto ambiental do desperdício alimentar globalmente.', impact: { aproveitamento: 10, eficiencia: 10, ambiental: 15 }, feedback: 'Importante para conscientizar, mas abstrato para a rotina da cozinha. Combine com exercícios práticos para que o conhecimento se transforme em ação.' },
+                    { emoji: '📱', title: 'Vídeos e Apostilas Online', description: 'Compartilhar materiais digitais sobre técnicas de aproveitamento para estudo autônomo.', impact: { aproveitamento: 5, eficiencia: 5, ambiental: 5 }, feedback: 'Insuficiente para a realidade da cozinha. Equipes operacionais aprendem com as mãos na massa. Materiais digitais funcionam como complemento, nunca como treinamento principal.' }
+                ]
+            }
+        ]
+    },
+
+];
+
+/* ═══════════════════════════════════════════════════════
+   ESTADO DO JOGO
+═══════════════════════════════════════════════════════ */
+let state = {
+    quiz: null,
+    currentScenario: 0,
+    scores: {},
+    shuffledChoices: [],
+    locked: false
+};
+
+/* ═══════════════════════════════════════════════════════
+   GALERIA
+═══════════════════════════════════════════════════════ */
+function buildGallery() {
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    QUIZZES.forEach(q => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.onclick = () => selectQuiz(q);
+        item.innerHTML = `
+            <div class="gallery-item-img" style="background:${q.gradient}">
+                <img src="${q.thumb}" alt="${q.name}"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+                     style="width:100%;height:100%;object-fit:cover;display:block;">
+                <span style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:80px">${q.emoji}</span>
+            </div>
+            <div class="gallery-item-title">${q.name}</div>
+            <div class="gallery-item-desc">${q.subtitle}</div>
+        `;
+        grid.appendChild(item);
+    });
+}
+
+function showGallery() {
+    document.getElementById('galleryScreen').style.display  = 'block';
+    document.getElementById('homeScreen').style.display     = 'none';
+    document.getElementById('gameScreen').style.display     = 'none';
+    document.getElementById('resultsScreen').style.display  = 'none';
+    document.getElementById('feedbackModal').classList.remove('active');
+}
+
+function selectQuiz(quiz) {
+    state.quiz = quiz;
+    document.getElementById('homeTitle').textContent    = quiz.name;
+    document.getElementById('homeSubtitle').textContent = quiz.subtitle;
+    document.getElementById('homeDesc').textContent     = quiz.homeDesc;
+    document.getElementById('homeImageBox').style.background = quiz.gradient;
+    document.getElementById('homeImageBox').innerHTML   = `
+        <img src="${quiz.cover}" alt="${quiz.name}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+             style="width:100%;height:100%;object-fit:cover;border-radius:18px;display:block;">
+        <span style="display:none;font-size:90px">${quiz.emoji}</span>
+    `;
+    document.getElementById('startBtn').style.background    = quiz.accentColor;
+    document.getElementById('startBtn').textContent         = quiz.startLabel;
+    document.getElementById('galleryScreen').style.display = 'none';
+    document.getElementById('homeScreen').style.display    = 'block';
+}
+
+/* ═══════════════════════════════════════════════════════
+   JOGO
+═══════════════════════════════════════════════════════ */
+function startGame() {
+    const quiz = state.quiz;
+    state.currentScenario = 0;
+    state.scores = JSON.parse(JSON.stringify(quiz.initialScores));
+    state.shuffledChoices = quiz.scenarios.map(sc => {
+        const idx = sc.choices.map((_, i) => i);
+        idx.sort(() => Math.random() - 0.5);
+        return idx;
+    });
+
+    const panel = document.getElementById('statsPanel');
+    panel.innerHTML = '';
+    quiz.stats.forEach(s => {
+        panel.innerHTML += `
+            <div class="stat-card" style="background:${quiz.statBg};border-color:${quiz.borderColor}">
+                <h3>${s.label}</h3>
+                <div class="stat-value" style="color:${quiz.accentColor}">
+                    <span id="score_${s.key}">0</span>
+                    <span class="stat-icon">pts</span>
+                </div>
+            </div>`;
+    });
+
+    document.getElementById('scenarioCard').style.borderLeftColor = quiz.accentColor;
+    document.getElementById('progressFill').style.background = quiz.gradient;
+    document.getElementById('progressLabel').textContent = quiz.progressLabel;
+    document.getElementById('continueBtn').style.background = quiz.accentColor;
+    document.getElementById('continueBtn').textContent = quiz.continueLabel;
+    document.getElementById('restartBtn').style.background = quiz.accentColor;
+    document.getElementById('restartBtn').textContent = quiz.restartLabel;
+
+    document.getElementById('homeScreen').style.display    = 'none';
+    document.getElementById('gameScreen').style.display    = 'block';
+    document.getElementById('resultsScreen').style.display = 'none';
+
+    updateStats();
+    loadScenario();
+}
+
+function loadScenario() {
+    const quiz     = state.quiz;
+    const scenario = quiz.scenarios[state.currentScenario];
+    const order    = state.shuffledChoices[state.currentScenario];
+
+    document.getElementById('scenarioIcon').textContent  = scenario.icon;
+    document.getElementById('scenarioTitle').textContent = scenario.title;
+    document.getElementById('scenarioText').textContent  = scenario.text;
+
+    const container = document.getElementById('choicesContainer');
+    container.innerHTML = '';
+
+    order.forEach(originalIdx => {
+        const choice = scenario.choices[originalIdx];
+        const btn = document.createElement('div');
+        btn.className = 'choice-btn';
+        btn.style.borderColor = quiz.borderColor;
+        btn.onclick = () => makeChoice(originalIdx);
+        btn.innerHTML = `
+            <div class="choice-content">
+                <div class="choice-title">
+                    <span class="choice-emoji">${choice.emoji}</span>
+                    ${choice.title}
+                </div>
+                <div class="choice-description">${choice.description}</div>
+            </div>`;
+        btn.addEventListener('mouseenter', () => { btn.style.borderColor = quiz.accentColor; });
+        btn.addEventListener('mouseleave', () => { btn.style.borderColor = quiz.borderColor; });
+        container.appendChild(btn);
+    });
+
+    updateProgress();
+}
+
+function makeChoice(choiceIndex) {
+    if (state.locked) return;
+    state.locked = true;
+    const quiz   = state.quiz;
+    const choice = quiz.scenarios[state.currentScenario].choices[choiceIndex];
+
+    quiz.stats.forEach(s => {
+        state.scores[s.key] += choice.impact[s.key];
+        if (state.scores[s.key] < 0) state.scores[s.key] = 0;
+    });
+
+    showFeedback(choice);
+}
+
+function showFeedback(choice) {
+    const quiz        = state.quiz;
+    const totalImpact = quiz.stats.reduce((sum, s) => sum + choice.impact[s.key], 0);
+
+    let feedbackIcon, feedbackTitle;
+    if      (totalImpact > 40) { feedbackIcon = '🌟'; feedbackTitle = 'Decisão Excepcional!'; }
+    else if (totalImpact > 20) { feedbackIcon = '✅'; feedbackTitle = 'Boa Decisão!'; }
+    else if (totalImpact > 0)  { feedbackIcon = '👍'; feedbackTitle = 'Decisão Razoável'; }
+    else if (totalImpact > -15){ feedbackIcon = '⚠️'; feedbackTitle = 'Pode Melhorar'; }
+    else                       { feedbackIcon = '❌'; feedbackTitle = 'Atenção!'; }
+
+    document.getElementById('feedbackIcon').textContent  = feedbackIcon;
+    document.getElementById('feedbackTitle').textContent = feedbackTitle;
+    document.getElementById('feedbackText').textContent  = choice.feedback;
+
+    const statsDiv = document.getElementById('feedbackStats');
+    statsDiv.innerHTML = '';
+    quiz.stats.forEach(s => {
+        const val   = choice.impact[s.key];
+        const cls   = val >= 0 ? 'positive-change' : 'negative-change';
+        const sign  = val > 0 ? '+' : '';
+        statsDiv.innerHTML += `
+            <div class="feedback-stat" style="background:${quiz.statBg}">
+                <div class="feedback-stat-value ${cls}">${sign}${val}</div>
+                <div class="feedback-stat-label">${s.label}</div>
+            </div>`;
+    });
+
+    document.getElementById('feedbackModal').classList.add('active');
+}
+
+function closeFeedback() {
+    setTimeout(function() { state.locked = false; }, 400);
+    document.getElementById('feedbackModal').classList.remove('active');
+    updateStats();
+    state.currentScenario++;
+    if (state.currentScenario < state.quiz.scenarios.length) {
+        loadScenario();
+    } else {
+        showResults();
+    }
+}
+
+function updateStats() {
+    state.quiz.stats.forEach(s => {
+        const el = document.getElementById('score_' + s.key);
+        if (el) el.textContent = Math.round(state.scores[s.key]);
+    });
+}
+
+function updateProgress() {
+    const total    = state.quiz.scenarios.length;
+    const current  = state.currentScenario + 1;
+    const pct      = (current / total) * 100;
+    document.getElementById('progressFill').style.width  = pct + '%';
+    document.getElementById('progressText').textContent  = current + '/' + total;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESULTADOS
+═══════════════════════════════════════════════════════ */
+function showResults() {
+    const quiz       = state.quiz;
+    const keys       = quiz.stats.map(s => s.key);
+    const totalScore = Math.round(keys.reduce((sum, k) => sum + state.scores[k], 0) / keys.length);
+
+    document.getElementById('gameScreen').style.display    = 'none';
+    document.getElementById('resultsScreen').style.display = 'block';
+
+    const threshold = quiz.scoreThresholds.find(t => totalScore >= t.min);
+    document.getElementById('finalScore').textContent  = totalScore + ' pts';
+    document.getElementById('finalScore').className    = 'results-score ' + threshold.cls;
+    document.getElementById('resultsIcon').textContent = threshold.icon;
+    document.getElementById('resultsTitle').textContent = quiz.endTitle;
+    document.getElementById('resultsMessage').textContent = threshold.msg;
+
+    const details = document.getElementById('resultsDetails');
+    details.innerHTML = '';
+    quiz.resultDetails.forEach(d => {
+        details.innerHTML += `
+            <div class="result-detail" style="border-color:${quiz.borderColor}">
+                <div class="result-detail-icon">${d.icon}</div>
+                <div class="result-detail-title">${d.title}</div>
+                <div class="result-detail-value" style="color:${quiz.accentColor}">${Math.round(state.scores[d.key])}</div>
+            </div>`;
+    });
+
+    document.getElementById('tipsTitle').textContent  = quiz.tipsTitle;
+    document.getElementById('tipsSection').style.background = quiz.statBg;
+    const tipsList = document.getElementById('tipsList');
+    tipsList.innerHTML = '';
+    quiz.tips.forEach(tip => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="tip-icon" style="color:${quiz.accentColor}">✓</span> ${tip}`;
+        tipsList.appendChild(li);
+    });
+}
+
+function restartGame() {
+    document.getElementById('resultsScreen').style.display = 'none';
+    startGame();
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+window.onload = buildGallery;
+</script>
+</body>
+</html>
