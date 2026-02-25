@@ -527,11 +527,29 @@
    DADOS DOS JOGOS
 ═══════════════════════════════════════════════════════ */
 const GAMES_DATA = {
+    observacao: {
+        id:            'observacao',
+        emoji:         '🦜',
+        title:         '🦜 Turismo de Observação',
+        desc:          'Um turista explora a natureza de barco. Mas algo mudou no cenário — encontre as 7 diferenças!',
+        thumb:         'images/thumb-turismo-observacao.jpg',
+        originalImage: 'images/turismo-observacao.jpg',
+        errorImage:    'images/sete-erros-turismo-observacao.jpg',
+        errors: [
+            { id: 1, name: 'Arara voando acima do barco',          top:  18, left: 52, width: 14, height: 10 },
+            { id: 2, name: 'Palmeira à direita no alto',           top:  15, left: 87, width: 10, height: 15 },
+            { id: 3, name: 'Palmeira menor entre árvores à esquerda', top: 30, left: 91, width:  8, height: 15 },
+            { id: 4, name: 'Tartaruga na água',                    top:  78, left: 57, width: 15, height: 12 },
+            { id: 5, name: 'Lontra menor à direita',               top:  65, left: 85, width: 10, height: 10 },
+            { id: 6, name: 'Sorriso do turista',                   top:  37, left: 42, width:  8, height:  6 },
+            { id: 7, name: 'Malas no fundo do barco',              top:  50, left: 57, width: 10, height:  8 }
+        ]
+    },
     aquario: {
         id:            'aquario',
         emoji:         '🐠',
         title:         '🐠 Turista no Aquário',
-        desc:          'Um turista animado visita o aquário. Mas algo mudou na imagem da direita — encontre as 7 diferenças!',
+        desc:          'Um turista animado visita o aquário. Mas algo mudou na segunda passagem pelo túnel — encontre as 7 diferenças!',
         thumb:         'images/thumb-aquario.jpg',
         originalImage: 'images/aquario.jpg',
         errorImage:    'images/sete-erros-aquario.jpg',
