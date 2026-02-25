@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo dos 7 Erros - TH&L</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 1.5rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a4d2e, #e76f51);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            color: #2d3142;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #f4a261; }
+
+        /* ── WRAPPER ── */
+        .game-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: calc(100vh - 100px);
+        }
+        .container { max-width: 1400px; width: 100%; }
+
+        /* ══════════════════════════════════════
+           TELA 1 – GALERIA
+        ══════════════════════════════════════ */
+        #galleryScreen {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .gallery-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            color: #2d3142;
+            margin-bottom: 10px;
+        }
+        .gallery-header p { font-size: 16px; color: #666; margin-bottom: 16px; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+        }
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+        }
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        .gallery-item img {
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item-emoji {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+        .gallery-item-title {
+            padding: 16px;
+            background: #f8f9fa;
+            text-align: center;
+            font-weight: 700;
+            color: #2d3142;
+            font-size: 15px;
+        }
+        .gallery-item-desc {
+            padding: 0 16px 14px;
+            background: #f8f9fa;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        /* ══════════════════════════════════════
+           TELA 2 – JOGO
+        ══════════════════════════════════════ */
+        #gameScreen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* Botões topo — idêntico ao quiz */
+        .game-header-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            justify-content: flex-end;
+        }
+
+        /* Barra de progresso — idêntica ao quiz */
+        .progress-container { margin-bottom: 22px; }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            color: #666;
+            font-weight: 600;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        /* Stats panel — idêntico ao quiz */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+        .stat-card {
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* Scenario card — idêntico ao quiz */
+        .scenario-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 22px;
+            border-left: 5px solid #667eea;
+        }
+        .scenario-icon { font-size: 3.5rem; margin-bottom: 12px; text-align: center; }
+        .scenario-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #2d3142;
+        }
+        .scenario-text { font-size: 1rem; color: #555; line-height: 1.8; }
+
+        /* ── ÁREA DAS IMAGENS ── */
+        .images-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .image-box {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 3px solid #e9ecef;
+            transition: border-color 0.3s;
+        }
+        .image-box img {
+            width: 100%;
+            display: block;
+        }
+        .image-label {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: rgba(0,0,0,0.65);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ── ZONAS CLICÁVEIS ── */
+        .error-zone {
+            position: absolute;
+            cursor: crosshair;
+            border-radius: 4px;
+            z-index: 5;
+            transition: background 0.2s;
+        }
+        .error-zone:hover {
+            background: rgba(102, 126, 234, 0.18);
+            outline: 2px dashed rgba(102, 126, 234, 0.6);
+        }
+
+        /* ── MARCADORES ── */
+        .error-marker {
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 900;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            box-shadow: 0 3px 12px rgba(102,126,234,0.55);
+            pointer-events: none;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Flash ao acertar */
+        @keyframes flashBorder {
+            0%   { border-color: #e9ecef; }
+            40%  { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.25); }
+            100% { border-color: #e9ecef; }
+        }
+        .flash-hit { animation: flashBorder 0.5s ease; }
+
+        /* ══════════════════════════════════════
+           BTNs — idênticos ao quiz
+        ══════════════════════════════════════ */
+        .btn {
+            padding: 14px 36px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary   { color: white; }
+        .btn-gallery   { background: #667eea; color: white; }
+        .btn-danger    { background: #f44336; color: white; }
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 0.88rem;
+            border-radius: 8px;
+        }
+
+        /* ══════════════════════════════════════
+           MODAL DE VITÓRIA — padrão feedback-modal do quiz
+        ══════════════════════════════════════ */
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.72);
+            z-index: 500;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .feedback-modal.active { display: flex; }
+        .feedback-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.35s ease;
+            text-align: center;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .feedback-icon  { font-size: 4.5rem; text-align: center; margin-bottom: 16px; }
+        .feedback-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+            color: #2d3142;
+        }
+        .feedback-text  { font-size: 1rem; color: #555; text-align: center; line-height: 1.8; margin-bottom: 22px; }
+
+        /* Resultado de tempo dentro do modal */
+        .feedback-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+        .feedback-stat {
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+            background: #f5f0ff;
+            border: 2px solid #764ba2;
+        }
+        .feedback-stat-value { font-size: 2rem; font-weight: 700; color: #764ba2; margin-bottom: 4px; }
+        .feedback-stat-label { font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        .action-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .continue-btn {
+            width: 100%;
+            padding: 14px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 12px;
+        }
+        .continue-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .gallery-grid      { grid-template-columns: 1fr 1fr; }
+            .images-container  { grid-template-columns: 1fr; }
+            .stats-panel       { grid-template-columns: 1fr 1fr; }
+            .gallery-header h1 { font-size: 28px; }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── NAV idêntico ao Quiz ── -->
+<nav>
+    <div class="nav-container">
+        <a href="../index.html" class="logo">TH&L</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Início</a></li>
+            <li><a href="index.html">Jogos</a></li>
+            <li><a href="../index.html#sobre">Sobre</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="game-wrapper">
+    <div class="container">
+
+        <!-- ══ TELA 1 – GALERIA ══ -->
+        <div id="galleryScreen">
+            <div class="gallery-header">
+                <h1>🔍 Jogo dos 7 Erros</h1>
+                <p>Escolha uma cena e encontre as 7 diferenças escondidas!</p>
+                <button class="btn btn-danger btn-small" onclick="window.location.href='index.html'">← Voltar aos Games</button>
+            </div>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+        <!-- ══ TELA 2 – JOGO ══ -->
+        <div id="gameScreen">
+
+            <!-- Botões topo — iguais ao quiz -->
+            <div class="game-header-btns">
+                <button class="btn btn-gallery btn-small" onclick="showGallery()">🔍 Outras Imagens</button>
+                <button class="btn btn-danger btn-small" onclick="window.location.href='index.html'">← Games</button>
+            </div>
+
+            <!-- Barra de progresso — igual ao quiz -->
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span id="progressLabel">Erros Encontrados</span>
+                    <span id="progressText">0 / 7</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width:0%; background: linear-gradient(135deg,#667eea,#764ba2);"></div>
+                </div>
+            </div>
+
+            <!-- Stats panel — igual ao quiz -->
+            <div class="stats-panel">
+                <div class="stat-card" style="border-color:#667eea; background:#f0f1ff;">
+                    <h3>🎯 Erros</h3>
+                    <div class="stat-value" style="color:#667eea;" id="errorCount">0 / 7</div>
+                </div>
+                <div class="stat-card" style="border-color:#764ba2; background:#f5f0ff;">
+                    <h3>⏱️ Tempo</h3>
+                    <div class="stat-value" style="color:#764ba2;" id="timerDisplay">0:00</div>
+                </div>
+            </div>
+
+            <!-- Scenario card — igual ao quiz -->
+            <div class="scenario-card">
+                <div class="scenario-icon" id="gameEmoji">🔍</div>
+                <h2 class="scenario-title" id="gameTitle">Jogo dos 7 Erros</h2>
+                <p class="scenario-text">
+                    📍 <strong>Como jogar:</strong> Observe as duas imagens com atenção. 
+                    Clique na imagem da <strong>DIREITA</strong> nos locais onde perceber que 
+                    FALTA algum elemento presente na imagem da esquerda. 
+                    Encontre os <strong>7 elementos</strong> que sumiram!
+                </p>
+            </div>
+
+            <!-- Imagens lado a lado -->
+            <div class="images-container">
+                <div class="image-box" id="boxLeft">
+                    <div class="image-label">📸 Original</div>
+                    <img id="originalImage" src="" alt="Imagem Original">
+                    <div id="markersLeft"></div>
+                </div>
+                <div class="image-box" id="boxRight">
+                    <div class="image-label">🔍 Encontre os Erros</div>
+                    <img id="errorImage" src="" alt="Imagem com Erros">
+                    <div id="markersRight"></div>
+                    <div id="errorZones"></div>
+                </div>
+            </div>
+
+        </div><!-- /gameScreen -->
+
+    </div>
+</div>
+
+<!-- ══ MODAL DE VITÓRIA — padrão feedback-modal do quiz ══ -->
+<div class="feedback-modal" id="victoryModal">
+    <div class="feedback-content">
+        <div class="feedback-icon">🎉</div>
+        <h2 class="feedback-title">Parabéns!</h2>
+        <p class="feedback-text">
+            Você encontrou todos os <strong>7 erros</strong>!<br>
+            Seus olhos são afiados como os de um detetive!
+        </p>
+        <div class="feedback-stats">
+            <div class="feedback-stat">
+                <div class="feedback-stat-value" id="finalTime">0:00</div>
+                <div class="feedback-stat-label">⏱️ Tempo Total</div>
+            </div>
+        </div>
+        <button class="continue-btn" onclick="restartCurrentGame()">🔄 Jogar Novamente</button>
+        <div class="action-buttons">
+            <button class="btn btn-gallery" onclick="showGallery()" style="flex:1;">🔍 Outras Imagens</button>
+            <button class="btn btn-danger" onclick="window.location.href='index.html'" style="flex:1;">← Games</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DADOS DOS JOGOS
+═══════════════════════════════════════════════════════ */
+const GAMES_DATA = {
+    aquario: {
+        id:            'aquario',
+        emoji:         '🐠',
+        title:         '🐠 Turista no Aquário',
+        desc:          'Um turista animado visita o aquário. Mas algo mudou na imagem da direita — encontre as 7 diferenças!',
+        thumb:         'images/thumb-aquario.jpg',
+        originalImage: 'images/aquario.jpg',
+        errorImage:    'images/sete-erros-aquario.jpg',
+        errors: [
+            { id: 1, name: 'Coral roxo',         top: 75, left: 15, width: 8,  height: 8  },
+            { id: 2, name: 'Tartaruga',           top: 44, left: 18, width: 10, height: 8  },
+            { id: 3, name: 'Meias do turista',    top: 87, left: 48, width: 10, height: 5  },
+            { id: 4, name: 'Peixinho',            top: 38, left: 28, width: 5,  height: 5  },
+            { id: 5, name: 'Mochila do turista',  top: 62, left: 52, width: 8,  height: 8  },
+            { id: 6, name: 'Criança à esquerda',  top: 70, left: 40, width: 8,  height: 8  },
+            { id: 7, name: 'Arraia',              top: 42, left: 73, width: 20, height: 8 }
+        ]
+    },
+    quarto: {
+        id:            'quarto',
+        emoji:         '🏨',
+        title:         '🏨 Turista no Quarto',
+        desc:          'O hóspede voltou ao quarto e sentiu que algo estava diferente. Você consegue encontrar os 7 erros?',
+        thumb:         'images/thumb-quarto.jpg',
+        originalImage: 'images/quarto.jpg',
+        errorImage:    'images/sete-erros-quarto.jpg',
+        errors: [
+            { id: 1, name: 'Ar condicionado',          top: 12, left: 3, width: 15, height: 8  },
+            { id: 2, name: 'Rosto do sol no quadro',   top: 20, left: 47, width: 8,  height: 7  },
+            { id: 3, name: 'Luminária no teto',        top: 1,  left: 22, width: 10, height: 8  },
+            { id: 4, name: 'Câmera fotográfica',       top: 56, left: 35, width: 8,  height: 8  },
+            { id: 5, name: 'Controle remoto',          top: 64, left: 65, width: 8,  height: 5  },
+            { id: 6, name: 'Mala de viagem',           top: 86, left: 73, width: 15, height: 12 },
+            { id: 7, name: 'Bandeja',                  top: 85, left: 8, width: 12, height: 8  }
+        ]
+    }
+};
+
+/* ═══════════════════════════════════════════════════════
+   ESTADO
+═══════════════════════════════════════════════════════ */
+let currentGame   = null;
+let foundErrors   = 0;
+let timerSeconds  = 0;
+let timerInterval = null;
+
+/* ═══════════════════════════════════════════════════════
+   GALERIA
+═══════════════════════════════════════════════════════ */
+function buildGallery() {
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+
+    Object.values(GAMES_DATA).forEach(g => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.onclick   = () => startGame(g.id);
+
+        const imgHTML = `<img src="${g.thumb}" alt="${g.title}"
+                              onerror="this.outerHTML='<div class=gallery-item-emoji>${g.emoji}</div>'">`;
+
+        item.innerHTML = `
+            ${imgHTML}
+            <div class="gallery-item-title">${g.title}</div>
+            <div class="gallery-item-desc">${g.desc}</div>
+        `;
+        grid.appendChild(item);
+    });
+}
+
+function showGallery() {
+    stopTimer();
+    document.getElementById('victoryModal').classList.remove('active');
+    document.getElementById('galleryScreen').style.display = 'block';
+    document.getElementById('gameScreen').style.display    = 'none';
+}
+
+/* ═══════════════════════════════════════════════════════
+   INICIAR JOGO
+═══════════════════════════════════════════════════════ */
+function startGame(gameId) {
+    currentGame  = gameId;
+    foundErrors  = 0;
+    timerSeconds = 0;
+
+    const g = GAMES_DATA[gameId];
+
+    /* Atualizar UI */
+    document.getElementById('gameEmoji').textContent         = g.emoji;
+    document.getElementById('gameTitle').textContent         = g.title;
+    document.getElementById('originalImage').src             = g.originalImage;
+    document.getElementById('errorImage').src                = g.errorImage;
+    document.getElementById('errorCount').textContent        = '0 / 7';
+    document.getElementById('timerDisplay').textContent      = '0:00';
+    document.getElementById('progressText').textContent      = '0 / 7';
+    document.getElementById('progressFill').style.width      = '0%';
+
+    /* Limpar marcadores e zonas anteriores */
+    ['markersLeft','markersRight','errorZones'].forEach(id => {
+        document.getElementById(id).innerHTML = '';
+    });
+
+    /* Criar zonas clicáveis */
+    createErrorZones(g.errors);
+
+    /* Trocar telas */
+    document.getElementById('galleryScreen').style.display = 'none';
+    document.getElementById('gameScreen').style.display    = 'block';
+
+    /* Iniciar timer */
+    startTimer();
+}
+
+/* ═══════════════════════════════════════════════════════
+   ZONAS CLICÁVEIS
+═══════════════════════════════════════════════════════ */
+function createErrorZones(errors) {
+    const container = document.getElementById('errorZones');
+    errors.forEach(error => {
+        const zone           = document.createElement('div');
+        zone.className       = 'error-zone';
+        zone.style.top       = error.top    + '%';
+        zone.style.left      = error.left   + '%';
+        zone.style.width     = error.width  + '%';
+        zone.style.height    = error.height + '%';
+        zone.dataset.errorId = error.id;
+        zone.onclick         = (e) => { e.stopPropagation(); markError(error, zone); };
+        container.appendChild(zone);
+    });
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARCAR ERRO ENCONTRADO
+═══════════════════════════════════════════════════════ */
+function markError(error, zoneEl) {
+    zoneEl.remove();
+    foundErrors++;
+
+    /* Atualizar contadores e barra */
+    document.getElementById('errorCount').textContent   = foundErrors + ' / 7';
+    document.getElementById('progressText').textContent = foundErrors + ' / 7';
+    document.getElementById('progressFill').style.width = (foundErrors / 7 * 100) + '%';
+
+    /* Flash nas bordas das duas imagens */
+    ['boxLeft','boxRight'].forEach(id => {
+        const box = document.getElementById(id);
+        box.classList.remove('flash-hit');
+        void box.offsetWidth;
+        box.classList.add('flash-hit');
+    });
+
+    /* Centro da zona para posicionar marcador */
+    const cx = error.left + error.width  / 2;
+    const cy = error.top  + error.height / 2;
+
+    /* Colocar marcador numerado nas duas imagens */
+    ['markersLeft','markersRight'].forEach(containerId => {
+        const marker       = document.createElement('div');
+        marker.className   = 'error-marker';
+        marker.textContent = foundErrors;
+        marker.style.left  = cx + '%';
+        marker.style.top   = cy + '%';
+        document.getElementById(containerId).appendChild(marker);
+    });
+
+    /* Verificar vitória */
+    if (foundErrors === 7) {
+        setTimeout(showVictory, 600);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════
+   TIMER
+═══════════════════════════════════════════════════════ */
+function startTimer() {
+    stopTimer();
+    timerInterval = setInterval(() => {
+        timerSeconds++;
+        const m = Math.floor(timerSeconds / 60);
+        const s = timerSeconds % 60;
+        document.getElementById('timerDisplay').textContent =
+            m + ':' + (s < 10 ? '0' : '') + s;
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   VITÓRIA
+═══════════════════════════════════════════════════════ */
+function showVictory() {
+    stopTimer();
+    document.getElementById('finalTime').textContent =
+        document.getElementById('timerDisplay').textContent;
+    document.getElementById('victoryModal').classList.add('active');
+}
+
+function restartCurrentGame() {
+    document.getElementById('victoryModal').classList.remove('active');
+    startGame(currentGame);
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+window.onload = buildGallery;
+</script>
+</body>
+</html>
