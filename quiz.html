@@ -25,7 +25,6 @@
             z-index: 100;
         }
         .nav-container {
-            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -57,7 +56,7 @@
             padding: 20px;
             min-height: calc(100vh - 100px);
         }
-        .container { max-width: 1100px; width: 100%; }
+        .container { max-width: 1400px; width: 100%; }
 
         /* ══════════════════════════════════════
            TELA 1 – GALERIA DE SELEÇÃO
@@ -99,8 +98,6 @@
             border-color: #667eea;
         }
         .gallery-item img {
-            width: 100%;
-            height: 185px;
             object-fit: cover;
             display: block;
         }        
@@ -1480,6 +1477,381 @@ const QUIZZES = [
             }
         ]
     },
+
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – Mestre dos Eventos (Gestão de Eventos)
+    ══════════════════════════════════════════════════════════ */
+    {
+        id: 'eventos',
+        name: 'Mestre dos Eventos',
+        emoji: '🎪',
+        thumb: 'images/thumb-mestre-dos-eventos.jpg',
+        cover: 'images/mestre-dos-eventos.jpg',
+        gradient: 'linear-gradient(135deg, #1a1a2e, #e94560)',
+        accentColor: '#c0392b',
+        borderColor: '#e94560',
+        statBg: '#fff0f3',
+        subtitle: 'Você é o gestor responsável por um grande evento! Cada decisão pode fazer a diferença entre um evento memorável e um desastre épico.',
+        homeDesc: 'Suas escolhas afetarão o Planejamento do Evento, a Satisfação dos Participantes e o Sucesso Operacional. Prove que você tem o que é preciso para ser Mestre dos Eventos!',
+        startLabel: '🎪 Começar o Evento',
+        progressLabel: 'Etapas do Evento',
+        continueLabel: 'Próxima Etapa →',
+        restartLabel: '🔄 Novo Evento',
+        endTitle: 'Evento Finalizado!',
+        tipsTitle: '🎪 Fundamentos da Gestão de Eventos de Excelência',
+        stats: [
+            { key: 'planejamento', label: '📋 Planejamento', icon: '📋' },
+            { key: 'satisfacao',   label: '😊 Satisfação',   icon: '😊' },
+            { key: 'operacional',  label: '⚙️ Operacional',  icon: '⚙️' }
+        ],
+        initialScores: { planejamento: 0, satisfacao: 0, operacional: 0 },
+        resultDetails: [
+            { key: 'planejamento', icon: '📋', title: 'Qualidade do Planejamento' },
+            { key: 'satisfacao',   icon: '😊', title: 'Satisfação dos Participantes' },
+            { key: 'operacional',  icon: '⚙️', title: 'Sucesso Operacional' }
+        ],
+        scoreThresholds: [
+            { min: 82, cls: 'score-excellent', icon: '🏆', msg: 'Extraordinário! Você é um verdadeiro Mestre dos Eventos! Suas decisões demonstram visão estratégica, liderança e atenção aos detalhes que transformam eventos em experiências inesquecíveis. O mercado de eventos precisa de profissionais como você!' },
+            { min: 62, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você tem sólidas habilidades em gestão de eventos e tomou boas decisões na maioria das situações. Com mais experiência e atenção aos detalhes, você será referência no setor. Continue evoluindo!' },
+            { min: 42, cls: 'score-average',   icon: '👍', msg: 'Você está aprendendo! Alguns eventos foram bem conduzidos, outros deixaram lacunas. Gestão de eventos exige antecipação, comunicação e jogo de cintura. Estude as dicas e planeje melhor o próximo!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Seu evento teve muitos imprevistos mal gerenciados! Não desanime — todo grande gestor de eventos aprendeu na prática. Revise os fundamentos abaixo e lembre-se: planejamento é tudo!' }
+        ],
+        tips: [
+            'Briefing completo é o alicerce de qualquer evento: entenda o objetivo, o público e o orçamento antes de qualquer passo.',
+            'Tenha sempre um Plano B para os elementos críticos: clima, fornecedores, tecnologia e transporte.',
+            'O cronograma deve ser detalhado ao minuto — e compartilhado com TODA a equipe envolvida.',
+            'Visite o local com antecedência: mapeie entradas, saídas de emergência, pontos elétricos e logística.',
+            'Contratos com fornecedores devem ter cláusulas de cancelamento, substituição e penalidades claras.',
+            'Comunicação com o cliente deve ser frequente e documentada — evite decisões apenas verbais.',
+            'Reserve entre 10% e 15% do orçamento como reserva para imprevistos — eles sempre acontecem.',
+            'O pós-evento é tão importante quanto o evento: relatório, pesquisa de satisfação e debriefing com a equipe.',
+            'Acessibilidade não é opcional: planeje o evento para todos os públicos desde o início.'
+        ],
+        scenarios: [
+            {
+                icon: '📋', title: 'O Briefing Inicial',
+                text: 'Um cliente contrata você para organizar um congresso corporativo para 500 pessoas. Na primeira reunião, ele diz apenas: "Quero algo moderno e impactante". Como você conduz o briefing?',
+                choices: [
+                    { emoji: '📝', title: 'Questionário Completo de Briefing', description: 'Apresentar um formulário estruturado com perguntas sobre objetivo do evento, perfil do público, orçamento, data, local preferido, identidade da marca e experiências anteriores do cliente.', impact: { planejamento: 35, satisfacao: 20, operacional: 25 }, feedback: 'Perfeito! Um briefing bem estruturado é a base de todo evento bem-sucedido. Sem informações precisas, você corre o risco de entregar algo tecnicamente bonito, mas que não atende ao objetivo do cliente.' },
+                    { emoji: '💡', title: 'Apresentar uma Proposta Criativa Imediata', description: 'Usar a criatividade para montar uma proposta conceitual impactante já na primeira reunião, mostrando proatividade e visão.', impact: { planejamento: -10, satisfacao: 5, operacional: -5 }, feedback: 'Arriscado! Proposta sem briefing completo é achismo. "Moderno e impactante" significa coisas diferentes para cada cliente. Uma proposta prematura pode desperdiçar esforço e criar expectativas erradas.' },
+                    { emoji: '🤝', title: 'Agendar Visita ao Local e Referências', description: 'Sugerir uma visita conjunta a eventos similares e ao espaço para alinhar visualmente o que o cliente imagina.', impact: { planejamento: 15, satisfacao: 15, operacional: 10 }, feedback: 'Boa iniciativa para alinhar expectativas, mas não substitui o briefing completo. Use essa visita como complemento — primeiro entenda os objetivos, depois mostre referências.' }
+                ]
+            },
+            {
+                icon: '⛈️', title: 'Crise: A Chuva no Dia D',
+                text: 'Faltam 3 horas para o início de um festival ao ar livre para 2.000 pessoas. A previsão do tempo indica chuva forte. O que você decide?',
+                choices: [
+                    { emoji: '⛺', title: 'Acionar Plano B de Estrutura Coberta', description: 'Contatar imediatamente o fornecedor de tendas e estruturas de contingência já previsto no contrato, comunicar a equipe e atualizar o público por todos os canais.', impact: { planejamento: 30, satisfacao: 25, operacional: 35 }, feedback: 'Gestão de crise exemplar! Plano B acionado com antecedência é o que separa eventos profissionais de amadores. A comunicação proativa com o público evita frustração e demonstra organização.' },
+                    { emoji: '🙏', title: 'Torcer para a Chuva Não Vir', description: 'Apostar que a previsão está errada e manter tudo como planejado, sem acionar nenhum plano de contingência.', impact: { planejamento: -25, satisfacao: -30, operacional: -25 }, feedback: 'Decisão desastrosa! Ignorar previsões de risco é negligência em gestão de eventos. Se a chuva vier, você terá 2.000 pessoas sem proteção, equipamentos danificados e um cliente furioso.' },
+                    { emoji: '📢', title: 'Comunicar Possível Adiamento ao Público', description: 'Informar aos participantes sobre o risco de adiamento e pedir que aguardem confirmação nas próximas 2 horas.', impact: { planejamento: 5, satisfacao: -10, operacional: 0 }, feedback: 'Comunicar é correto, mas "aguardar" sem ação concreta é passivo demais. Ao mesmo tempo que comunica, você deve estar acionando fornecedores de contingência — não uma coisa ou outra.' }
+                ]
+            },
+            {
+                icon: '🎤', title: 'O Palestrante Sumiu',
+                text: 'Você organiza uma conferência e o palestrante principal confirma cancelamento 48 horas antes do evento. Ele é o principal atrativo do dia. Como resolver?',
+                choices: [
+                    { emoji: '📞', title: 'Acionar Banco de Palestrantes de Contingência', description: 'Contatar imediatamente sua rede de palestrantes alternativos da mesma área, negociar condições de emergência e comunicar ao cliente com a solução já em andamento.', impact: { planejamento: 30, satisfacao: 20, operacional: 30 }, feedback: 'Profissionalismo de alto nível! Ter uma lista de palestrantes alternativos é planejamento de risco essencial. Apresentar a solução junto com o problema transforma uma crise em demonstração de competência.' },
+                    { emoji: '😱', title: 'Comunicar ao Cliente o Cancelamento Imediatamente', description: 'Ligar para o cliente assim que receber a notícia, explicar a situação e esperar orientação sobre o que fazer.', impact: { planejamento: 5, satisfacao: -10, operacional: 5 }, feedback: 'Comunicar é importante, mas esperar orientação do cliente sem ter soluções em mãos é fraqueza. O cliente contratou você exatamente para resolver esse tipo de problema. Venha com opções, não apenas com o problema.' },
+                    { emoji: '🔁', title: 'Reorganizar a Programação sem o Palestrante', description: 'Redistribuir o tempo da programação entre as outras atividades do evento, preenchendo o espaço com dinâmicas e debates.', impact: { planejamento: 15, satisfacao: 10, operacional: 15 }, feedback: 'Solução criativa que pode funcionar para eventos menores. Para uma conferência onde o palestrante é o principal atrativo, a ausência será sentida. Combine essa reorganização com a busca por um substituto.' }
+                ]
+            },
+            {
+                icon: '💰', title: 'O Orçamento Estourou',
+                text: 'A 30 dias do evento, você percebe que os custos reais estão 25% acima do orçamento aprovado. O que fazer?',
+                choices: [
+                    { emoji: '📊', title: 'Análise Imediata e Apresentação ao Cliente', description: 'Fazer um mapeamento detalhado do estouro por categoria, identificar cortes possíveis e adicionais necessários, e apresentar ao cliente um relatório claro com opções e recomendações.', impact: { planejamento: 30, satisfacao: 25, operacional: 25 }, feedback: 'Gestão financeira impecável! Transparência com dados e opções concretas é o que o cliente precisa. Esconder problemas financeiros até o último momento é a forma mais rápida de perder a confiança — e o contrato.' },
+                    { emoji: '✂️', title: 'Cortar Itens sem Comunicar o Cliente', description: 'Reduzir serviços e fornecedores de forma silenciosa para encaixar no orçamento original sem preocupar o cliente.', impact: { planejamento: -15, satisfacao: -25, operacional: -10 }, feedback: 'Sério erro ético! Cortar serviços contratados sem comunicar é quebra de contrato e de confiança. O cliente vai perceber no dia do evento — e a situação será muito pior do que uma conversa difícil antecipada.' },
+                    { emoji: '💳', title: 'Absorver o Custo Extra para Não Perder o Cliente', description: 'Arcar com o estouro por conta própria para manter a relação comercial e entregar o evento conforme prometido.', impact: { planejamento: -5, satisfacao: 10, operacional: -5 }, feedback: 'Generoso, mas insustentável! Absorver prejuízos compromete a saúde financeira da sua empresa. O cliente merece saber o que aconteceu — muitas vezes ele prefere ajustar o escopo a ver você no prejuízo.' }
+                ]
+            },
+            {
+                icon: '🏨', title: 'Escolha do Espaço',
+                text: 'Um cliente quer realizar um jantar de gala para 300 convidados. Dois locais estão disponíveis: um hotel 5 estrelas caro e um espaço independente mais barato. Como decidir?',
+                choices: [
+                    { emoji: '🔍', title: 'Visita Técnica com Checklist Detalhado', description: 'Visitar os dois locais com checklist: capacidade real, acústica, logística de cozinha, estacionamento, acessibilidade, pontos elétricos, saídas de emergência e histórico de eventos similares.', impact: { planejamento: 35, satisfacao: 25, operacional: 30 }, feedback: 'Decisão embasada! A escolha do espaço deve ser técnica, não apenas estética ou financeira. Um local glamouroso com cozinha inadequada para 300 pessoas pode arruinar o jantar inteiro — o checklist revela isso antes.' },
+                    { emoji: '💎', title: 'Indicar o Hotel 5 Estrelas Diretamente', description: 'Recomendar o hotel premium como a escolha mais segura e adequada para um evento de alto padrão, independente do custo adicional.', impact: { planejamento: 10, satisfacao: 15, operacional: 10 }, feedback: 'Pode ser a escolha certa, mas sem critérios técnicos é suposição. Hotéis 5 estrelas têm infraestrutura confiável, mas podem ter limitações específicas. A visita técnica deve confirmar, não a reputação.' },
+                    { emoji: '💰', title: 'Indicar o Espaço Mais Barato para Economizar', description: 'Priorizar o espaço independente para preservar o orçamento e aplicar a economia em outros elementos do evento.', impact: { planejamento: -5, satisfacao: -10, operacional: -5 }, feedback: 'Economia prematura! Para um jantar de gala, a infraestrutura do local é crítica. Um espaço barato com problemas logísticos compromete toda a experiência. Economize onde não aparecer — nunca no espaço principal.' }
+                ]
+            },
+            {
+                icon: '🎭', title: 'Gestão da Equipe no Dia',
+                text: 'São 2 horas antes do evento e dois membros-chave da sua equipe chegam atrasados com carro quebrado. Você está com equipe reduzida para a montagem final. O que faz?',
+                choices: [
+                    { emoji: '🔄', title: 'Redistribuir Tarefas e Acionar Suporte', description: 'Redistribuir imediatamente as funções entre a equipe presente, priorizar as montagens críticas e acionar fornecedores ou freelancers de emergência da sua rede de contatos.', impact: { planejamento: 25, satisfacao: 15, operacional: 30 }, feedback: 'Liderança de crise! Priorização e rede de suporte são as ferramentas do gestor eficiente. Redistribuir sem pânico e ter freelancers de emergência são marcas de um profissional que planeja para o imprevisível.' },
+                    { emoji: '😤', title: 'Ligar Cobrando os Atrasados', description: 'Focar energia em cobrar a equipe atrasada por telefone enquanto a montagem aguarda sua volta.', impact: { planejamento: -10, satisfacao: -15, operacional: -20 }, feedback: 'Foco errado no momento crítico! Com 2 horas para o evento, cada minuto conta. A cobrança pode e deve acontecer depois — agora a energia toda precisa ser direcionada à solução, não ao problema.' },
+                    { emoji: '🏃', title: 'Assumir Pessoalmente Todas as Tarefas', description: 'Tentar executar sozinho as funções em falta, assumindo o máximo possível para cobrir o time reduzido.', impact: { planejamento: 5, satisfacao: 5, operacional: -5 }, feedback: 'Dedicação admirável, mas ineficiente! Um gestor que executa sozinho perde a visão do todo. Seu lugar é coordenar, não montar mesa. Delegue, mobilize reforços e mantenha o controle estratégico do evento.' }
+                ]
+            },
+            {
+                icon: '📸', title: 'O Registro do Evento',
+                text: 'O fotógrafo contratado sofre um acidente no caminho e não poderá comparecer. O evento começa em 1 hora. Como garantir o registro?',
+                choices: [
+                    { emoji: '📷', title: 'Acionar Fotógrafo Reserva da Rede', description: 'Contatar imediatamente sua lista de fotógrafos parceiros de emergência, negociar cachê extra pelo acionamento de última hora e confirmar chegada antes do início.', impact: { planejamento: 25, satisfacao: 20, operacional: 25 }, feedback: 'Solução profissional! Ter uma rede de fornecedores de emergência para serviços críticos como fotografia é planejamento de risco básico. Cachê de emergência é custo justificável para garantir a memória do evento.' },
+                    { emoji: '🤳', title: 'Pedir aos Participantes que Fotografem', description: 'Criar uma hashtag e incentivar os participantes a registrarem o evento pelo celular, prometendo uma coletânea das melhores fotos.', impact: { planejamento: -5, satisfacao: 5, operacional: 5 }, feedback: 'Criativo como complemento, mas insuficiente como único recurso! Para eventos corporativos ou formais, fotos amadoras não substituem o trabalho profissional.' },
+                    { emoji: '🎬', title: 'Contratar Serviço de Vídeo para Compensar', description: 'Acionar rapidamente uma produtora de vídeo para registrar o evento em vez de fotos, garantindo pelo menos documentação audiovisual.', impact: { planejamento: 10, satisfacao: 10, operacional: 15 }, feedback: 'Boa alternativa se o fotógrafo não puder ser substituído! Vídeo documenta bem o evento e pode gerar frames de qualidade. Comunique ao cliente imediatamente — transparência sobre a mudança é essencial.' }
+                ]
+            },
+            {
+                icon: '📊', title: 'O Pós-Evento',
+                text: 'O evento terminou com sucesso. O cliente ficou satisfeito e os participantes aplaudiram. Qual é o seu próximo passo?',
+                choices: [
+                    { emoji: '📋', title: 'Relatório Completo + Pesquisa de Satisfação', description: 'Elaborar relatório detalhado com resultados, métricas, fotos, gestão financeira e lições aprendidas. Enviar pesquisa de satisfação aos participantes e agendar debriefing com o cliente.', impact: { planejamento: 30, satisfacao: 30, operacional: 30 }, feedback: 'Excelência profissional completa! O pós-evento define se você terá um cliente fiel ou apenas um contrato pontual. Relatório + pesquisa + debriefing mostram comprometimento com melhoria contínua e abrem portas para novos eventos.' },
+                    { emoji: '🎉', title: 'Celebrar com a Equipe e Descansar', description: 'Comemorar o sucesso com a equipe e dar uma pausa merecida antes de pensar no próximo evento.', impact: { planejamento: 5, satisfacao: 10, operacional: 0 }, feedback: 'Celebrar a equipe é fundamental e necessário! Mas o descanso não pode substituir o fechamento profissional. Relatório e pesquisa de satisfação devem vir antes — preferencialmente nos dois dias seguintes ao evento.' },
+                    { emoji: '💼', title: 'Enviar a Nota Fiscal e Aguardar Novo Contato', description: 'Finalizar o processo enviando a cobrança e aguardar o cliente retornar com novos projetos se tiver gostado.', impact: { planejamento: -5, satisfacao: -10, operacional: 5 }, feedback: 'Passivo demais! Clientes satisfeitos que não são nutridos migram para outros fornecedores. Um debriefing proativo e um relatório impecável transformam um bom evento em uma parceria de longo prazo.' }
+                ]
+            }
+        ]
+    },
+
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – A Arte do Bem Conviver (Etiqueta Social)
+    ══════════════════════════════════════════════════════════ */
+    {
+        id: 'etiqueta',
+        name: 'A Arte do Bem Conviver',
+        emoji: '🎩',
+        thumb: 'images/thumb-arte-do-bem-conviver.jpg',
+        cover: 'images/arte-do-bem-conviver.jpg',
+        gradient: 'linear-gradient(135deg, #2c3e50, #bdc3c7)',
+        accentColor: '#2c3e50',
+        borderColor: '#95a5a6',
+        statBg: '#f4f6f7',
+        subtitle: 'A etiqueta social é a arte de fazer as pessoas ao redor se sentirem bem. Teste suas habilidades em situações do dia a dia profissional e social!',
+        homeDesc: 'Suas escolhas revelarão o quanto você domina a Postura Social, a Comunicação Refinada e o Respeito às Convenções em diferentes contextos da vida profissional e pessoal.',
+        startLabel: '🎩 Entrar em Cena',
+        progressLabel: 'Situações Vividas',
+        continueLabel: 'Próxima Situação →',
+        restartLabel: '🔄 Recomeçar',
+        endTitle: 'Experiência Concluída!',
+        tipsTitle: '🎩 Princípios Essenciais da Etiqueta Social',
+        stats: [
+            { key: 'postura',     label: '🧍 Postura',     icon: '🧍' },
+            { key: 'comunicacao', label: '💬 Comunicação', icon: '💬' },
+            { key: 'refinamento', label: '✨ Refinamento', icon: '✨' }
+        ],
+        initialScores: { postura: 0, comunicacao: 0, refinamento: 0 },
+        resultDetails: [
+            { key: 'postura',     icon: '🧍', title: 'Postura Social' },
+            { key: 'comunicacao', icon: '💬', title: 'Comunicação Refinada' },
+            { key: 'refinamento', icon: '✨', title: 'Refinamento Geral' }
+        ],
+        scoreThresholds: [
+            { min: 82, cls: 'score-excellent', icon: '🏆', msg: 'Extraordinário! Você domina a Arte do Bem Conviver! Sua postura, comunicação e sensibilidade tornam cada interação mais agradável para todos ao redor. Etiqueta não é rigidez — é elegância, e você a pratica com maestria!' },
+            { min: 62, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você tem sólida base de etiqueta social e se sai bem na maioria das situações. Alguns refinamentos ainda podem elevar ainda mais sua presença. Continue observando e aprendendo com o ambiente ao redor!' },
+            { min: 42, cls: 'score-average',   icon: '👍', msg: 'Você conhece os conceitos básicos, mas ainda comete alguns deslizes. Lembre-se: etiqueta é empatia em ação. Releia as dicas e pratique o olhar atento às necessidades das pessoas ao redor!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Há muito a aprender sobre etiqueta social! A boa notícia: é uma habilidade que se desenvolve com atenção, empatia e prática. Comece pelos princípios básicos abaixo e observe como suas relações melhoram!' }
+        ],
+        tips: [
+            'Etiqueta não é sobre rigidez — é sobre fazer as pessoas ao redor se sentirem confortáveis e respeitadas.',
+            'Pontualidade é uma forma de respeito: chegar no horário diz que você valoriza o tempo do outro.',
+            'Celular à mesa em refeições formais é sempre inadequado — a presença plena é o maior elogio.',
+            'Ao ser apresentado, olho no olho, aperto de mão firme e repetir o nome da pessoa fixam a memória.',
+            'Em refeições formais, os talheres se usam de fora para dentro, a partir dos posicionados mais afastados do prato.',
+            'Correspondências de agradecimento após um jantar ou favor demonstram grande distinção.',
+            'Nunca corrija o erro de alguém publicamente — se necessário, faça-o em particular e com delicadeza.',
+            'Conheça a diferença entre dress codes: casual, smart casual, business casual, business formal e black tie.',
+            'Escuta ativa é a etiqueta mais valorizada: quem se sente ouvido, se sente respeitado.'
+        ],
+        scenarios: [
+            {
+                icon: '🍽️', title: 'O Jantar Formal',
+                text: 'Você é convidado para um jantar formal de negócios. Ao sentar à mesa, percebe um arsenal de talheres dos dois lados do prato e três taças diferentes à sua frente. Por onde começar?',
+                choices: [
+                    { emoji: '🍴', title: 'Talheres de fora para dentro, taças da direita', description: 'Usar os talheres mais afastados do prato primeiro, avançando para os internos a cada novo prato. As taças ficam à direita: água, vinho tinto e vinho branco, nessa ordem da esquerda para direita.', impact: { postura: 30, comunicacao: 15, refinamento: 35 }, feedback: 'Perfeito! A regra dos talheres de fora para dentro é universal na etiqueta ocidental. As taças seguem a ordem de serviço da esquerda para a direita. Dominar isso permite que você se concentre na conversa, não nos utensílios.' },
+                    { emoji: '👀', title: 'Observar o anfitrião e seguir seu exemplo', description: 'Aguardar discretamente o anfitrião começar e espelhar suas escolhas de talheres e taças ao longo do jantar.', impact: { postura: 20, comunicacao: 20, refinamento: 20 }, feedback: 'Estratégia elegante e segura! Seguir o anfitrião é sempre uma saída refinada em situações de dúvida. Demonstra humildade e observação — qualidades muito valorizadas socialmente.' },
+                    { emoji: '🤷', title: 'Perguntar ao garçom qual talher usar', description: 'Chamar o garçom discretamente para perguntar qual talher usar em cada prato ao longo do jantar.', impact: { postura: -10, comunicacao: 5, refinamento: -15 }, feedback: 'Compreensível, mas evitável! Em um jantar formal, perguntar ao garçom sobre os talheres chama atenção desnecessária. Melhor aprender a sequência com antecedência ou observar o anfitrião.' }
+                ]
+            },
+            {
+                icon: '🤝', title: 'A Apresentação Formal',
+                text: 'Em um evento corporativo, você é apresentado ao CEO de uma empresa parceira e a um estagiário ao mesmo tempo. Quem você cumprimenta primeiro?',
+                choices: [
+                    { emoji: '👑', title: 'O CEO, por hierarquia e protocolo', description: 'Cumprimentar primeiro a pessoa de maior status ou hierarquia é o protocolo formal em ambientes corporativos e sociais.', impact: { postura: 30, comunicacao: 20, refinamento: 30 }, feedback: 'Correto pelo protocolo! Na etiqueta formal e corporativa, cumprimentar primeiro quem tem maior hierarquia é o padrão esperado. Isso demonstra consciência de protocolo e respeito às convenções do ambiente.' },
+                    { emoji: '🤝', title: 'Os dois simultaneamente com um aceno', description: 'Fazer um gesto amplo de cumprimento que inclua os dois ao mesmo tempo para não criar distinção entre eles.', impact: { postura: -5, comunicacao: 5, refinamento: -10 }, feedback: 'A intenção igualitária é bonita, mas a execução é imprecisa. Cumprimentos simultâneos tendem a parecer dispersos. Em etiqueta, personalizar cada cumprimento é sempre superior.' },
+                    { emoji: '🎲', title: 'O mais próximo de mim, por praticidade', description: 'Cumprimentar quem estiver fisicamente mais próximo para iniciar a apresentação de forma natural.', impact: { postura: -10, comunicacao: 10, refinamento: -10 }, feedback: 'Prático, mas sem consciência de protocolo. A proximidade física não define a ordem de cumprimento em contextos formais. Em eventos corporativos, a hierarquia orienta a ordem das apresentações.' }
+                ]
+            },
+            {
+                icon: '📱', title: 'O Celular Inoportuno',
+                text: 'Durante uma reunião importante com um cliente, seu celular vibra repetidamente. Você vê que é uma ligação do seu filho adolescente. O que fazer?',
+                choices: [
+                    { emoji: '🔕', title: 'Silenciar e verificar após a reunião', description: 'Silenciar discretamente o aparelho sem olhar a tela e verificar assim que a reunião terminar — salvo emergências conhecidas com combinado prévio.', impact: { postura: 25, comunicacao: 25, refinamento: 25 }, feedback: 'Conduta adequada na maioria dos casos! O cliente em sua frente merece atenção plena. Se houver risco real de emergência, a etiqueta permite pedir licença brevemente para verificar — mas sempre com a devida explicação.' },
+                    { emoji: '📞', title: 'Pedir licença, atender brevemente e retornar', description: 'Desculpar-se com o cliente, sair da sala por até dois minutos para atender e retornar com explicação breve.', impact: { postura: 15, comunicacao: 20, refinamento: 15 }, feedback: 'Aceitável quando bem executado! Pedir licença e retornar rapidamente é mais elegante do que atender na frente do cliente. O segredo está na brevidade e na explicação — "meu filho, me desculpe um instante" é suficiente.' },
+                    { emoji: '📲', title: 'Atender na sala gesticulando que é rápido', description: 'Atender o telefone na própria sala gesticulando ao cliente que será breve, sem sair.', impact: { postura: -20, comunicacao: -15, refinamento: -25 }, feedback: 'Sério deslize! Atender o celular durante uma reunião sem sair da sala divide a atenção e desrespeita o cliente. Gestos de "é rápido" raramente amenizam a má impressão causada.' }
+                ]
+            },
+            {
+                icon: '🥂', title: 'O Brinde Correto',
+                text: 'Você está em um jantar de confraternização e o anfitrião propõe um brinde. Você não bebe álcool. Como participar do brinde de forma elegante?',
+                choices: [
+                    { emoji: '💧', title: 'Levantar a taça de água e participar normalmente', description: 'Erguer a taça de água com o mesmo entusiasmo, participar do brinde tocando as taças e beber um gole de água — a etiqueta moderna aceita e encoraja isso plenamente.', impact: { postura: 30, comunicacao: 25, refinamento: 30 }, feedback: 'Perfeito! A etiqueta contemporânea é clara: qualquer bebida serve para um brinde. O que importa é o gesto de participação, não o conteúdo da taça. Brindar com água é totalmente aceito e elimina qualquer constrangimento.' },
+                    { emoji: '🙅', title: 'Explicar em voz alta que não bebe e recusar', description: 'Informar ao grupo que não consome álcool e permanecer sentado enquanto os outros brindam.', impact: { postura: -10, comunicacao: 5, refinamento: -15 }, feedback: 'Desnecessariamente chamativo! Recusar o brinde publicamente cria um momento de desconforto. A etiqueta favorece a participação discreta — use a taça de água e ninguém precisará saber o que contém.' },
+                    { emoji: '🫣', title: 'Fingir beber sem tocar os lábios na taça', description: 'Levantar a taça e simular beber sem realmente tomar nada, para não chamar atenção.', impact: { postura: 5, comunicacao: -5, refinamento: -10 }, feedback: 'A intenção de não criar cena é correta, mas a simulação é desnecessária. Brindar com água é perfeitamente elegante e honesto — não há razão para fingir.' }
+                ]
+            },
+            {
+                icon: '✉️', title: 'O E-mail Profissional',
+                text: 'Você precisa enviar um e-mail discordando de uma decisão do seu gestor direto para um grupo de diretores. Como estrutura a mensagem?',
+                choices: [
+                    { emoji: '📝', title: 'Concordar com aspectos positivos e apresentar alternativa fundamentada', description: 'Iniciar reconhecendo os pontos válidos da decisão, apresentar a discordância com dados e argumentos sólidos, propor alternativa e finalizar com abertura ao diálogo.', impact: { postura: 25, comunicacao: 35, refinamento: 30 }, feedback: 'Comunicação profissional exemplar! Discordar com elegância é uma das habilidades mais valorizadas no ambiente corporativo. Reconhecer o que é bom antes de propor mudança demonstra maturidade e respeito.' },
+                    { emoji: '⚡', title: 'Expor diretamente a discordância com argumentos', description: 'Ir direto ao ponto, listar os problemas da decisão e sugerir o que deveria ser feito de forma objetiva.', impact: { postura: 5, comunicacao: 10, refinamento: 5 }, feedback: 'Objetivo, mas arriscado no tom! Num e-mail para múltiplos diretores, a objetividade deve vir acompanhada de tato. Expor a discordância sem reconhecer o contexto pode soar como ataque, não como contribuição.' },
+                    { emoji: '😤', title: 'Responder para todos expressando que a decisão está errada', description: 'Usar o "responder a todos" para tornar pública a discordância, garantindo que todos os envolvidos saibam da sua posição.', impact: { postura: -25, comunicacao: -20, refinamento: -30 }, feedback: 'Grave erro de etiqueta digital! "Responder a todos" para confrontar publicamente uma decisão é uma das piores práticas no ambiente profissional. Discordâncias sérias merecem canal adequado — conversa privada primeiro.' }
+                ]
+            },
+            {
+                icon: '🎁', title: 'O Presente Adequado',
+                text: 'Você foi convidado para o aniversário de 50 anos do seu diretor, celebrado em um jantar íntimo na casa dele. Qual é o presente mais adequado?',
+                choices: [
+                    { emoji: '🍷', title: 'Vinho ou espumante de qualidade com cartão personalizado', description: 'Uma garrafa de vinho ou espumante de boa procedência, com bilhete manuscrito mencionando algo específico sobre a pessoa ou a data.', impact: { postura: 25, comunicacao: 20, refinamento: 30 }, feedback: 'Escolha elegante e segura! Vinho de qualidade é um presente socialmente aceito em contextos formais. O bilhete manuscrito eleva muito o gesto — demonstra cuidado e personalização.' },
+                    { emoji: '💵', title: 'Envelope com dinheiro para ele escolher o que quiser', description: 'Dinheiro em envelope bonito com cartão, argumentando que assim ele pode comprar exatamente o que quiser.', impact: { postura: -15, comunicacao: 5, refinamento: -20 }, feedback: 'Prático, mas sem elegância social! Dar dinheiro para superiores hierárquicos em contextos formais é considerado inadequado — pode soar como pagamento, não como presente. Prefira algo tangível e bem escolhido.' },
+                    { emoji: '🎀', title: 'Cesta temática personalizada com os gostos dele', description: 'Montar uma cesta com produtos alinhados às preferências conhecidas do aniversariante: cafés especiais, chocolates finos, livro do autor favorito.', impact: { postura: 30, comunicacao: 25, refinamento: 35 }, feedback: 'Presente impecável! Personalização demonstra que você presta atenção e se importa. Uma cesta curada com os gostos reais do aniversariante é um dos presentes mais elegantes e memoráveis que existem.' }
+                ]
+            },
+            {
+                icon: '🗣️', title: 'A Conversa Difícil',
+                text: 'Em um almoço de equipe, um colega faz um comentário preconceituoso sem perceber o impacto. Todos ficam em silêncio constrangido. Como você age?',
+                choices: [
+                    { emoji: '🤫', title: 'Mudar de assunto sutilmente para aliviar o clima', description: 'Conduzir a conversa para outro tema de forma natural e discreta, aliviando o constrangimento sem confrontar publicamente o colega.', impact: { postura: 15, comunicacao: 15, refinamento: 10 }, feedback: 'Resolve o imediato com elegância, mas deixa o problema sem correção. Mudar de assunto protege o grupo do constrangimento, mas o colega não aprende. Uma correção gentil e privada é eticamente mais completa.' },
+                    { emoji: '🗣️', title: 'Contestar com leveza e sem agressividade', description: 'Dizer algo como "Acho que esse ponto de vista pode magoar pessoas — o que você quis dizer exatamente?" — abrindo espaço para reflexão sem humilhar.', impact: { postura: 25, comunicacao: 35, refinamento: 25 }, feedback: 'Conduta socialmente corajosa e elegante! Questionar sem atacar é a forma mais madura de lidar com comentários inadequados. Você protege quem pode ter sido afetado e dá ao colega a chance de refletir.' },
+                    { emoji: '😠', title: 'Corrigir diretamente e em voz alta o comentário', description: 'Sinalizar claramente e para todos que aquele comentário foi inadequado e por quê, defendendo quem possa ter sido atingido.', impact: { postura: 10, comunicacao: 10, refinamento: -5 }, feedback: 'A intenção de defender é legítima, mas a forma pode gerar conflito desnecessário. Uma correção muito direta em público pode constranger a todos. A leveza na abordagem costuma ser mais eficaz para gerar mudança real.' }
+                ]
+            },
+            {
+                icon: '🧥', title: 'O Dress Code',
+                text: 'Você recebe um convite para um evento com dress code "Smart Casual". O que você veste para estar adequadamente apresentado?',
+                choices: [
+                    { emoji: '👔', title: 'Calça de alfaiataria, camisa social sem gravata e sapato', description: 'Combinação que equilibra elegância e descontração: peças estruturadas sem o formalismo do terno completo — o coração do Smart Casual.', impact: { postura: 30, comunicacao: 10, refinamento: 35 }, feedback: 'Acerto certeiro! Smart Casual pede peças de qualidade sem o excesso do traje formal. Calça de alfaiataria ou chino, camisa ou polo de boa textura e sapato fechado compõem a leitura correta desse dress code.' },
+                    { emoji: '👗', title: 'Jeans rasgado e camiseta estampada', description: 'Roupa casual do dia a dia, confortável e despretensiosa para qualquer ocasião.', impact: { postura: -25, comunicacao: -10, refinamento: -30 }, feedback: 'Completamente inadequado para Smart Casual! Jeans rasgado e camiseta estampada estão abaixo do esperado. Smart Casual pede um nível acima: calças estruturadas, camisas, blazers e sapatos fechados.' },
+                    { emoji: '🤵', title: 'Terno completo com gravata', description: 'Traje formal de negócios — o mais elegante e seguro para qualquer ocasião profissional ou social.', impact: { postura: 5, comunicacao: 5, refinamento: -10 }, feedback: 'Excessivamente formal para Smart Casual! Vestir-se acima do dress code indicado também é um erro de etiqueta — pode parecer que você não leu o convite. Respeite o código pedido pelo anfitrião.' }
+                ]
+            }
+        ]
+    },
+
+    /* ══════════════════════════════════════════════════════════
+       QUIZ – Palco & Hospitalidade (Eventos na Hotelaria)
+    ══════════════════════════════════════════════════════════ */
+    {
+        id: 'eventoshotel',
+        name: 'Palco & Hospitalidade',
+        emoji: '🏨',
+        thumb: 'images/thumb-palco-e-hospitalidade..jpg',
+        cover: 'images/palco-e-hospitalidade.jpg',
+        gradient: 'linear-gradient(135deg, #1a1a2e, #16213e, #e94560)',
+        accentColor: '#9b2335',
+        borderColor: '#e94560',
+        statBg: '#fff0f3',
+        subtitle: 'Você é o Events Manager de um hotel de luxo! Das bodas corporativas aos casamentos dos sonhos, cada decisão define se o evento será lendário ou esquecível.',
+        homeDesc: 'Suas escolhas vão impactar a Experiência dos Hóspedes, a Eficiência Operacional do Hotel e a Satisfação do Cliente. Prove que você tem o perfil de um Events Manager de excelência!',
+        startLabel: '🏨 Iniciar o Serviço',
+        progressLabel: 'Etapas do Evento',
+        continueLabel: 'Próxima Etapa →',
+        restartLabel: '🔄 Novo Evento',
+        endTitle: 'Evento Concluído!',
+        tipsTitle: '🏨 Fundamentos dos Eventos na Hotelaria',
+        stats: [
+            { key: 'experiencia', label: '✨ Experiência', icon: '✨' },
+            { key: 'operacional', label: '⚙️ Operacional', icon: '⚙️' },
+            { key: 'satisfacao',  label: '😊 Satisfação',  icon: '😊' }
+        ],
+        initialScores: { experiencia: 0, operacional: 0, satisfacao: 0 },
+        resultDetails: [
+            { key: 'experiencia', icon: '✨', title: 'Experiência dos Hóspedes' },
+            { key: 'operacional', icon: '⚙️', title: 'Eficiência Operacional' },
+            { key: 'satisfacao',  icon: '😊', title: 'Satisfação do Cliente' }
+        ],
+        scoreThresholds: [
+            { min: 82, cls: 'score-excellent', icon: '🏆', msg: 'Extraordinário! Você é um Events Manager de alto nível! Seu domínio sobre hospitalidade, operações hoteleiras e relacionamento com clientes transformou cada evento em uma experiência inesquecível. O mercado de eventos em hotelaria precisa de talentos como você!' },
+            { min: 62, cls: 'score-good',      icon: '⭐', msg: 'Muito bem! Você demonstrou sólido conhecimento em eventos hoteleiros e tomou decisões acertadas na maioria das situações. Com mais refinamento e atenção à experiência do hóspede, você chegará à excelência total!' },
+            { min: 42, cls: 'score-average',   icon: '👍', msg: 'Você está crescendo! Algumas decisões foram positivas, mas eventos na hotelaria exigem antecipação, integração de equipes e foco total na experiência. Revise as dicas e volte ao palco mais preparado!' },
+            { min: 0,  cls: 'score-poor',      icon: '💭', msg: 'Foi um serviço desafiador! Eventos na hotelaria são complexos e exigem muito preparo. Não desanime — estude os fundamentos abaixo e tente novamente!' }
+        ],
+        tips: [
+            'O Events Manager é o elo entre o cliente e todos os departamentos do hotel — comunicação clara é tudo.',
+            'Faça um site inspection completo com o cliente antes de qualquer proposta: deixe-o visualizar o espaço.',
+            'O banquet event order (BEO) é o documento mais importante do evento — deve ser detalhado e aprovado pelo cliente.',
+            'Integração com cozinha, A&B, manutenção, governança e segurança é o que separa eventos memoráveis dos mediocres.',
+            'Upselling bem feito agrega valor real ao cliente — jamais ofereça o que não será aproveitado.',
+            'Tenha sempre um plano de contingência para falhas técnicas: projetor, som, iluminação e energia.',
+            'O pós-evento é tão estratégico quanto o evento: relatório, pesquisa de satisfação e follow-up abrem portas para contratos futuros.',
+            'Casamentos e eventos sociais exigem habilidade emocional além da técnica — você lida com sonhos, não apenas logística.',
+            'Conheça os espaços do hotel de cor: capacidades em diferentes layouts, pontos de energia, acústica e restrições.'
+        ],
+        scenarios: [
+            {
+                icon: '📋', title: 'O Primeiro Contato com o Cliente',
+                text: 'Um casal entra no hotel querendo organizar o casamento para 250 convidados daqui a 10 meses. Eles não têm experiência com eventos e estão claramente ansiosos. Como você conduz essa primeira reunião?',
+                choices: [
+                    { emoji: '🗺️', title: 'Tour pelos Espaços + Escuta Ativa', description: 'Iniciar com uma escuta cuidadosa dos sonhos do casal, fazer um tour pelos salões disponíveis, entender o estilo deles e só então apresentar possibilidades e pacotes de forma personalizada.', impact: { experiencia: 35, operacional: 15, satisfacao: 35 }, feedback: 'Conduta impecável! Em eventos sociais, especialmente casamentos, o cliente compra emoção antes de comprar serviço. Escutar antes de apresentar demonstra que você está ali para realizar sonhos, não apenas vender espaço.' },
+                    { emoji: '📊', title: 'Apresentar o Pacote Padrão de Casamentos', description: 'Mostrar o menu fixo de pacotes de casamento do hotel com preços, capacidades e serviços inclusos de forma objetiva.', impact: { experiencia: 5, operacional: 15, satisfacao: -5 }, feedback: 'Eficiente, mas frio demais para o momento. Casamentos são únicos — começar com pacotes padrão pode fazê-los sentir que são apenas mais um contrato. Personalize a escuta antes de apresentar soluções.' },
+                    { emoji: '📝', title: 'Entregar Questionário de Briefing para Preencherem', description: 'Fornecer o formulário de briefing padrão do hotel para o casal preencher em casa e retornar com as informações.', impact: { experiencia: -10, operacional: 10, satisfacao: -15 }, feedback: 'Burocrático e impessoal! Enviar o casal para casa com um questionário logo na primeira reunião é uma oportunidade perdida de conexão emocional. A reunião presencial existe exatamente para criar vínculo e confiança.' }
+                ]
+            },
+            {
+                icon: '🎭', title: 'Conflito de Reserva de Salão',
+                text: 'Dois clientes diferentes reservaram o mesmo salão para a mesma data: uma empresa para uma convenção de 200 pessoas e um casal para o casamento dos sonhos. A confirmação de ambos foi um erro do sistema. O que você faz?',
+                choices: [
+                    { emoji: '🔄', title: 'Analisar Alternativas e Apresentar Soluções a Ambos', description: 'Verificar imediatamente outros espaços do hotel e parceiros externos, contatar ambos os clientes com honestidade sobre o erro e apresentar soluções concretas — nunca apenas o problema.', impact: { experiencia: 25, operacional: 30, satisfacao: 30 }, feedback: 'Gestão de crise madura! Transparência + solução proativa é a fórmula certa. Apresentar o erro acompanhado de alternativas reais demonstra competência e mantém a confiança mesmo em situação adversa.' },
+                    { emoji: '🏆', title: 'Priorizar Quem Reservou Primeiro', description: 'Honrar a primeira reserva confirmada e comunicar ao segundo cliente que houve erro, oferecendo apenas desculpas e reembolso.', impact: { experiencia: -5, operacional: 10, satisfacao: -15 }, feedback: 'Juridicamente correto, mas hospitaleiramente insuficiente! Apenas reembolso não repara o impacto — especialmente para um casamento. Alternativas criativas e compensações generosas são obrigatórias para preservar a reputação.' },
+                    { emoji: '🤫', title: 'Tentar Resolver Internamente sem Comunicar os Clientes', description: 'Trabalhar internamente para achar uma solução antes de admitir o erro para qualquer um dos clientes.', impact: { experiencia: -15, operacional: -10, satisfacao: -20 }, feedback: 'Risco enorme! Quanto mais tempo demora para comunicar, pior fica. Clientes que descobrem o problema por conta própria causam danos de reputação muito maiores do que uma comunicação honesta e imediata.' }
+                ]
+            },
+            {
+                icon: '🍽️', title: 'O Menu do Evento Corporativo',
+                text: 'Uma empresa contratou um jantar de confraternização para 150 funcionários. O orçamento é apertado, mas o cliente quer impressionar os colaboradores. Como você propõe o cardápio?',
+                choices: [
+                    { emoji: '🌟', title: 'Cardápio Estratégico: Poucos Itens de Alta Qualidade', description: 'Propor um menu enxuto com dois ou três pratos principais muito bem executados, sobremesa impactante e estação de bebidas bem apresentada — qualidade percebida acima do volume.', impact: { experiencia: 30, operacional: 25, satisfacao: 30 }, feedback: 'Excelente estratégia! Em orçamento limitado, menos é mais. Um prato principal impecável impressiona mais do que dez opções mediocres. A apresentação e o serviço transformam refeições simples em experiências memoráveis.' },
+                    { emoji: '🍕', title: 'Menu Buffet com Muitas Opções para Satisfazer Todos', description: 'Montar um buffet extenso com muitas opções de baixo custo por item para dar sensação de abundância.', impact: { experiencia: -10, operacional: -10, satisfacao: 5 }, feedback: 'Armadilha comum do orçamento apertado! Buffet extenso com itens baratos gera percepção de baixa qualidade. O cliente quer impressionar os colaboradores — volume sem qualidade não atinge esse objetivo.' },
+                    { emoji: '🤝', title: 'Apresentar Dois Pacotes com Diferença de Custo', description: 'Mostrar duas propostas concretas: uma dentro do orçamento e outra ligeiramente acima, detalhando o que cada uma entrega em experiência.', impact: { experiencia: 20, operacional: 20, satisfacao: 25 }, feedback: 'Abordagem profissional e consultiva! Dar opções com clareza de custo-benefício ajuda o cliente a tomar decisão consciente. Muitas vezes, ao ver o que ganham com um pequeno investimento extra, preferem ajustar o orçamento.' }
+                ]
+            },
+            {
+                icon: '🔊', title: 'A Falha Técnica Durante o Evento',
+                text: 'No meio de uma keynote importante para 300 executivos, o sistema de som falha completamente. O palestrante para no palco. Todos olham para você. O que faz nos próximos 60 segundos?',
+                choices: [
+                    { emoji: '⚡', title: 'Acionar Técnico + Microfone de Emergência Imediatamente', description: 'Sinalizar para o técnico de A/V acionar o protocolo de contingência, entregar ao palestrante o microfone de backup e comunicar ao público com calma que o problema será resolvido em instantes.', impact: { experiencia: 30, operacional: 35, satisfacao: 30 }, feedback: 'Resposta de Events Manager experiente! Ter microfone de backup pronto é planejamento de risco básico. A comunicação calma e proativa com o público transforma uma crise técnica em demonstração de profissionalismo.' },
+                    { emoji: '🏃', title: 'Correr para a Cabine Técnica e Tentar Resolver', description: 'Ir pessoalmente à cabine de som para tentar resolver o problema o mais rápido possível.', impact: { experiencia: -5, operacional: 10, satisfacao: -10 }, feedback: 'A intenção é boa, mas o lugar do gestor não é na cabine técnica — é coordenando a situação. Deixar o palco sem um responsável visível aumenta o caos. Delegue a resolução técnica e mantenha o controle do ambiente.' },
+                    { emoji: '😬', title: 'Aguardar o Técnico Resolver sem Intervir', description: 'Confiar que o técnico de A/V responsável vai resolver e não intervir para não atrapalhar.', impact: { experiencia: -20, operacional: -10, satisfacao: -20 }, feedback: 'Postura passiva em momento crítico! Com 300 executivos esperando e um palestrante parado no palco, aguardar sem agir é o pior cenário possível. O Events Manager deve ser a âncora de tranquilidade — não um espectador.' }
+                ]
+            },
+            {
+                icon: '💍', title: 'O Casamento dos Sonhos em Crise',
+                text: 'Faltam 2 horas para a cerimônia de casamento e o florista confirma que metade das flores encomendadas não chegou. A noiva ainda não sabe. Como você age?',
+                choices: [
+                    { emoji: '🌸', title: 'Resolver Antes de Comunicar, com Solução em Mãos', description: 'Acionar imediatamente fornecedores alternativos de emergência, adaptar a decoração com o disponível no hotel e só então comunicar à noiva — já com a solução pronta e apresentada como uma proposta elegante.', impact: { experiencia: 35, operacional: 30, satisfacao: 35 }, feedback: 'Gestão emocional e operacional de alto nível! Em casamentos, você lida com o dia mais importante da vida de alguém. Resolver antes de comunicar — chegando com soluções, não com problemas — é o que define um Events Manager excepcional.' },
+                    { emoji: '😰', title: 'Comunicar Imediatamente à Noiva o Problema', description: 'Ir até a noiva e informar honestamente o ocorrido assim que soube, para que ela possa tomar decisões.', impact: { experiencia: -15, operacional: 5, satisfacao: -20 }, feedback: 'Honestidade é importante, mas o timing é tudo! Comunicar um problema sem solução a uma noiva 2 horas antes da cerimônia pode desencadear uma crise emocional que afeta todo o evento. Resolva primeiro, comunique depois — com elegância.' },
+                    { emoji: '📞', title: 'Exigir do Florista uma Solução Imediata', description: 'Ligar para o florista e pressionar por uma entrega emergencial, usando o contrato como argumento.', impact: { experiencia: 0, operacional: 15, satisfacao: -5 }, feedback: 'Necessário, mas insuficiente! Pressionar o fornecedor é correto e deve acontecer em paralelo. Porém, em 2 horas, você não pode depender apenas do florista — ative alternativas internas e de rede ao mesmo tempo.' }
+                ]
+            },
+            {
+                icon: '📊', title: 'O Upselling no Momento Certo',
+                text: 'Um cliente fecha um pacote básico de evento corporativo para 100 pessoas. Durante a reunião de detalhamento, você percebe que o orçamento dele é maior do que o pacote escolhido sugere. Como agir?',
+                choices: [
+                    { emoji: '💡', title: 'Apresentar Upgrades que Agregam Valor Real', description: 'Sugerir, com base nos objetivos do cliente, upgrades específicos: coffee break premium, iluminação cênica, lounge de networking — explicando o retorno de cada um para o objetivo do evento.', impact: { experiencia: 30, operacional: 20, satisfacao: 30 }, feedback: 'Upselling consultivo perfeito! Quando feito com base no objetivo do cliente e não na comissão, o upselling é serviço, não venda. O cliente percebe o valor e agradece a sugestão — aumentando receita e satisfação ao mesmo tempo.' },
+                    { emoji: '💰', title: 'Apresentar Todos os Opcionais de Uma Vez', description: 'Mostrar uma lista completa de todos os serviços adicionais disponíveis com os respectivos preços.', impact: { experiencia: -5, operacional: 10, satisfacao: 0 }, feedback: 'Inundação de informação! Uma lista extensa de opcionais sem contexto ou curadoria parece um catálogo de produtos. O cliente quer orientação, não mais decisões para tomar sozinho.' },
+                    { emoji: '🤐', title: 'Respeitar a Escolha e não Sugerir Nada Adicional', description: 'Honrar a escolha do cliente pelo pacote básico sem fazer qualquer sugestão adicional, para não parecer insistente.', impact: { experiencia: -5, operacional: 5, satisfacao: -10 }, feedback: 'Omissão que prejudica todos! Se o cliente tem orçamento e o upgrade melhoraria genuinamente a experiência, não sugerir é falhar na função consultiva. Upselling bem feito é cuidado com o cliente — não é pressão.' }
+                ]
+            },
+            {
+                icon: '🌧️', title: 'O Evento ao Ar Livre e o Tempo Fechado',
+                text: 'Um evento de gala ao ar livre para 180 pessoas está programado para esta noite. A previsão indica 70% de chance de chuva a partir das 20h. O evento começa às 19h. O que você decide?',
+                choices: [
+                    { emoji: '⛺', title: 'Ativar Estrutura de Contingência Coberta', description: 'Acionar imediatamente o fornecedor de tendas e estrutura de cobertura emergencial, reconfigurar o layout e comunicar o cliente com a atualização e a solução já em andamento.', impact: { experiencia: 30, operacional: 35, satisfacao: 30 }, feedback: 'Decisão proativa e profissional! Com 70% de chance de chuva, não agir é imprudência. Estrutura de cobertura preserva a experiência outdoor sem expor hóspedes e equipamentos ao risco.' },
+                    { emoji: '🎲', title: 'Manter o Planejamento Original e Torcer', description: 'Seguir com o evento ao ar livre como planejado — previsão não é certeza e mudar agora causaria mais transtorno do que a chuva em si.', impact: { experiencia: -20, operacional: -15, satisfacao: -25 }, feedback: 'Decisão temerária! 70% de probabilidade é risco alto demais para um evento de gala com 180 pessoas. Se a chuva vier, o dano à experiência, ao equipamento e à reputação do hotel será irreversível.' },
+                    { emoji: '🏛️', title: 'Transferir o Evento para o Salão Interno', description: 'Propor ao cliente migrar o evento completamente para o salão interno do hotel, garantindo proteção total contra a chuva.', impact: { experiencia: 10, operacional: 20, satisfacao: 10 }, feedback: 'Solução segura, mas pode frustrar o cliente que escolheu o ambiente externo por razão estética. Antes de propor a mudança total, explore a estrutura de cobertura — ela preserva o espírito do evento ao ar livre.' }
+                ]
+            },
+            {
+                icon: '📈', title: 'O Relatório Pós-Evento',
+                text: 'O grande evento corporativo terminou com sucesso e o cliente saiu satisfeito. O que você faz nas 48 horas seguintes para consolidar essa relação?',
+                choices: [
+                    { emoji: '📋', title: 'Relatório Completo + Pesquisa + Reunião de Debriefing', description: 'Enviar relatório detalhado com métricas, fotos profissionais, gestão financeira e lições aprendidas. Incluir pesquisa de satisfação com os participantes e propor reunião de debriefing com o cliente para o próximo contrato.', impact: { experiencia: 25, operacional: 30, satisfacao: 35 }, feedback: 'Excelência completa! O pós-evento na hotelaria é onde os contratos futuros são ganhos ou perdidos. Um relatório impecável + pesquisa + debriefing proativo transforma um cliente satisfeito em um cliente fiel e embaixador do hotel.' },
+                    { emoji: '📧', title: 'Enviar E-mail de Agradecimento', description: 'Mandar uma mensagem agradecendo pela preferência e sinalizando disponibilidade para futuros eventos.', impact: { experiencia: 5, operacional: 5, satisfacao: 10 }, feedback: 'Educado, mas insuficiente! Um e-mail genérico não aproveita o momentum de um evento bem-sucedido. O cliente está satisfeito agora — esse é o momento exato para consolidar a parceria com ações concretas.' },
+                    { emoji: '🎯', title: 'Enviar Proposta para o Próximo Evento Imediatamente', description: 'Aproveitar o momento de satisfação do cliente para enviar uma proposta para o próximo evento corporativo do calendário deles.', impact: { experiencia: 5, operacional: 10, satisfacao: -5 }, feedback: 'Foco excessivo em venda! Proposta imediata sem debriefing pode soar como oportunismo. Faça o fechamento correto do evento atual primeiro — relatório, pesquisa, reunião — e a proposta virá naturalmente.' }
+                ]
+            }
+        ]
+    }
 
 ];
 
