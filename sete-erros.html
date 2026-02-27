@@ -527,6 +527,24 @@
    DADOS DOS JOGOS
 ═══════════════════════════════════════════════════════ */
 const GAMES_DATA = {
+    recepcaohotel: {
+        id:            'recepcaohotel',
+        emoji:         '🏨',
+        title:         '🏨 Recepção do Hotel',
+        desc:          'O turista chegou ao hotel cheio de animação. Mas algo mudou na imagem da direita — encontre as 7 diferenças!',
+        thumb:         'images/thumb-recepcao-hotel.jpg',
+        originalImage: 'images/recepcao-hotel.jpg',
+        errorImage:    'images/sete-erros-recepcao-hotel.jpg',
+        errors: [
+            { id: 1, name: 'Quadro na parede',                  top:  20, left:  1, width: 10, height: 6 },
+            { id: 2, name: 'Mesa de centro no hall',            top:  52, left:  1, width: 6, height:  9 },
+            { id: 3, name: 'Abajur da luminária',               top:   8, left: 32, width: 10, height:  9 },
+            { id: 4, name: 'Planta à direita da recepcionista', top:  30, left: 93, width:  8, height: 16 },
+            { id: 5, name: 'Mala pequena no chão',              top:  83, left: 35, width: 12, height:  9 },
+            { id: 6, name: 'Chave entregue pela recepcionista', top:  41, left: 50, width:  7, height:  7 },
+            { id: 7, name: 'Folheto acima do balcão',           top:  51, left: 46, width:  8, height: 10 }
+        ]
+    },
     observacao: {
         id:            'observacao',
         emoji:         '🦜',
